@@ -28,8 +28,14 @@ Include(ovale_trinkets_mop)
 Include(ovale_trinkets_wod)
 Include(ovale_druid_spells)
 
-
-
+# Temporary Defines till next Ovale version
+Define(ashamanes_energy_buff 210583)
+	SpellInfo(ashamanes_energy_buff duration=3)
+	SpellAddBuff(tigers_fury ashamanes_energy_buff=1)
+Define(scent_of_blood_buff 210664)
+	SpellInfo(scent_of_blood_buff duration=4)
+	SpellAddBuff(thrash_cat scent_of_blood_buff=1)
+Define(luffa_wrappings 137056)
 
 AddCheckBox(opt_interrupt L(interrupt) default specialization=feral)
 AddCheckBox(opt_melee_range L(not_in_melee_range) specialization=feral)
