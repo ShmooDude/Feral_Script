@@ -198,6 +198,7 @@ AddFunction Regrowth
 				and BuffExpires(bloodtalons_buff) 
 				and SpellCooldown(ashamanes_frenzy) < GCD() 
 				and { BuffRemaining(savage_roar_buff) > GCD() or not Talent(savage_roar_talent) } 
+				and target.TimeToDie() > 20
 				and CheckBoxOn(opt_ashamanes_frenzy_main_action)
 			or Talent(elunes_guidance_talent) 
 				and { SpellCooldown(elunes_guidance) < GCD() and ComboPoints() == 0 
