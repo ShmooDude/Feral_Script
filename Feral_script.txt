@@ -36,6 +36,7 @@ Define(scent_of_blood_buff 210664)
 	SpellInfo(scent_of_blood_buff duration=4)
 	SpellAddBuff(thrash_cat scent_of_blood_buff=1)
 Define(luffa_wrappings 137056)
+Define(fiery_red_maimers_buff 236757)
 
 AddCheckBox(opt_interrupt L(interrupt) default specialization=feral)
 AddCheckBox(opt_melee_range L(not_in_melee_range) specialization=feral)
@@ -48,6 +49,7 @@ AddCheckBox(opt_tigers_fury_multiplier_predict "Tiger's Fury multiplier predicti
 
 AddCheckBox(opt_brutal_slash_use_at_three_always "Always use BS at 3 charges" specialization=feral)
 AddCheckBox(opt_burtal_slash_use_with_tigers_fury "Only suggest BS when TF is up" specialization=feral)
+AddCheckBox(opt_single_target_thrash "Single Target Thrash" specialization=feral)
 
 AddListItem(opt_desired_targets dt_2 "Min targets to suggest Brutal Slash = 2" specialization=feral)
 AddListItem(opt_desired_targets dt_3 "Min targets to suggest Brutal Slash = 3" specialization=feral default)
@@ -129,6 +131,7 @@ AddFunction energy_pooling
 		or BuffPresent(ashamanes_energy_buff) 
 		or SpellCooldown(tigers_fury) < 3 
 		or Talent(soul_of_the_forest_talent)
+		or TimeToMaxEnergy() < 3 and Talent(moment_of_clarity_talent)
 }
 #variable,name=finisher_conditions,value=combo_points=5&(energy.time_to_max<1|buff.berserk.up|buff.incarnation.up|buff.elunes_guidance.up|cooldown.tigers_fury.remains<3|talent.soul_of_the_forest.enabled|!dot.rip.ticking|(dot.rake.remains<1.5&spell_targets.swipe_cat<6))
 AddFunction finisher_conditions
@@ -141,7 +144,9 @@ AddFunction finisher_conditions
 			or SpellCooldown(tigers_fury) < 3 
 			or Talent(soul_of_the_forest_talent) 
 			or target.DebuffExpires(rip_debuff) 
-			or target.DebuffRemaining(rake_debuff) < 1.5 and Enemies() < 6 }
+			or target.DebuffRemaining(rake_debuff) < 1.5 and Enemies() < 6 
+			or TimeToMaxEnergy() < 3 and Talent(moment_of_clarity_talent) 
+			or Enemies() >= BrutalSlashDesiredTargets() and Talent(brutal_slash_talent) }
 }
 #rake,if=buff.prowl.up|buff.shadowmeld.up
 AddFunction Rake_Prowl
@@ -150,10 +155,14 @@ AddFunction Rake_Prowl
 		or BuffPresent(shadowmeld_buff)
 }
 #berserk,if=buff.ashamanes_energy.up
-#incarnation,if=buff.ashamanes_energy.up
 AddFunction Berserk
 {   
 	BuffPresent(ashamanes_energy_buff) or TigersFury() and SpellCooldown(tigers_fury) <= 0
+}
+#incarnation,if=buff.ashamanes_energy.up
+AddFunction Incarnation
+{
+	Energy() >= 35 or BuffPresent(ashamanes_energy_buff) or TigersFury() and SpellCooldown(tigers_fury) <= 0
 }
 #tigers_fury,if=(!buff.clearcasting.react&energy.deficit>=60)|energy.deficit>=80|(talent.sabertooth.enabled&!dot.rip.ticking&combo_points=5&(buff.bloodtalons.up|!talent.bloodtalons.enabled))
 AddFunction TigersFury
@@ -190,7 +199,8 @@ AddFunction Regrowth
 	Talent(bloodtalons_talent) 
 		and { BuffPresent(predatory_swiftness_buff) 
 			or Talent(sabertooth_talent) and ComboPoints() == 5 and BuffExpires(bloodtalons_buff) and target.DebuffExpires(rip_debuff) } 
-		and { BuffStacks(bloodtalons_buff) < 2 and not HasEquippedItem(ailuro_pouncers) or BuffExpires(bloodtalons_buff) } 
+		and { BuffStacks(bloodtalons_buff) < 2 and not HasEquippedItem(ailuro_pouncers) 
+			or BuffExpires(bloodtalons_buff) } 
 		and { ComboPoints() >= 5 
 			or BuffRemaining(predatory_swiftness_buff) < 1.5 
 			or BuffStacks(predatory_swiftness_buff) > 1 
@@ -198,7 +208,6 @@ AddFunction Regrowth
 				and BuffExpires(bloodtalons_buff) 
 				and SpellCooldown(ashamanes_frenzy) < GCD() 
 				and { BuffRemaining(savage_roar_buff) > GCD() or not Talent(savage_roar_talent) } 
-				and target.TimeToDie() > 20
 				and CheckBoxOn(opt_ashamanes_frenzy_main_action)
 			or Talent(elunes_guidance_talent) 
 				and { SpellCooldown(elunes_guidance) < GCD() and ComboPoints() == 0 
@@ -263,6 +272,15 @@ AddFunction ThrashCat_5Targets
 		and Enemies() >= 5 
 		and { target.DebuffExpires(thrash_cat_debuff) or energy_pooling() }
 }
+#maim,if=buff.fiery_red_maimers.up&variable.finisher_conditions&spell_targets.swipe_cat>=3&(buff.bloodtalons.up|!talent.bloodtalons.enabled)&(buff.savage_roar.up|!talent.savage_roar.enabled)
+AddFunction Maim_3Targets
+{ 
+	BuffPresent(fiery_red_maimers_buff) 
+		and finisher_conditions() 
+		and Enemies() >= 3 
+		and { BuffPresent(bloodtalons_buff) or not Talent(bloodtalons_talent) } 
+		and { BuffPresent(savage_roar_buff) or not Talent(savage_roar_talent) }
+}           
 #pool_resource,for_next=1
 #swipe_cat,if=spell_targets.swipe_cat>=8&(buff.scent_of_blood.up|variable.energy_pooling)
 AddFunction SwipeCat_8Targets
@@ -294,6 +312,14 @@ AddFunction SavageRoar_Refresh
 			or BuffRemaining(savage_roar_buff) < 13 and Talent(jagged_wounds_talent) and target.HealthPercent() >= 25 } 
 		and finisher_conditions()
 }
+#maim,if=buff.fiery_red_maimers.up&variable.finisher_conditions&spell_targets.swipe_cat>=3&(buff.bloodtalons.up|!talent.bloodtalons.enabled)&(buff.savage_roar.up|!talent.savage_roar.enabled)
+AddFunction Maim
+{ 
+	BuffPresent(fiery_red_maimers_buff) 
+		and finisher_conditions() 
+		and { BuffPresent(bloodtalons_buff) or not Talent(bloodtalons_talent) } 
+		and { BuffPresent(savage_roar_buff) or not Talent(savage_roar_talent) }
+}  
 #pool_resource,for_next=1
 #swipe_cat,if=combo_points=5&(spell_targets.swipe_cat>=6|(spell_targets.swipe_cat>=3&!talent.bloodtalons.enabled))&(buff.scent_of_blood.up|variable.energy_pooling)
 AddFunction SwipeCat_6Targets
@@ -353,13 +379,24 @@ AddFunction MoonfireCat
 		and target.TimeToDie() - target.DebuffRemaining(moonfire_cat_debuff) > target.TickTime(moonfire_cat_debuff) * 2
 }
 #pool_resource,for_next=1
-#thrash_cat,cycle_targets=1,if=combo_points<5&remains<=duration*0.3&(spell_targets.thrash_cat>=2|(buff.clearcasting.up&equipped.luffa_wrappings))&(!ticking|variable.energy_pooling)
+#thrash_cat,cycle_targets=1,if=combo_points<5&remains<=duration*0.3&spell_targets.thrash_cat>=2&(!ticking|variable.energy_pooling)
 AddFunction ThrashCat_2Targets
 {
 	ComboPoints() < 5 
 		and target.DebuffRemaining(thrash_cat_debuff) <= BaseDuration(thrash_cat_debuff) * 0.3 
-		and { Enemies() >= 2 or BuffPresent(clearcasting_buff) and HasEquippedItem(luffa_wrappings) } 
+		and Enemies() >= 2 
 		and { target.DebuffExpires(thrash_cat_debuff) or energy_pooling() }
+}
+#thrash_cat,cycle_targets=1,if=combo_points<5&remains<=duration*0.3&variable.energy_pooling&(buff.bloodtalons.down|equipped.luffa_wrappings)&(!buff.incarnation.up|equipped.luffa_wrappings)&set_bonus.tier19_4pc
+AddFunction ThrashCat_HighEnergy
+{
+	ComboPoints() < 5 
+		and target.DebuffRemaining(thrash_cat_debuff) <= BaseDuration(thrash_cat_debuff) * 0.3 
+		and energy_pooling() 
+		and { BuffExpires(bloodtalons_buff) or HasEquippedItem(luffa_wrappings) } 
+		and { BuffExpires(incarnation_king_of_the_jungle_buff) or HasEquippedItem(luffa_wrappings) } 
+		and ArmorSetBonus(T19 4)
+		and CheckBoxOn(opt_single_target_thrash)
 }
 #brutal_slash,if=combo_points<5&((raid_event.adds.exists&raid_event.adds.in>(1+max_charges-charges_fractional)*15)|(!raid_event.adds.exists&buff.tigers_fury.up))
 AddFunction BrutalSlash_MaxCharges
@@ -399,7 +436,7 @@ AddFunction FeralDefaultMainActions
 	if FerociousBite_3SecondRefresh() Spell(ferocious_bite) 
 	
 	#regrowth,if=talent.bloodtalons.enabled&(buff.predatory_swiftness.up|(talent.sabertooth.enabled&combo_points=5&!buff.bloodtalons.up&!dot.rip.ticking))&((buff.bloodtalons.stack<2&!equipped.ailuro_pouncers)|buff.bloodtalons.down)&(combo_points>=5|buff.predatory_swiftness.remains<1.5|buff.predatory_swiftness.stack>1|(combo_points=2&buff.bloodtalons.down&cooldown.ashamanes_frenzy.remains<gcd&(buff.savage_roar.remains>gcd|!talent.savage_roar.enabled))|(talent.elunes_guidance.enabled&((cooldown.elunes_guidance.remains<gcd&combo_points=0)|(buff.elunes_guidance.up&combo_points>=4))))
-	if Regrowth() Spell(regrowth)       
+	if Regrowth() Spell(regrowth) 
 	
 	#ashamanes_frenzy,if=combo_points<=2&buff.elunes_guidance.down&(buff.bloodtalons.up|!talent.bloodtalons.enabled)&(buff.savage_roar.up|!talent.savage_roar.enabled)
 	if AshamanesFrenzy() and CheckBoxOn(opt_ashamanes_frenzy_main_action) Spell(ashamanes_frenzy)
@@ -420,6 +457,10 @@ AddFunction FeralDefaultMainActions
 	if ThrashCat_5Targets() Spell(thrash_cat)
 	unless ThrashCat_5Targets() and SpellUsable(thrash_cat) and SpellCooldown(thrash_cat) < TimeToEnergyFor(thrash_cat)    {
 	
+	#maim,if=buff.fiery_red_maimers.up&variable.finisher_conditions&spell_targets.swipe_cat>=3&(buff.bloodtalons.up|!talent.bloodtalons.enabled)&(buff.savage_roar.up|!talent.savage_roar.enabled)
+	if Maim_3Targets() Spell(maim)
+	unless Maim_3Targets() and SpellUsable(maim) and SpellCooldown(maim) < TimeToEnergyFor(maim)    {
+	
 	#pool_resource,for_next=1
 	#swipe_cat,if=spell_targets.swipe_cat>=8&(buff.scent_of_blood.up|variable.energy_pooling)
 	if SwipeCat_8Targets() Spell(swipe_cat)
@@ -438,6 +479,10 @@ AddFunction FeralDefaultMainActions
 	if SavageRoar_Refresh() Spell(savage_roar)
 	unless SavageRoar_Refresh() and SpellUsable(savage_roar) and SpellCooldown(savage_roar) < TimeToEnergyFor(savage_roar)    {
 	
+	#maim,if=buff.fiery_red_maimers.up&variable.finisher_conditions&spell_targets.swipe_cat>=3&(buff.bloodtalons.up|!talent.bloodtalons.enabled)&(buff.savage_roar.up|!talent.savage_roar.enabled)
+	if Maim() Spell(maim)
+	unless Maim() and SpellUsable(maim) and SpellCooldown(maim) < TimeToEnergyFor(maim)    {
+		
 	#pool_resource,for_next=1
 	#swipe_cat,if=combo_points=5&(spell_targets.swipe_cat>=6|(spell_targets.swipe_cat>=3&!talent.bloodtalons.enabled))&(buff.scent_of_blood.up|variable.energy_pooling)
 	if SwipeCat_6Targets() Spell(swipe_cat)
@@ -474,13 +519,15 @@ AddFunction FeralDefaultMainActions
 	if ThrashCat_2Targets() Spell(thrash_cat)
 	unless ThrashCat_2Targets() and SpellUsable(thrash_cat) and SpellCooldown(thrash_cat) < TimeToEnergyFor(thrash_cat)    {
 	
+	#thrash_cat,cycle_targets=1,if=combo_points<5&remains<=duration*0.3&variable.energy_pooling&(buff.bloodtalons.down|equipped.luffa_wrappings)&(!buff.incarnation.up|equipped.luffa_wrappings)&set_bonus.tier19_4pc
+	if ThrashCat_HighEnergy() Spell(thrash_cat)
 	#brutal_slash,if=combo_points<5&((raid_event.adds.exists&raid_event.adds.in>(1+max_charges-charges_fractional)*15)|(!raid_event.adds.exists&buff.tigers_fury.up))
 	if BrutalSlash_MaxCharges() Spell(brutal_slash)
 	#swipe_cat,if=combo_points<5&spell_targets.swipe_cat>=3&(buff.scent_of_blood.up|variable.energy_pooling)
 	if SwipeCat_3Targets() Spell(swipe_cat)
 	#shred,if=combo_points<5&(spell_targets.swipe_cat<3|talent.brutal_slash.enabled)&((dot.rake.remains>(action.shred.cost+action.rake.cost-energy)%energy.regen)|variable.energy_pooling)
 	if Shred() Spell(shred)
-	}}}}}}}}}}}}
+	}}}}}}}}}}}}}}
 }
 
 AddFunction FeralDefaultMainPostConditions
