@@ -133,7 +133,7 @@ AddFunction energy_pooling
 		or Talent(soul_of_the_forest_talent)
 		or TimeToMaxEnergy() < 3 and Talent(moment_of_clarity_talent)
 }
-#variable,name=finisher_conditions,value=combo_points=5&(energy.time_to_max<1|buff.berserk.up|buff.incarnation.up|buff.elunes_guidance.up|cooldown.tigers_fury.remains<3|talent.soul_of_the_forest.enabled|!dot.rip.ticking|(dot.rake.remains<1.5&spell_targets.swipe_cat<6))
+#/variable,name=finisher_conditions,value=combo_points=5&(energy.time_to_max<1|buff.berserk.up|buff.incarnation.up|buff.elunes_guidance.up|cooldown.ashamanes_frenzy.remains<1|cooldown.tigers_fury.remains<3|talent.soul_of_the_forest.enabled|!dot.rip.ticking|(dot.rake.remains<1.5&spell_targets.swipe_cat<6)|(energy.time_to_max<3&talent.moment_of_clarity.enabled)|(spell_targets.brutal_slash>desired_targets&talent.brutal_slash.enabled))
 AddFunction finisher_conditions
 {
 	ComboPoints() == 5 
@@ -141,6 +141,7 @@ AddFunction finisher_conditions
 			or BuffPresent(berserk_cat_buff) 
 			or BuffPresent(incarnation_king_of_the_jungle_buff) 
 			or BuffPresent(elunes_guidance_buff) 
+			or SpellCooldown(ashamanes_frenzy) < 1 
 			or SpellCooldown(tigers_fury) < 3 
 			or Talent(soul_of_the_forest_talent) 
 			or target.DebuffExpires(rip_debuff) 
@@ -837,7 +838,7 @@ AddFunction GuardianDefaultCdActions
 	unless { BuffExpires(ironfur_buff) or RageDeficit() < 25 } and Spell(ironfur) or BuffExpires(frenzied_regeneration_buff) and IncomingDamage(6) / MaxHealth() > 0.25 + { 2 - Charges(frenzied_regeneration count=0) } * 0.15 and Spell(frenzied_regeneration) or BuffExpires(pulverize_buff) and target.DebuffGain(thrash_bear_debuff) <= BaseDuration(thrash_bear_debuff) and Spell(pulverize) or target.DebuffRemaining(thrash_bear_debuff) < 4.5 and Spell(thrash_bear) or Spell(mangle) or BuffRemaining(pulverize_buff) < GCD() and target.DebuffGain(thrash_bear_debuff) <= BaseDuration(thrash_bear_debuff) and Spell(pulverize)
 	{
 		#incarnation
-		Spell(incarnation_son_of_ursoc)
+		Spell(incarnation_guardian_of_ursoc)
 	}
 }
 
@@ -918,7 +919,7 @@ AddIcon checkbox=opt_druid_guardian_aoe help=cd specialization=guardian
 # frenzied_regeneration
 # frenzied_regeneration_buff
 # galactic_guardian_buff
-# incarnation_son_of_ursoc
+# incarnation_guardian_of_ursoc
 # ironfur
 # ironfur_buff
 # thrash_bear_debuff
