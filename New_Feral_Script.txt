@@ -310,9 +310,9 @@ AddFunction FeralInterruptActions
         if not target.Classification(worldboss)
         {
             if target.InRange(mighty_bash) Spell(mighty_bash)
-            Spell(typhoon)
+            if target.distance() < 20 Spell(typhoon)
             if target.InRange(maim) Spell(maim)
-            Spell(war_stomp)
+            if target.distance() < 8 Spell(war_stomp)
         }
     }
 }
@@ -321,7 +321,7 @@ AddFunction TFMultPred asvalue=1
 {
     if CheckBoxOn(opt_tigers_fury_multiplier_predict) 
         and SpellCooldown(tigers_fury) <= 0
-        and { TigersFury_Main() or TigersFury_Sabertooth } 1.15
+        and { TigersFury_Main() or TigersFury_Sabertooth() } 1.15
     1
 }
 
@@ -566,11 +566,13 @@ AddFunction TigersFury_Sabertooth
 }
 #variable,name=Rip_Main,value=(!dot.rip.ticking|(dot.rip.remains<variable.RipRefresh&target.health.pct>variable.ExecuteRange)|action.rip.persistent_multiplier>dot.rip.pmultiplier)&target.time_to_die-dot.rip.remains>action.rip.tick_time*4
 #rip,cycle_targets=1,if=variable.Rip_Main
+# MODIFICATION: TFMultPred when CheckBoxOn(opt_tigers_fury_multiplier_predict)
+# REASON: When Tiger's Fury is suggested, treat Rip as if it is already up even if it hasn't been cast yet.
 AddFunction Rip_Main
 {
     { target.DebuffExpires(rip_debuff) 
             or target.DebuffRemaining(rip_debuff) < RipRefresh() and target.HealthPercent() > ExecuteRange() 
-            or PersistentMultiplier(rip_debuff) > target.DebuffPersistentMultiplier(rip_debuff) } 
+            or TFMultPred() * PersistentMultiplier(rip_debuff) > target.DebuffPersistentMultiplier(rip_debuff) } 
         and target.TimeToDie() - target.DebuffRemaining(rip_debuff) > target.TickTime(rip_debuff) * 4
 }
 #variable,name=FerociousBite_9SecondRefresh,value=dot.rip.remains<variable.RipRefresh&target.health.pct<variable.ExecuteRange
@@ -630,12 +632,14 @@ AddFunction SwipeCat_6Targets
 # MODIFICATION: CheckBoxOn(opt_shadowmeld_main_action) in Shadowmeld_Main
 # MODIFICATION: Shadowmeld_Cd for CheckBoxOff(opt_shadowmeld_main_action)
 # REASON: Allows player to choose via checkbox whether to add Shadowmeld to the Main Icon
+# MODIFICATION: TFMultPred() > 1 in addition to BuffPresent(tigers_fury_buff) for CheckBoxOn(opt_tigers_fury_multiplier_predict)
+# REASON: When Tiger's Fury is suggested, treat Shadowmeld as if it is already up even if it hasn't been cast yet.
 AddFunction Shadowmeld_Main
 {
     CheckBoxOn(opt_shadowmeld_main_action)
         and Energy() >= PowerCost(rake) 
         and target.DebuffPersistentMultiplier(rake_debuff) < 1.9 
-        and BuffPresent(tigers_fury_buff) 
+        and { BuffPresent(tigers_fury_buff) or TFMultPred() > 1 }
         and BuffSavageRoarUp() 
         and BuffBloodtalonsUp() 
         and { not Talent(incarnation_talent) or SpellCooldown(incarnation_king_of_the_jungle) > 18 } 
@@ -662,10 +666,12 @@ AddFunction Shadowmeld_Cd
 ########################################
 #variable,name=Rake_Main,value=(!dot.rake.ticking|(variable.BuffBloodtalonsUp&dot.rake.remains<=variable.RakeRefresh&action.rake.persistent_multiplier>dot.rake.pmultiplier*0.80))&target.time_to_die-dot.rake.remains>action.rake.tick_time
 #rake,cycle_targets=1,if=variable.Rake_Main
+# MODIFICATION: TFMultPred when CheckBoxOn(opt_tigers_fury_multiplier_predict)
+# REASON: When Tiger's Fury is suggested, treat Rip as if it is already up even if it hasn't been cast yet.
 AddFunction Rake_Main
 {
     { target.DebuffExpires(rake_debuff) 
-            or BuffBloodtalonsUp() and target.DebuffRemaining(rake_debuff) <= RakeRefresh() and PersistentMultiplier(rake_debuff) > target.DebuffPersistentMultiplier(rake_debuff) * 0.8 } 
+            or BuffBloodtalonsUp() and target.DebuffRemaining(rake_debuff) <= RakeRefresh() and TFMultPred() * PersistentMultiplier(rake_debuff) > target.DebuffPersistentMultiplier(rake_debuff) * 0.8 } 
         and target.TimeToDie() - target.DebuffRemaining(rake_debuff) > target.TickTime(rake_debuff)
 }
 #variable,name=MoonfireCat_Main,value=dot.moonfire_cat.remains<=4.2&target.time_to_die-dot.moonfire_cat.remains>action.moonfire_cat.tick_time*2
@@ -779,13 +785,24 @@ AddFunction ElunesGuidance_Main
 #thrash_cat,cycle_targets=1,if=variable.ThrashCat_Incarnation
 AddFunction ThrashCat_Incarnation
 {
-    target.DebuffRemaining(thrash_cat_debuff) <= ThrashCatPandemic() and Enemies() >= 5
+    target.DebuffRemaining(thrash_cat_debuff) <= ThrashCatPandemic() 
+		and Enemies() >= 5
 }
 #variable,name=Regrowth_Incarnation_Expires,value=talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.bloodtalons.down&(buff.predatory_swiftness.remains<1.5|((!dot.rip.ticking|(dot.rip.remains<(variable.RipPandemic+gcd)|action.rip.persistent_multiplier>dot.rip.pmultiplier)&target.time_to_die-dot.rip.remains>action.rip.tick_time*4&combo_points=5)))
 #regrowth,if=variable.Regrowth_Incarnation_Expires
+# MODIFICATION: TFMultPred when CheckBoxOn(opt_tigers_fury_multiplier_predict)
+# REASON: When Tiger's Fury is suggested, treat Rip as if it is already up even if it hasn't been cast yet.
 AddFunction Regrowth_Incarnation_Expires
 {
-    Talent(bloodtalons_talent) and BuffPresent(predatory_swiftness_buff) and BuffExpires(bloodtalons_buff) and { BuffRemaining(predatory_swiftness_buff) < 1.5 or target.DebuffExpires(rip_debuff) or { target.DebuffRemaining(rip_debuff) < RipPandemic() + GCD() or PersistentMultiplier(rip_debuff) > target.DebuffPersistentMultiplier(rip_debuff) } and target.TimeToDie() - target.DebuffRemaining(rip_debuff) > target.TickTime(rip_debuff) * 4 and ComboPoints() == 5 }
+    Talent(bloodtalons_talent) 
+		and BuffPresent(predatory_swiftness_buff) 
+		and BuffExpires(bloodtalons_buff) 
+		and { BuffRemaining(predatory_swiftness_buff) < 1.5 
+			or target.DebuffExpires(rip_debuff) 
+			or { target.DebuffRemaining(rip_debuff) < RipPandemic() + GCD() 
+				or TFMultPred() * PersistentMultiplier(rip_debuff) > target.DebuffPersistentMultiplier(rip_debuff) } 
+			and target.TimeToDie() - target.DebuffRemaining(rip_debuff) > target.TickTime(rip_debuff) * 4 
+			and ComboPoints() == 5 }
 }
 #ashamanes_frenzy,if=variable.AshamanesFrenzy_Main
 ###
@@ -799,12 +816,14 @@ AddFunction SwipeCat_Incarnation
 }
 #variable,name=Rip_Incarnation,value=combo_points=5&(!dot.rip.ticking|(dot.rip.remains<variable.RipPandemic)|action.rip.persistent_multiplier>dot.rip.pmultiplier)&target.time_to_die-dot.rip.remains>action.rip.tick_time*4
 #rip,cycle_targets=1,if=variable.Rip_Incarnation
+# MODIFICATION: TFMultPred when CheckBoxOn(opt_tigers_fury_multiplier_predict)
+# REASON: When Tiger's Fury is suggested, treat Rip as if it is already up even if it hasn't been cast yet.
 AddFunction Rip_Incarnation
 {
     ComboPoints() == 5
         and { target.DebuffExpires(rip_debuff) 
             or target.DebuffRemaining(rip_debuff) < RipPandemic() 
-            or PersistentMultiplier(rip_debuff) > target.DebuffPersistentMultiplier(rip_debuff) } 
+            or TFMultPred() * PersistentMultiplier(rip_debuff) > target.DebuffPersistentMultiplier(rip_debuff) } 
         and target.TimeToDie() - target.DebuffRemaining(rip_debuff) > target.TickTime(rip_debuff) * 4 
 }
 #variable,name=Regrowth_Incarnation_Rip_Expires,value=talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.bloodtalons.down&combo_points=5&(dot.rip.remains<=(variable.RipPandemic+4+gcd)|cooldown.ashamanes_frenzy.remains<1+gcd)
