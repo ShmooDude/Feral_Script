@@ -627,9 +627,26 @@ AddFunction SwipeCat_6Targets
 # REASON: Does not use Shadowmeld on targets with less than 15/20 seconds to live
 # MODIFICATION: target.InRange(rake)
 # REASON: Cannot move after Shadowmeld so add range check before suggesting
+# MODIFICATION: CheckBoxOn(opt_shadowmeld_main_action) in Shadowmeld_Main
+# MODIFICATION: Shadowmeld_Cd for CheckBoxOff(opt_shadowmeld_main_action)
+# REASON: Allows player to choose via checkbox whether to add Shadowmeld to the Main Icon
 AddFunction Shadowmeld_Main
 {
-    Energy() >= PowerCost(rake) 
+    CheckBoxOn(opt_shadowmeld_main_action)
+		and Energy() >= PowerCost(rake) 
+		and target.DebuffPersistentMultiplier(rake_debuff) < 1.9 
+		and BuffPresent(tigers_fury_buff) 
+		and BuffSavageRoarUp() 
+		and BuffBloodtalonsUp() 
+		and { not Talent(incarnation_talent) or SpellCooldown(incarnation_king_of_the_jungle) > 18 } 
+		and BuffExpires(incarnation_king_of_the_jungle_buff)
+		and target.TimeToDie() > BaseDuration(rake_debuff) + 5
+		and target.InRange(rake)
+}
+AddFunction Shadowmeld_Cd
+{
+    CheckBoxOff(opt_shadowmeld_main_action) 
+		and Energy() >= PowerCost(rake) 
 		and target.DebuffPersistentMultiplier(rake_debuff) < 1.9 
 		and BuffPresent(tigers_fury_buff) 
 		and BuffSavageRoarUp() 
@@ -978,6 +995,11 @@ AddFunction FeralGeneratorsMainActions
         if SwipeCat_6Targets() Spell(swipe_cat)
         unless SwipeCat_6Targets() and SpellUsable(swipe_cat) and SpellCooldown(swipe_cat) < TimeToEnergyFor(swipe_cat)
         {
+			#variable,name=Shadowmeld_Main,value=energy>=action.rake.cost&dot.rake.pmultiplier<1.9&buff.tigers_fury.up&variable.BuffSavageRoarUp&variable.BuffBloodtalonsUp&(!talent.incarnation.enabled|cooldown.incarnation.remains>18)&!buff.incarnation.up
+            #shadowmeld,if=variable.Shadowmeld_Main
+			# MODIFICATION: Shadowmeld_Main for CheckBoxOn(opt_shadowmeld_main_action)
+			# REASON: Allows player to choose via checkbox whether to add Shadowmeld to the Main Icon
+            if Shadowmeld_Main() Spell(shadowmeld)
             #call_action_list,name=Maintain
             FeralMaintainMainActions()
 
@@ -1055,7 +1077,9 @@ AddFunction FeralGeneratorsCdActions
             {
                 #variable,name=Shadowmeld_Main,value=energy>=action.rake.cost&dot.rake.pmultiplier<1.9&buff.tigers_fury.up&variable.BuffSavageRoarUp&variable.BuffBloodtalonsUp&(!talent.incarnation.enabled|cooldown.incarnation.remains>18)&!buff.incarnation.up
                 #shadowmeld,if=variable.Shadowmeld_Main
-                if Shadowmeld_Main() Spell(shadowmeld)
+				# MODIFICATION: Shadowmeld_Cd for CheckBoxOff(opt_shadowmeld_main_action)
+				# REASON: Allows player to choose via checkbox whether to add Shadowmeld to the Main Icon
+                if Shadowmeld_Cd() Spell(shadowmeld)
                 #call_action_list,name=Maintain
                 FeralMaintainCdActions()
             }
