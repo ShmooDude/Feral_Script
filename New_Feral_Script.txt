@@ -1865,3 +1865,4 @@ AddIcon checkbox=opt_druid_feral_aoe help=cd specialization=feral
 # wild_charge
 # wild_charge_bear
 # wild_charge_cat
+
