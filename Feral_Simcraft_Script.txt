@@ -29,7 +29,7 @@ off_hand=,id=128859,relic_id=0/0,gem_id=0/0/0/0
 # set_bonus=tier19_2pc=0
 # set_bonus=tier19_4pc=0
 
-$(tf_soon_or_berserk)=buff.berserk.up|buff.incarnation.up|cooldown.tigers_fury.remains<3|talent.soul_of_the_forest.enabled
+$(tf_soon_or_berserk)=buff.berserk.up|buff.incarnation.up|buff.ashamanes_energy.up|cooldown.tigers_fury.remains<3|talent.soul_of_the_forest.enabled
 $(clearcasting_tf_soon_or_berserk)=$(tf_soon_or_berserk)|buff.clearcasting.react
 $(pooling)=energy.time_to_max<variable.pooling|$(tf_soon_or_berserk)
 $(clearcasting_pooling)=$(pooling)|buff.clearcasting.react
@@ -135,7 +135,7 @@ actions.aoe_generator+=/thrash_cat,cycle_targets=1,if=remains<=variable.thrash_c
 actions.aoe_generator+=/swipe_cat,if=spell_targets.swipe_cat>=3&($(swipe_cat_pooling))
 actions.aoe_generator+=/shred,if=(spell_targets.swipe_cat<3|talent.brutal_slash.enabled)&((dot.rake.remains>(action.shred.cost+action.rake.cost-energy)%energy.regen&combo_points<3)|$(clearcasting_pooling))
 
-actions.maintain=shadowmeld,if=combo_points<5&energy>=action.rake.cost&dot.rake.pmultiplier<1.9&buff.tigers_fury.up&$(sr_up)&$(bt_up)&(!talent.incarnation.enabled|cooldown.incarnation.remains>18)&!buff.incarnation.up
+actions.maintain=shadowmeld,if=energy>=action.rake.cost&dot.rake.pmultiplier<1.9&buff.tigers_fury.up&$(sr_up)&$(bt_up)&(!talent.incarnation.enabled|cooldown.incarnation.remains>18)&!buff.incarnation.up
 actions.maintain+=/pool_resource,for_next=1
 actions.maintain+=/rake,cycle_targets=1,if=(!ticking|($(bt_up)&remains<=variable.rake_refresh&persistent_multiplier>dot.rake.pmultiplier*0.80))&target.time_to_die-remains>tick_time
 actions.maintain+=/moonfire_cat,cycle_targets=1,if=remains<=4.2&target.time_to_die-remains>tick_time*2
