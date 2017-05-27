@@ -201,12 +201,12 @@ AddFunction ExecuteRange
     if Talent(sabertooth_talent) 100
     25
 }
-#variable,name=BloodtalonsOverwriteStacks,value=1
-#variable,name=BloodtalonsOverwriteStacks,value=2,if=equipped.ailuro_pouncers
+#variable,name=BloodtalonsOverwriteStacks,value=2
+#variable,name=BloodtalonsOverwriteStacks,value=1,if=equipped.ailuro_pouncers
 AddFunction BloodtalonsOverwriteStacks
 {
-    if HasEquippedItem(ailuro_pouncers) 2
-    1
+    if HasEquippedItem(ailuro_pouncers) 1
+    2
 }
 #variable,name=LotsOfEnergy,value=buff.berserk.up|buff.incarnation.up|cooldown.tigers_fury.remains<3|talent.soul_of_the_forest.enabled
 AddFunction LotsOfEnergy
@@ -687,7 +687,7 @@ AddFunction ThrashCat_Tier19_4pc
 {
     ArmorSetBonus(T19 4) 
         and target.DebuffRemaining(thrash_cat_debuff) <= ThrashCatPandemic() 
-        and { BuffPresent(clearcasting_buff) and BuffExpires(bloodtalons_buff) 
+        and { BuffPresent(clearcasting_buff) and { HasEquippedItem(ailuro_pouncers) or BuffExpires(bloodtalons_buff) } 
             or ClearcastingLotsOfEnergy() and HasEquippedItem(luffa_wrappings) }
 }
 #variable,name=ThrashCat_NoTier19_4pc,value=!set_bonus.tier19_4pc&dot.thrash_cat.remains<=variable.ThrashCatPandemic&(buff.clearcasting.react&equipped.luffa_wrappings&(equipped.ailuro_pouncers|buff.bloodtalons.down))
@@ -1885,3 +1885,193 @@ AddIcon checkbox=opt_druid_feral_aoe help=cd specialization=feral
 # wild_charge_bear
 # wild_charge_cat
 
+# Based on SimulationCraft profile "Druid_Guardian_T19P".
+#    class=druid
+#    spec=guardian
+#    talents=3133323
+
+AddCheckBox(opt_interrupt L(interrupt) default specialization=guardian)
+AddCheckBox(opt_melee_range L(not_in_melee_range) specialization=guardian)
+
+AddFunction GuardianUseItemActions
+{
+	Item(Trinket0Slot usable=1)
+	Item(Trinket1Slot usable=1)
+}
+
+AddFunction GuardianGetInMeleeRange
+{
+	if CheckBoxOn(opt_melee_range) and Stance(druid_bear_form) and not target.InRange(mangle) or Stance(druid_cat_form) and not target.InRange(shred)
+	{
+		if target.InRange(wild_charge) Spell(wild_charge)
+		Texture(misc_arrowlup help=L(not_in_melee_range))
+	}
+}
+
+AddFunction GuardianInterruptActions
+{
+	if CheckBoxOn(opt_interrupt) and not target.IsFriend() and target.IsInterruptible()
+	{
+		if target.InRange(skull_bash) Spell(skull_bash)
+		if not target.Classification(worldboss)
+		{
+			if target.InRange(mighty_bash) Spell(mighty_bash)
+			Spell(typhoon)
+			if target.InRange(maim) Spell(maim)
+			Spell(war_stomp)
+		}
+	}
+}
+
+### actions.default
+
+AddFunction GuardianDefaultMainActions
+{
+	#pulverize,cycle_targets=1,if=buff.pulverize.down
+	if BuffExpires(pulverize_buff) and target.DebuffGain(thrash_bear_debuff) <= BaseDuration(thrash_bear_debuff) Spell(pulverize)
+	#thrash_bear,if=dot.thrash_bear.remains<4.5
+	if target.DebuffRemaining(thrash_bear_debuff) < 4.5 Spell(thrash_bear)
+	#mangle
+	Spell(mangle)
+	#pulverize,cycle_targets=1,if=buff.pulverize.remains<gcd
+	if BuffRemaining(pulverize_buff) < GCD() and target.DebuffGain(thrash_bear_debuff) <= BaseDuration(thrash_bear_debuff) Spell(pulverize)
+	#thrash_bear
+	Spell(thrash_bear)
+	#pulverize,cycle_targets=1,if=buff.pulverize.remains<3.6
+	if BuffRemaining(pulverize_buff) < 3.6 and target.DebuffGain(thrash_bear_debuff) <= BaseDuration(thrash_bear_debuff) Spell(pulverize)
+	#moonfire,if=!ticking|buff.galactic_guardian.up
+	if target.DebuffExpires(moonfire_debuff) or BuffPresent(galactic_guardian_buff) Spell(moonfire)
+	#swipe_bear
+	Spell(swipe_bear)
+}
+
+AddFunction GuardianDefaultShortCdActions
+{
+	#auto_attack
+	GuardianGetInMeleeRange()
+	#ironfur,if=buff.ironfur.down|rage.deficit<25
+	if target.IsAggroed() and { BuffExpires(ironfur_buff) or RageDeficit() < 25 } Spell(ironfur)
+	#maul
+	if not target.IsAggroed() and RageDeficit() < 25 Spell(maul)
+	#frenzied_regeneration,if=!ticking&incoming_damage_6s%health.max>0.25+(2-charges_fractional)*0.15
+	if BuffExpires(frenzied_regeneration_buff) and IncomingDamage(5) / MaxHealth() > 0.25 + { 2 - Charges(frenzied_regeneration count=0) } * 0.15 Spell(frenzied_regeneration)
+	#bristling_fur,if=buff.ironfur.remains<2&rage<40
+	if BuffRemaining(ironfur_buff) < 2 and Rage() < 40 Spell(bristling_fur)
+}
+
+AddFunction GuardianDefaultCdActions
+{
+	#skull_bash
+	GuardianInterruptActions()
+	#blood_fury
+	Spell(blood_fury_apsp)
+	#berserking
+	Spell(berserking)
+	#arcane_torrent
+	Spell(arcane_torrent_energy)
+	#use_item,slot=trinket2
+	GuardianUseItemActions()
+
+	unless { BuffExpires(ironfur_buff) or RageDeficit() < 25 } and Spell(ironfur) or BuffExpires(frenzied_regeneration_buff) and IncomingDamage(6) / MaxHealth() > 0.25 + { 2 - Charges(frenzied_regeneration count=0) } * 0.15 and Spell(frenzied_regeneration) or BuffExpires(pulverize_buff) and target.DebuffGain(thrash_bear_debuff) <= BaseDuration(thrash_bear_debuff) and Spell(pulverize) or target.DebuffRemaining(thrash_bear_debuff) < 4.5 and Spell(thrash_bear) or Spell(mangle) or BuffRemaining(pulverize_buff) < GCD() and target.DebuffGain(thrash_bear_debuff) <= BaseDuration(thrash_bear_debuff) and Spell(pulverize)
+	{
+		#incarnation
+		Spell(incarnation_guardian_of_ursoc)
+	}
+}
+
+### actions.precombat
+
+AddFunction GuardianPrecombatMainActions
+{
+	#flask,type=flask_of_the_seventh_demon
+	#food,type=azshari_salad
+	#bear_form
+	Spell(bear_form)
+}
+
+AddFunction GuardianPrecombatShortCdPostConditions
+{
+	Spell(bear_form)
+}
+
+AddFunction GuardianPrecombatCdPostConditions
+{
+	Spell(bear_form)
+}
+
+### Guardian icons.
+
+AddCheckBox(opt_druid_guardian_aoe L(AOE) default specialization=guardian)
+
+AddIcon checkbox=!opt_druid_guardian_aoe enemies=1 help=shortcd specialization=guardian
+{
+	unless not InCombat() and GuardianPrecombatShortCdPostConditions()
+	{
+		GuardianDefaultShortCdActions()
+	}
+}
+
+AddIcon checkbox=opt_druid_guardian_aoe help=shortcd specialization=guardian
+{
+	unless not InCombat() and GuardianPrecombatShortCdPostConditions()
+	{
+		GuardianDefaultShortCdActions()
+	}
+}
+
+AddIcon enemies=1 help=main specialization=guardian
+{
+	if not InCombat() GuardianPrecombatMainActions()
+	GuardianDefaultMainActions()
+}
+
+AddIcon checkbox=opt_druid_guardian_aoe help=aoe specialization=guardian
+{
+	if not InCombat() GuardianPrecombatMainActions()
+	GuardianDefaultMainActions()
+}
+
+AddIcon checkbox=!opt_druid_guardian_aoe enemies=1 help=cd specialization=guardian
+{
+	unless not InCombat() and GuardianPrecombatCdPostConditions()
+	{
+		GuardianDefaultCdActions()
+	}
+}
+
+AddIcon checkbox=opt_druid_guardian_aoe help=cd specialization=guardian
+{
+	unless not InCombat() and GuardianPrecombatCdPostConditions()
+	{
+		GuardianDefaultCdActions()
+	}
+}
+
+### Required symbols
+# arcane_torrent_energy
+# bear_form
+# berserking
+# blood_fury_apsp
+# bristling_fur
+# frenzied_regeneration
+# frenzied_regeneration_buff
+# galactic_guardian_buff
+# incarnation_guardian_of_ursoc
+# ironfur
+# ironfur_buff
+# thrash_bear_debuff
+# maim
+# mangle
+# mighty_bash
+# moonfire
+# moonfire_debuff
+# pulverize
+# pulverize_buff
+# shred
+# skull_bash
+# swipe_bear
+# thrash_bear
+# thrash_bear_debuff
+# typhoon
+# war_stomp
+# wild_charge
