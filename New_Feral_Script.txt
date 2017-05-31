@@ -1458,10 +1458,10 @@ AddFunction FeralDefaultMainActions
                         #variable,name=Regrowth_5CPs,value=variable.RegrowthConditions&combo_points=5
                         #regrowth,if=variable.Regrowth_5CPs
                         if Regrowth_5CPs() Spell(regrowth)
-                        #call_action_list,name=Finishers,if=variable.FinisherConditions
-                        if FinisherConditions() FeralFinishersMainActions()
+                        #call_action_list,name=Finishers,if=variable.FinisherConditions&variable.BuffSavageRoarUp
+                        if FinisherConditions() and BuffSavageRoarUp() FeralFinishersMainActions()
 
-                        unless FinisherConditions() and FeralFinishersMainPostConditions()
+                        unless FinisherConditions() and BuffSavageRoarUp() and FeralFinishersMainPostConditions()
                         {
                             #call_action_list,name=Generators,if=combo_points<5
                             if ComboPoints() < 5 FeralGeneratorsMainActions()
