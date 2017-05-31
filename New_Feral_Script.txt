@@ -721,6 +721,12 @@ AddFunction BrutalSlash_3Charges
         and Charges(brutal_slash count=0) > 2.66 
         and TimeInCombat() > 10
 }
+#variable,name=SwipeCat_Main,value=spell_targets.swipe_cat>=3&variable.SwipeCatEnergyPooling
+#swipe_cat,if=variable.SwipeCat_Main
+AddFunction SwipeCat_Main
+{
+    Enemies() >= 3 and SwipeCatEnergyPooling()
+}
 #variable,name=Shred_Main,value=(spell_targets.swipe_cat<3|talent.brutal_slash.enabled)&((dot.rake.remains>(action.shred.cost+action.rake.cost-energy)%energy.regen&combo_points<3)|variable.ClearcastingPoolEnergy)
 #shred,if=variable.Shred_Main
 AddFunction Shred_Main
@@ -1030,6 +1036,9 @@ AddFunction FeralGeneratorsMainActions
                 if ThrashCat_2Targets() Spell(thrash_cat)
                 unless ThrashCat_2Targets() and SpellUsable(thrash_cat) and SpellCooldown(thrash_cat) < TimeToEnergyFor(thrash_cat)
                 {
+                    #variable,name=SwipeCat_Main,value=spell_targets.swipe_cat>=3&variable.SwipeCatEnergyPooling
+                    #swipe_cat,if=variable.SwipeCat_Main
+                    if SwipeCat_Main() Spell(swipe_cat)
                     #variable,name=BrutalSlash_3Charges,value=charges_fractional>2.66&time>10
                     #brutal_slash,if=variable.BrutalSlash_3Charges
                     if BrutalSlash_3Charges() Spell(brutal_slash)
@@ -1077,7 +1086,9 @@ AddFunction FeralGeneratorsShortCdPostConditions
         and not { SwipeCat_6Targets() and SpellUsable(swipe_cat) and SpellCooldown(swipe_cat) < TimeToEnergyFor(swipe_cat) } 
         and { FeralMaintainShortCdPostConditions() 
             or ThrashCat_2Targets() and Spell(thrash_cat) or not { ThrashCat_2Targets() and SpellUsable(thrash_cat) and SpellCooldown(thrash_cat) < TimeToEnergyFor(thrash_cat) } 
-            and { BrutalSlash_3Charges() and Spell(brutal_slash) or Shred_Main() and Spell(shred) } }
+            and { SwipeCat_Main() and Spell(swipe_cat) 
+                or BrutalSlash_3Charges() and Spell(brutal_slash) 
+                or Shred_Main() and Spell(shred) } }
 }
 
 AddFunction FeralGeneratorsCdActions
@@ -1113,7 +1124,8 @@ AddFunction FeralGeneratorsCdPostConditions
         and not { SwipeCat_6Targets() and SpellUsable(swipe_cat) and SpellCooldown(swipe_cat) < TimeToEnergyFor(swipe_cat) } 
         and { FeralMaintainCdPostConditions() 
             or ThrashCat_2Targets() and Spell(thrash_cat) or not { ThrashCat_2Targets() and SpellUsable(thrash_cat) and SpellCooldown(thrash_cat) < TimeToEnergyFor(thrash_cat) } 
-            and { BrutalSlash_3Charges() and Spell(brutal_slash) 
+            and { SwipeCat_Main() and Spell(swipe_cat) 
+                or BrutalSlash_3Charges() and Spell(brutal_slash) 
                 or Shred_Main() and Spell(shred) } }
 }
 
