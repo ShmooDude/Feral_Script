@@ -1900,10 +1900,8 @@ AddIcon checkbox=opt_druid_feral_aoe help=cd specialization=feral
 # wild_charge_bear
 # wild_charge_cat
 
-# Based on SimulationCraft profile "Druid_Guardian_T19P".
-#    class=druid
-#    spec=guardian
-#    talents=3133323
+# Guardian Script
+# Greenjeans/Dhol deserves credit for most of the options added
 
 AddCheckBox(opt_interrupt L(interrupt) default specialization=guardian)
 AddCheckBox(opt_melee_range L(not_in_melee_range) specialization=guardian)
@@ -1914,6 +1912,33 @@ AddListItem(opt_rotation mit "Max Mitigation rotation" specialization=guardian)
 AddListItem(opt_rotation hyb "Hybrid rotation" specialization=guardian default)
 AddListItem(opt_rotation dps "Max DPS rotation" specialization=guardian)
 AddListItem(opt_rotation dpsm "Max DPS rotation with Maul" specialization=guardian)
+
+AddListItem(opt_frenzied_regeneration_aggressiveness frenzied_regeneration_1 "FR: 1 (lower is more agressive)" specialization=guardian)
+AddListItem(opt_frenzied_regeneration_aggressiveness frenzied_regeneration_2 "FR: 2 (lower is more agressive)" specialization=guardian)
+AddListItem(opt_frenzied_regeneration_aggressiveness frenzied_regeneration_3 "FR: 3 (lower is more agressive)" specialization=guardian)
+AddListItem(opt_frenzied_regeneration_aggressiveness frenzied_regeneration_4 "FR: 4 (lower is more agressive)" specialization=guardian)
+AddListItem(opt_frenzied_regeneration_aggressiveness frenzied_regeneration_5 "FR: 5 (lower is more agressive)" specialization=guardian default)
+AddListItem(opt_frenzied_regeneration_aggressiveness frenzied_regeneration_6 "FR: 6 (lower is more agressive)" specialization=guardian)
+AddListItem(opt_frenzied_regeneration_aggressiveness frenzied_regeneration_7 "FR: 7 (lower is more agressive)" specialization=guardian)
+AddListItem(opt_frenzied_regeneration_aggressiveness frenzied_regeneration_8 "FR: 8 (lower is more agressive)" specialization=guardian)
+AddListItem(opt_frenzied_regeneration_aggressiveness frenzied_regeneration_9 "FR: 9 (lower is more agressive)" specialization=guardian)
+
+AddFunction FrenziedRegenerationAgressiveness asvalue=1
+{
+	unless List(opt_frenzied_regeneration_aggressiveness frenzied_regeneration_5)
+	{
+		if List(opt_frenzied_regeneration_aggressiveness frenzied_regeneration_1) 0.1
+		if List(opt_frenzied_regeneration_aggressiveness frenzied_regeneration_2) 0.2
+		if List(opt_frenzied_regeneration_aggressiveness frenzied_regeneration_3) 0.3
+		if List(opt_frenzied_regeneration_aggressiveness frenzied_regeneration_4) 0.4
+		if List(opt_frenzied_regeneration_aggressiveness frenzied_regeneration_6) 0.6
+		if List(opt_frenzied_regeneration_aggressiveness frenzied_regeneration_7) 0.7
+		if List(opt_frenzied_regeneration_aggressiveness frenzied_regeneration_8) 0.8
+		if List(opt_frenzied_regeneration_aggressiveness frenzied_regeneration_9) 0.9
+	}
+	0.5
+	
+}
 
 
 AddFunction GuardianUseItemActions
@@ -2044,7 +2069,7 @@ AddFunction GuardianDefaultShortCdActions
 
     # Frenzied regen, if it's not up, and....something.  Math.
     if BuffExpires(frenzied_regeneration_buff)
-    	and IncomingDamage(5) / MaxHealth() > 0.25 + { 2 - Charges(frenzied_regeneration count=0) } * 0.15 Spell(frenzied_regeneration)
+    	and IncomingDamage(5) / MaxHealth() + { 100 - HealthPercent() } / 100 > FrenziedRegenerationAgressiveness() + { SpellMaxCharges(frenzied_regeneration) - Charges(frenzied_regeneration count=0) } * 0.20 Spell(frenzied_regeneration)
 
     # Bristling fur, if ironfur is about to expire and you're low on rage.
     if BuffRemaining(ironfur_buff) < 2 
