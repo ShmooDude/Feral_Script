@@ -2049,9 +2049,9 @@ AddFunction GuardianDefaultShortCdActions
         and BuffRefreshable(mark_of_ursol_buff) 
         and not List(opt_rotation dpsm) Spell(mark_of_ursol)
 
-    # Ironfur if has aggro and there's been physical damage in the last 10 seconds and ironfur isn't up or rage is about to cap, and not using dpsm rotation
+    # Ironfur if has aggro and there's been physical damage in the last 3 seconds and ironfur isn't up or rage is about to cap, and not using dpsm rotation
     if target.IsAggroed() 
-        and IncomingDamage(10 physical=1) 
+        and IncomingDamage(3 physical=1) 
         and { BuffExpires(ironfur_buff) or RageDeficit() < 25 } 
         and not List(opt_rotation dpsm) Spell(ironfur)
 
