@@ -47,6 +47,7 @@ Include(ovale_druid_spells)
 # Temporary Define until Ovale updated
 Define(chatoyant_signet 137040)
 Define(brutal_slash_talent 21)
+Define(sephuzs_secret 132452)
 
 AddCheckBox(opt_melee_range L(not_in_melee_range) specialization=feral)
 AddCheckBox(opt_interrupt L(interrupt) default specialization=feral)
