@@ -393,7 +393,7 @@ AddFunction FerociousBite_3SecondRefresh
 ###
 #variable,name=RegrowthConditions,value=talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.bloodtalons.stack<variable.BloodtalonsOverwriteStacks
 #variable,name=Regrowth_PredatorySwiftness_Expires,value=buff.predatory_swiftness.remains<1.5
-#variable,name=Regrowth_AshamanesFrenzy,value=combo_points=2&buff.bloodtalons.down&cooldown.ashamanes_frenzy.remains<1+gcd&(buff.savage_roar.remains>(3+gcd)|!talent.savage_roar.enabled)
+#variable,name=Regrowth_AshamanesFrenzy,value=combo_points=2&buff.bloodtalons.down&cooldown.ashamanes_frenzy.remains<gcd&(buff.savage_roar.remains>(3+gcd)|!talent.savage_roar.enabled)
 #regrowth,if=variable.RegrowthConditions&(variable.Regrowth_PredatorySwiftness_Expires|variable.Regrowth_AshamanesFrenzy)
 AddFunction RegrowthConditions
 {
@@ -416,7 +416,7 @@ AddFunction Regrowth_AshamanesFrenzy
     CheckBoxOn(opt_ashamanes_frenzy_main_action)
         and ComboPoints() == 2 
         and BuffExpires(bloodtalons_buff) 
-        and SpellCooldown(ashamanes_frenzy) < GCD() * 2
+        and SpellCooldown(ashamanes_frenzy) < GCD()
         and { BuffRemaining(savage_roar_buff) > 3 + GCD() or not Talent(savage_roar_talent) }
         and target.TimeToDie() > 21
 }
@@ -425,7 +425,7 @@ AddFunction Regrowth_AshamanesFrenzy_ShortCd
     CheckBoxOff(opt_ashamanes_frenzy_main_action)
         and ComboPoints() == 2 
         and BuffExpires(bloodtalons_buff) 
-        and SpellCooldown(ashamanes_frenzy) < GCD() * 2
+        and SpellCooldown(ashamanes_frenzy) < GCD()
         and { BuffRemaining(savage_roar_buff) > 3 + GCD() or not Talent(savage_roar_talent) }
         and target.TimeToDie() > 21
 }
@@ -894,29 +894,33 @@ AddFunction FeralFinishersMainActions
     unless Maim_3Targets() and SpellUsable(maim) and SpellCooldown(maim) < TimeToEnergyFor(maim)
     {
         #variable,name=Rip_Main,value=(!dot.rip.ticking|(dot.rip.remains<variable.RipRefresh&target.health.pct>variable.ExecuteRange)|action.rip.persistent_multiplier>dot.rip.pmultiplier)&target.time_to_die-dot.rip.remains>action.rip.tick_time*4
+        #pool_resource,for_next=1
         #rip,cycle_targets=1,if=variable.Rip_Main
         if Rip_Main() Spell(rip)
-        #variable,name=FerociousBite_9SecondRefresh,value=dot.rip.remains<variable.RipRefresh&target.health.pct<variable.ExecuteRange
-        #pool_resource,for_next=1
-        #ferocious_bite,max_energy=1,cycle_targets=1,if=variable.FerociousBite_9SecondRefresh
-        if Energy() >= EnergyCost(ferocious_bite max=1) and FerociousBite_9SecondRefresh() Spell(ferocious_bite text=Execute)
-        unless Energy() >= EnergyCost(ferocious_bite max=1) and FerociousBite_9SecondRefresh() and SpellUsable(ferocious_bite) and SpellCooldown(ferocious_bite) < TimeToEnergyFor(ferocious_bite) + 25 / EnergyRegenRate()+ 25 / EnergyRegenRate()
+        unless Rip_Main() and SpellUsable(rip) and SpellCooldown(rip) < TimeToEnergyFor(rip)
         {
-            #variable,name=SavageRoar_Main,value=(buff.savage_roar.remains<=7.2|(buff.savage_roar.remains<variable.SavageRoarRefresh&target.health.pct>=variable.ExecuteRange))
+            #variable,name=FerociousBite_9SecondRefresh,value=dot.rip.ticking&dot.rip.remains<variable.RipRefresh&target.health.pct<variable.ExecuteRange
             #pool_resource,for_next=1
-            #savage_roar,if=variable.SavageRoar_Main
-            if SavageRoar_Main() Spell(savage_roar)
-            unless SavageRoar_Main() and SpellUsable(savage_roar) and SpellCooldown(savage_roar) < TimeToEnergyFor(savage_roar)
+            #ferocious_bite,max_energy=1,cycle_targets=1,if=variable.FerociousBite_9SecondRefresh
+            if Energy() >= EnergyCost(ferocious_bite max=1) and FerociousBite_9SecondRefresh() Spell(ferocious_bite)
+            unless Energy() >= EnergyCost(ferocious_bite max=1) and FerociousBite_9SecondRefresh() and SpellUsable(ferocious_bite) and SpellCooldown(ferocious_bite) < TimeToEnergyFor(ferocious_bite)
             {
-                #variable,name=Maim_Main,value=buff.fiery_red_maimers.up&variable.BuffBloodtalonsUp
+                #variable,name=SavageRoar_Main,value=(buff.savage_roar.remains<=7.2|(buff.savage_roar.remains<variable.SavageRoarRefresh&target.health.pct>=variable.ExecuteRange))
                 #pool_resource,for_next=1
-                #maim,if=variable.Maim_Main
-                if Maim_Main() Spell(maim)
-                unless Maim_Main() and SpellUsable(maim) and SpellCooldown(maim) < TimeToEnergyFor(maim)
+                #savage_roar,if=variable.SavageRoar_Main
+                if SavageRoar_Main() Spell(savage_roar)
+                unless SavageRoar_Main() and SpellUsable(savage_roar) and SpellCooldown(savage_roar) < TimeToEnergyFor(savage_roar)
                 {
+                    #variable,name=Maim_Main,value=buff.fiery_red_maimers.up&variable.BuffBloodtalonsUp
                     #pool_resource,for_next=1
-                    #ferocious_bite,max_energy=1
-                    if Energy() >= EnergyCost(ferocious_bite max=1) Spell(ferocious_bite)
+                    #maim,if=variable.Maim_Main
+                    if Maim_Main() Spell(maim)
+                    unless Maim_Main() and SpellUsable(maim) and SpellCooldown(maim) < TimeToEnergyFor(maim)
+                    {
+                        #pool_resource,for_next=1
+                        #ferocious_bite,max_energy=1
+                        if Energy() >= EnergyCost(ferocious_bite max=1) Spell(ferocious_bite)
+                    }
                 }
             }
         }
