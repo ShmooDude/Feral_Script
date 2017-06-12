@@ -615,7 +615,7 @@ AddFunction SwipeCat_6Targets
 {
     Enemies() >= 6 and SwipeCatEnergyPooling()
 }
-#variable,name=Shadowmeld_Main,value=energy>=action.rake.cost&dot.rake.pmultiplier<1.9&buff.tigers_fury.up&variable.BuffSavageRoarUp&variable.BuffBloodtalonsUp&(!talent.incarnation.enabled|cooldown.incarnation.remains>18)&!buff.incarnation.up
+#variable,name=Shadowmeld_Main,value=combo_points<5&energy>=action.rake.cost&dot.rake.pmultiplier<1.9&buff.tigers_fury.up&variable.BuffSavageRoarUp&variable.BuffBloodtalonsUp&(!talent.incarnation.enabled|cooldown.incarnation.remains>18)&!buff.incarnation.up
 #shadowmeld,if=variable.Shadowmeld_Main
 # MODIFICATION: target.TimeToDie() > BaseDuration(rake_debuff) + 5
 # REASON: Does not use Shadowmeld on targets with less than 15/20 seconds to live
@@ -628,7 +628,7 @@ AddFunction SwipeCat_6Targets
 # REASON: When Tiger's Fury is suggested, treat Shadowmeld as if it is already up even if it hasn't been cast yet.
 AddFunction Shadowmeld_Main
 {
-    CheckBoxOn(opt_shadowmeld_main_action)
+    CheckBoxOn(opt_shadowmeld_main_action)		and ComboPoints() < 5
         and Energy() >= PowerCost(rake) 
         and target.DebuffPersistentMultiplier(rake_debuff) < 1.9 
         and { BuffPresent(tigers_fury_buff) or TFMultPred() > 1 }
@@ -641,7 +641,7 @@ AddFunction Shadowmeld_Main
 }
 AddFunction Shadowmeld_Cd
 {
-    CheckBoxOff(opt_shadowmeld_main_action) 
+    CheckBoxOff(opt_shadowmeld_main_action) 		and ComboPoints() < 5
         and Energy() >= PowerCost(rake) 
         and target.DebuffPersistentMultiplier(rake_debuff) < 1.9 
         and BuffPresent(tigers_fury_buff) 
