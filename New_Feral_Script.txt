@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # ShmooDude Feral and Guardian script
+=======
+## ShmooDude Feral and Guardian script
+>>>>>>> parent of b73840c... Remove Incarnation and Tweak EG
 ###
 ### Options:
 # Interrupt - Suggests use of interuptting abilities, including stuns/knockbacks on non-boss targets.
@@ -50,7 +54,10 @@ Define(sephuzs_secret 132452)
 
 AddCheckBox(opt_melee_range L(not_in_melee_range) specialization=feral)
 AddCheckBox(opt_interrupt L(interrupt) default specialization=feral)
+<<<<<<< HEAD
 AddCheckBox(opt_use_consumables L(opt_use_consumables) default specialization=feral)
+=======
+>>>>>>> parent of b73840c... Remove Incarnation and Tweak EG
 
 AddCheckBox(opt_ashamanes_frenzy_main_action "Ashamane's Frenzy as a main action" default specialization=feral)
 AddCheckBox(opt_shadowmeld_main_action "Shadowmeld as a main action" specialization=feral)
@@ -279,12 +286,15 @@ AddFunction FeralUseItemActions
     Item(Trinket0Slot text=13 usable=1)
     Item(Trinket1Slot text=14 usable=1)
 }
+<<<<<<< HEAD
 #potion
 AddFunction FeralPotionActions
 {
     Item(old_war_potion usable=1)
     Item(prolonged_power_potion usable=1)
 }
+=======
+>>>>>>> parent of b73840c... Remove Incarnation and Tweak EG
 #melee_range
 AddFunction FeralGetInMeleeRange
 {
@@ -318,7 +328,11 @@ AddFunction FeralInterruptActions
 AddFunction TFMultPred asvalue=1
 {
     if CheckBoxOn(opt_tigers_fury_multiplier_predict) 
+<<<<<<< HEAD
         and BuffExpires(tigers_fury_buff)
+=======
+		and BuffExpires(tigers_fury_buff)
+>>>>>>> parent of b73840c... Remove Incarnation and Tweak EG
         and SpellCooldown(tigers_fury) <= 0
         and { TigersFury_Main() or TigersFury_Sabertooth() } 1.15
     1
@@ -383,7 +397,11 @@ AddFunction TigersFury_Main
 {
     BuffExpires(clearcasting_buff) and EnergyDeficit() >= 60 
         or EnergyDeficit() >= 80
+<<<<<<< HEAD
         or TimeInCombat() < 8 and BuffPresent(savage_roar_buff)
+=======
+		or TimeInCombat() < 8 and BuffPresent(savage_roar_buff)
+>>>>>>> parent of b73840c... Remove Incarnation and Tweak EG
 }
 #variable,name=FerociousBite_3SecondRefresh,value=dot.rip.ticking&dot.rip.remains<3&target.time_to_die>3&target.health.pct<variable.ExecuteRange
 #ferocious_bite,cycle_targets=1,if=variable.FerociousBite_3SecondRefresh
@@ -394,6 +412,13 @@ AddFunction FerociousBite_3SecondRefresh
         and target.TimeToDie() > 3 
         and target.HealthPercent() < ExecuteRange()
 }
+<<<<<<< HEAD
+=======
+#run_action_list,name=Incarnation,if=buff.incarnation.up&set_bonus.tier19_4pc
+###
+### Incarnation Action List defined after Main Action List
+###
+>>>>>>> parent of b73840c... Remove Incarnation and Tweak EG
 #variable,name=RegrowthConditions,value=talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.bloodtalons.stack<variable.BloodtalonsOverwriteStacks
 #variable,name=Regrowth_PredatorySwiftness_Expires,value=buff.predatory_swiftness.remains<1.5
 #variable,name=Regrowth_AshamanesFrenzy,value=combo_points=2&buff.bloodtalons.down&cooldown.ashamanes_frenzy.remains<gcd&(buff.savage_roar.remains>(3+gcd)|!talent.savage_roar.enabled)
@@ -551,9 +576,15 @@ AddFunction TigersFury_Sabertooth
 # REASON: Suggest TF anytime its ready if TF is already up to maximize buff uptime.
 AddFunction TigersFury_Predator
 {
+<<<<<<< HEAD
     UnitInRaid() 
         and Talent(predator_talent) 
         and BuffPresent(tigers_fury_buff)
+=======
+	UnitInRaid() 
+		and Talent(predator_talent) 
+		and BuffPresent(tigers_fury_buff)
+>>>>>>> parent of b73840c... Remove Incarnation and Tweak EG
 }
 #variable,name=Rip_Main,value=(!dot.rip.ticking|(dot.rip.remains<variable.RipRefresh&target.health.pct>variable.ExecuteRange)|action.rip.persistent_multiplier>dot.rip.pmultiplier)&target.time_to_die-dot.rip.remains>action.rip.tick_time*4
 #rip,cycle_targets=1,if=variable.Rip_Main
@@ -571,7 +602,11 @@ AddFunction Rip_Main
 AddFunction FerociousBite_9SecondRefresh
 {
     target.DebuffPresent(rip_debuff) 
+<<<<<<< HEAD
         and target.DebuffRemaining(rip_debuff) < RipRefresh() 
+=======
+		and target.DebuffRemaining(rip_debuff) < RipRefresh() 
+>>>>>>> parent of b73840c... Remove Incarnation and Tweak EG
         and target.HealthPercent() < ExecuteRange()
 }
 #variable,name=SavageRoar_Main,value=(buff.savage_roar.remains<=7.2|(buff.savage_roar.remains<variable.SavageRoarRefresh&target.health.pct>=variable.ExecuteRange))
@@ -580,6 +615,7 @@ AddFunction SavageRoar_Main
 {
     BuffRemaining(savage_roar_buff) <= 7.2 
         or BuffRemaining(savage_roar_buff) < SavageRoarRefresh() and target.HealthPercent() >= ExecuteRange()
+<<<<<<< HEAD
 }
 #variable,name=Maim_Main,value=buff.fiery_red_maimers.up&variable.BuffSavageRoarUp&variable.BuffBloodtalonsUp
 #maim,if=variable.Maim_Main
@@ -771,10 +807,284 @@ AddFunction ElunesGuidance_Main
     Talent(elunes_guidance_talent) 
         and ComboPoints() == 0 
         and Energy() >= EnergyCost(ferocious_bite max=1)
+=======
+}
+#variable,name=Maim_Main,value=buff.fiery_red_maimers.up&variable.BuffSavageRoarUp&variable.BuffBloodtalonsUp
+#maim,if=variable.Maim_Main
+AddFunction Maim_Main
+{
+    BuffPresent(fiery_red_maimers_buff) 
+        and BuffSavageRoarUp() 
+        and BuffBloodtalonsUp()
+}
+#ferocious_bite,max_energy=1
+#
+# No Function Required
+#
+########################################
+### END Finishers Action List        ###
+########################################
+#call_action_list,name=Generators,if=combo_points<5
+########################################
+### BEGIN Generators Action List     ###
+########################################
+#variable,name=BrutalSlash_Main,value=spell_targets.brutal_slash>desired_targets
+#brutal_slash,if=variable.BrutalSlash_Main
+AddFunction BrutalSlash_Main
+{
+    Enemies() >= BrutalSlashDesiredTargets()
+}
+#variable,name=ThrashCat_Spam,value=talent.brutal_slash.enabled&spell_targets.thrash_cat>=9
+#thrash_cat,if=variable.ThrashCat_Spam
+AddFunction ThrashCat_Spam
+{
+    Talent(brutal_slash_talent) and Enemies() >= 9
+}
+#variable,name=SwipeCat_6Targets,value=spell_targets.swipe_cat>=6&variable.SwipeCatEnergyPooling
+#swipe_cat,if=variable.SwipeCat_6Targets
+AddFunction SwipeCat_6Targets
+{
+    Enemies() >= 6 and SwipeCatEnergyPooling()
+}
+#variable,name=Shadowmeld_Main,value=combo_points<5&energy>=action.rake.cost&dot.rake.pmultiplier<1.9&buff.tigers_fury.up&variable.BuffSavageRoarUp&variable.BuffBloodtalonsUp&(!talent.incarnation.enabled|cooldown.incarnation.remains>18)&!buff.incarnation.up
+#shadowmeld,if=variable.Shadowmeld_Main
+# MODIFICATION: target.TimeToDie() > BaseDuration(rake_debuff) + 5
+# REASON: Does not use Shadowmeld on targets with less than 15/20 seconds to live
+# MODIFICATION: target.InRange(rake)
+# REASON: Cannot move after Shadowmeld so add range check before suggesting
+# MODIFICATION: CheckBoxOn(opt_shadowmeld_main_action) in Shadowmeld_Main
+# MODIFICATION: Shadowmeld_Cd for CheckBoxOff(opt_shadowmeld_main_action)
+# REASON: Allows player to choose via checkbox whether to add Shadowmeld to the Main Icon
+# MODIFICATION: TFMultPred() > 1 in addition to BuffPresent(tigers_fury_buff) for CheckBoxOn(opt_tigers_fury_multiplier_predict)
+# REASON: When Tiger's Fury is suggested, treat Shadowmeld as if it is already up even if it hasn't been cast yet.
+AddFunction Shadowmeld_Main
+{
+    CheckBoxOn(opt_shadowmeld_main_action)		and ComboPoints() < 5
+        and Energy() >= PowerCost(rake) 
+        and target.DebuffPersistentMultiplier(rake_debuff) < 1.9 
+        and { BuffPresent(tigers_fury_buff) or TFMultPred() > 1 }
+        and BuffSavageRoarUp() 
+        and BuffBloodtalonsUp() 
+        and { not Talent(incarnation_talent) or SpellCooldown(incarnation_king_of_the_jungle) > 18 } 
+        and BuffExpires(incarnation_king_of_the_jungle_buff)
+        and target.TimeToDie() > BaseDuration(rake_debuff) + 5
+        and target.InRange(rake)
+}
+AddFunction Shadowmeld_Cd
+{
+    CheckBoxOff(opt_shadowmeld_main_action) 		and ComboPoints() < 5
+        and Energy() >= PowerCost(rake) 
+        and target.DebuffPersistentMultiplier(rake_debuff) < 1.9 
+        and BuffPresent(tigers_fury_buff) 
+        and BuffSavageRoarUp() 
+        and BuffBloodtalonsUp() 
+        and { not Talent(incarnation_talent) or SpellCooldown(incarnation_king_of_the_jungle) > 18 } 
+        and BuffExpires(incarnation_king_of_the_jungle_buff)
+        and target.TimeToDie() > BaseDuration(rake_debuff) + 5
+        and target.InRange(rake)
+}
+#call_action_list,name=Maintain
+########################################
+### BEGIN Maintain Action List       ###
+########################################
+#variable,name=Rake_Main,value=(!dot.rake.ticking|(variable.BuffBloodtalonsUp&dot.rake.remains<=variable.RakeRefresh&action.rake.persistent_multiplier>dot.rake.pmultiplier*0.80))&target.time_to_die-dot.rake.remains>action.rake.tick_time
+#rake,cycle_targets=1,if=variable.Rake_Main
+# MODIFICATION: TFMultPred when CheckBoxOn(opt_tigers_fury_multiplier_predict)
+# REASON: When Tiger's Fury is suggested, treat Rip as if it is already up even if it hasn't been cast yet.
+AddFunction Rake_Main
+{
+    { target.DebuffExpires(rake_debuff) 
+            or BuffBloodtalonsUp() and target.DebuffRemaining(rake_debuff) <= RakeRefresh() and TFMultPred() * PersistentMultiplier(rake_debuff) > target.DebuffPersistentMultiplier(rake_debuff) * 0.8 } 
+        and target.TimeToDie() - target.DebuffRemaining(rake_debuff) > target.TickTime(rake_debuff)
+}
+#variable,name=MoonfireCat_Main,value=dot.moonfire_cat.remains<=4.2&target.time_to_die-dot.moonfire_cat.remains>action.moonfire_cat.tick_time*2
+#moonfire_cat,cycle_targets=1,if=variable.MoonfireCat_Main
+AddFunction MoonfireCat_Main
+{
+    target.DebuffRemaining(moonfire_cat_debuff) <= 4.2 
+        and target.TimeToDie() - target.DebuffRemaining(moonfire_cat_debuff) > target.TickTime(moonfire_cat_debuff) * 2
+}
+#variable,name=ThrashCat_Tier19_4pc,value=set_bonus.tier19_4pc&dot.thrash_cat.remains<=variable.ThrashCatPandemic&((buff.clearcasting.react&buff.bloodtalons.down)|(variable.ClearcastingLotsOfEnergy&equipped.luffa_wrappings))
+#thrash_cat,cycle_targets=1,if=variable.ThrashCat_Tier19_4pc
+AddFunction ThrashCat_Tier19_4pc
+{
+    ArmorSetBonus(T19 4) 
+        and target.DebuffRemaining(thrash_cat_debuff) <= ThrashCatPandemic() 
+        and { BuffPresent(clearcasting_buff) and { HasEquippedItem(ailuro_pouncers) or BuffExpires(bloodtalons_buff) } 
+            or ClearcastingLotsOfEnergy() and HasEquippedItem(luffa_wrappings) }
+}
+#variable,name=ThrashCat_NoTier19_4pc,value=!set_bonus.tier19_4pc&dot.thrash_cat.remains<=variable.ThrashCatPandemic&(buff.clearcasting.react&equipped.luffa_wrappings&(equipped.ailuro_pouncers|buff.bloodtalons.down))
+#thrash_cat,cycle_targets=1,if=variable.ThrashCat_NoTier19_4pc
+AddFunction ThrashCat_NoTier19_4pc
+{
+    not ArmorSetBonus(T19 4) 
+        and target.DebuffRemaining(thrash_cat_debuff) <= ThrashCatPandemic() 
+        and BuffPresent(clearcasting_buff) 
+        and HasEquippedItem(luffa_wrappings) 
+        and { HasEquippedItem(ailuro_pouncers) or BuffExpires(bloodtalons_buff) }
+}
+########################################
+### END Maintain Action List         ###
+########################################
+#variable,name=ThrashCat_2Targets,value=dot.thrash_cat.remains<=variable.ThrashCatPandemic&spell_targets.thrash_cat>=2&variable.ThrashCatEnergyPooling
+#thrash_cat,cycle_targets=1,if=variable.ThrashCat_2Targets
+AddFunction ThrashCat_2Targets
+{
+    target.DebuffRemaining(thrash_cat_debuff) <= ThrashCatPandemic() 
+        and Enemies() >= 2 
+        and ThrashCatEnergyPooling()
+}
+#variable,name=BrutalSlash_3Charges,value=charges_fractional>2.66
+#brutal_slash,if=variable.BrutalSlash_3Charges
+# MODIFICATION: CheckBoxOn(opt_brutal_slash_use_at_three_always)
+# REASON: Allows a player to pool to full charges
+AddFunction BrutalSlash_3Charges
+{
+    CheckBoxOn(opt_brutal_slash_use_at_three_always)
+        and Charges(brutal_slash count=0) > 2.66 
+}
+#variable,name=SwipeCat_Main,value=spell_targets.swipe_cat>=3&variable.SwipeCatEnergyPooling
+#swipe_cat,if=variable.SwipeCat_Main
+AddFunction SwipeCat_Main
+{
+    Enemies() >= 3 and SwipeCatEnergyPooling()
+}
+#variable,name=Shred_Main,value=(spell_targets.swipe_cat<3|talent.brutal_slash.enabled)&((dot.rake.remains>(action.shred.cost+action.rake.cost-energy)%energy.regen&combo_points<3)|variable.ClearcastingPoolEnergy)
+#shred,if=variable.Shred_Main
+AddFunction Shred_Main
+{
+    { Enemies() < 3 or Talent(brutal_slash_talent) } 
+        and { target.DebuffRemaining(rake_debuff) > { PowerCost(shred) + PowerCost(rake) - Energy() } / EnergyRegenRate() and ComboPoints() < 3 
+            or ClearcastingPoolEnergy() }
+}
+########################################
+### END Generators Action List       ###
+########################################
+########################################
+### END Main Action List             ###
+########################################
+
+
+
+########################################
+### BEGIN ElunesGuidance Action List ###
+########################################
+#variable,name=ElunesGuidance_Regrowth,value=talent.elunes_guidance.enabled&variable.RegrowthConditions&((cooldown.elunes_guidance.remains<gcd&combo_points=0)|(buff.elunes_guidance.up&combo_points>=4))
+#regrowth,if=variable.ElunesGuidance_Regrowth
+AddFunction ElunesGuidance_Regrowth
+{
+    Talent(elunes_guidance_talent) 
+        and RegrowthConditions() 
+        and { SpellCooldown(elunes_guidance) < GCD() and ComboPoints() == 0 
+            or BuffPresent(elunes_guidance_buff) and ComboPoints() >= 4 }
+}
+#variable,name=ElunesGuidance_Pooling,value=talent.elunes_guidance.enabled&combo_points=0&energy<action.ferocious_bite.cost+25-energy.regen*cooldown.elunes_guidance.remains
+#pool_resource,if=variable.ElunesGuidance_Pooling
+# MODIFICATION: PowerCost(ferocious_bite) + 25 to EnergyCost(ferocious_bite max=1)
+# REASON: Ovale Calculates this automatically
+AddFunction ElunesGuidance_Pooling
+{
+    Talent(elunes_guidance_talent) 
+        and ComboPoints() == 0 
+        and Energy() < EnergyCost(ferocious_bite max=1) - EnergyRegenRate() * SpellCooldown(elunes_guidance)
+}
+#variable,name=ElunesGuidance_Main,value=talent.elunes_guidance.enabled&combo_points=0&energy>=action.ferocious_bite.cost+25
+#elunes_guidance,if=variable.ElunesGuidance_Main
+# MODIFICATION: PowerCost(ferocious_bite) + 25 to EnergyCost(ferocious_bite max=1)
+# REASON: Ovale Calculates this automatically
+AddFunction ElunesGuidance_Main
+{
+    Talent(elunes_guidance_talent) 
+        and ComboPoints() == 0 
+        and Energy() >= EnergyCost(ferocious_bite max=1)
 }
 ########################################
 ### END ElunesGuidance Action List   ###
 ########################################
+
+
+
+########################################
+### BEGIN Incarnation Action List    ###
+########################################
+#variable,name=ThrashCat_Incarnation,value=dot.thrash_cat.remains<=variable.ThrashCatPandemic&spell_targets.thrash_cat>=5
+#thrash_cat,cycle_targets=1,if=variable.ThrashCat_Incarnation
+AddFunction ThrashCat_Incarnation
+{
+    target.DebuffRemaining(thrash_cat_debuff) <= ThrashCatPandemic() 
+        and Enemies() >= 5
+}
+#variable,name=Regrowth_Incarnation_Expires,value=talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.bloodtalons.down&(buff.predatory_swiftness.remains<1.5|((!dot.rip.ticking|(dot.rip.remains<(variable.RipPandemic+gcd)|action.rip.persistent_multiplier>dot.rip.pmultiplier)&target.time_to_die-dot.rip.remains>action.rip.tick_time*4&combo_points=5)))
+#regrowth,if=variable.Regrowth_Incarnation_Expires
+# MODIFICATION: TFMultPred when CheckBoxOn(opt_tigers_fury_multiplier_predict)
+# REASON: When Tiger's Fury is suggested, treat Rip as if it is already up even if it hasn't been cast yet.
+AddFunction Regrowth_Incarnation_Expires
+{
+    Talent(bloodtalons_talent) 
+        and BuffPresent(predatory_swiftness_buff) 
+        and BuffExpires(bloodtalons_buff) 
+        and { BuffRemaining(predatory_swiftness_buff) < 1.5 
+            or target.DebuffExpires(rip_debuff) 
+            or { target.DebuffRemaining(rip_debuff) < RipPandemic() + GCD() 
+                or TFMultPred() * PersistentMultiplier(rip_debuff) > target.DebuffPersistentMultiplier(rip_debuff) } 
+            and target.TimeToDie() - target.DebuffRemaining(rip_debuff) > target.TickTime(rip_debuff) * 4 
+            and ComboPoints() == 5 }
+}
+#ashamanes_frenzy,if=variable.AshamanesFrenzy_Main
+###
+### AshamanesFrenzy_Main defined in Main Action List
+###
+#variable,name=SwipeCat_Incarnation,value=spell_targets.swipe_cat>=8
+#swipe_cat,if=variable.SwipeCat_Incarnation
+AddFunction SwipeCat_Incarnation
+{
+    Enemies() >= 8
+}
+#variable,name=Rip_Incarnation,value=combo_points=5&(!dot.rip.ticking|(dot.rip.remains<variable.RipPandemic)|action.rip.persistent_multiplier>dot.rip.pmultiplier)&target.time_to_die-dot.rip.remains>action.rip.tick_time*4
+#rip,cycle_targets=1,if=variable.Rip_Incarnation
+# MODIFICATION: TFMultPred when CheckBoxOn(opt_tigers_fury_multiplier_predict)
+# REASON: When Tiger's Fury is suggested, treat Rip as if it is already up even if it hasn't been cast yet.
+AddFunction Rip_Incarnation
+{
+    ComboPoints() == 5
+        and { target.DebuffExpires(rip_debuff) 
+            or target.DebuffRemaining(rip_debuff) < RipPandemic() 
+            or TFMultPred() * PersistentMultiplier(rip_debuff) > target.DebuffPersistentMultiplier(rip_debuff) } 
+        and target.TimeToDie() - target.DebuffRemaining(rip_debuff) > target.TickTime(rip_debuff) * 4 
+}
+#variable,name=Regrowth_Incarnation_Rip_Expires,value=talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.bloodtalons.down&combo_points=5&(dot.rip.remains<=(variable.RipPandemic+4+gcd)|cooldown.ashamanes_frenzy.remains<1+gcd)
+#regrowth,if=variable.Regrowth_Incarnation_Rip_Expires
+AddFunction Regrowth_Incarnation_Rip_Expires
+{
+    Talent(bloodtalons_talent) 
+        and BuffPresent(predatory_swiftness_buff) 
+        and BuffExpires(bloodtalons_buff) 
+        and ComboPoints() == 5 
+        and { target.DebuffRemaining(rip_debuff) <= RipPandemic() + 4 + GCD() or SpellCooldown(ashamanes_frenzy) < 1 + GCD() }
+}
+#variable,name=Maim_Incarnation,value=talent.bloodtalons.enabled&combo_points=5&buff.fiery_red_maimers.up&(dot.rip.remains<=(variable.RipPandemic+4)|cooldown.ashamanes_frenzy.remains<1)
+#maim,if=variable.Maim_Incarnation
+AddFunction Maim_Incarnation
+{
+    Talent(bloodtalons_talent) 
+        and ComboPoints() == 5 
+        and BuffPresent(fiery_red_maimers_buff) 
+        and { target.DebuffRemaining(rip_debuff) <= RipPandemic() + 4 or SpellCooldown(ashamanes_frenzy) < 1 }
+}
+#variable,name=FerociousBite_Incarnation,value=talent.bloodtalons.enabled&combo_points=5&(dot.rip.remains<=(variable.RipPandemic+4)|cooldown.ashamanes_frenzy.remains<1)
+#ferocious_bite,cycle_targets=1,if=variable.FerociousBite_Incarnation
+AddFunction FerociousBite_Incarnation
+{
+    Talent(bloodtalons_talent) and ComboPoints() == 5 and { target.DebuffRemaining(rip_debuff) <= RipPandemic() + 4 or SpellCooldown(ashamanes_frenzy) < 1 }
+}
+#call_action_list,name=Maintain
+###
+### Maintain defined in Main Action List
+###
+#shred
+#
+# No Function Required
+#
 
 ### actions.AoeFinishers
 
@@ -848,6 +1158,245 @@ AddFunction FeralFinishersMainActions
     }
 }
 
+AddFunction FeralFinishersMainPostConditions
+{
+}
+
+### actions.Generators
+
+AddFunction FeralGeneratorsMainActions
+{
+    #variable,name=BrutalSlash_Main,value=spell_targets.brutal_slash>desired_targets
+    #brutal_slash,if=variable.BrutalSlash_Main
+    if BrutalSlash_Main() Spell(brutal_slash)
+    #variable,name=ThrashCat_Spam,value=talent.brutal_slash.enabled&spell_targets.thrash_cat>=9
+    #pool_resource,for_next=1
+    #thrash_cat,if=variable.ThrashCat_Spam
+    if ThrashCat_Spam() Spell(thrash_cat)
+    unless ThrashCat_Spam() and SpellUsable(thrash_cat) and SpellCooldown(thrash_cat) < TimeToEnergyFor(thrash_cat)
+    {
+        #variable,name=SwipeCat_6Targets,value=spell_targets.swipe_cat>=6&variable.SwipeCatEnergyPooling
+        #pool_resource,for_next=1
+        #swipe_cat,if=variable.SwipeCat_6Targets
+        if SwipeCat_6Targets() Spell(swipe_cat)
+        unless SwipeCat_6Targets() and SpellUsable(swipe_cat) and SpellCooldown(swipe_cat) < TimeToEnergyFor(swipe_cat)
+        {
+            #call_action_list,name=Maintain
+            FeralMaintainMainActions()
+
+            unless FeralMaintainMainPostConditions()
+            {
+                #variable,name=ThrashCat_2Targets,value=dot.thrash_cat.remains<=variable.ThrashCatPandemic&spell_targets.thrash_cat>=2&variable.ThrashCatEnergyPooling
+                #pool_resource,for_next=1
+                #thrash_cat,cycle_targets=1,if=variable.ThrashCat_2Targets
+                if ThrashCat_2Targets() Spell(thrash_cat)
+                unless ThrashCat_2Targets() and SpellUsable(thrash_cat) and SpellCooldown(thrash_cat) < TimeToEnergyFor(thrash_cat)
+                {
+                    #variable,name=SwipeCat_Main,value=spell_targets.swipe_cat>=3&variable.SwipeCatEnergyPooling
+                    #swipe_cat,if=variable.SwipeCat_Main
+                    if SwipeCat_Main() Spell(swipe_cat)
+                    #variable,name=BrutalSlash_3Charges,value=action.brutal_slash.charges_fractional>2.66&time>10
+                    #brutal_slash,if=variable.BrutalSlash_3Charges
+                    if BrutalSlash_3Charges() Spell(brutal_slash)
+                    #variable,name=Shred_Main,value=(spell_targets.swipe_cat<3|talent.brutal_slash.enabled)&((dot.rake.remains>(action.shred.cost+action.rake.cost-energy)%energy.regen&combo_points<3)|variable.ClearcastingPoolEnergy)
+                    #shred,if=variable.Shred_Main
+                    if Shred_Main() Spell(shred)
+                }
+            }
+        }
+    }
+}
+
+### actions.Maintain
+
+AddFunction FeralMaintainMainActions
+{
+    #variable,name=Rake_Main,value=(!dot.rake.ticking|(variable.BuffBloodtalonsUp&dot.rake.remains<=variable.RakeRefresh&action.rake.persistent_multiplier>dot.rake.pmultiplier*0.80))&target.time_to_die-dot.rake.remains>action.rake.tick_time
+    #pool_resource,for_next=1
+    #rake,cycle_targets=1,if=variable.Rake_Main
+    if Rake_Main() Spell(rake)
+    unless Rake_Main() and SpellUsable(rake) and SpellCooldown(rake) < TimeToEnergyFor(rake)
+    {
+        #variable,name=MoonfireCat_Main,value=dot.moonfire_cat.remains<=4.2&target.time_to_die-dot.moonfire_cat.remains>action.moonfire_cat.tick_time*2
+        #moonfire_cat,cycle_targets=1,if=variable.MoonfireCat_Main
+        if MoonfireCat_Main() Spell(moonfire_cat)
+        #variable,name=ThrashCat_Tier19_4pc,value=set_bonus.tier19_4pc&dot.thrash_cat.remains<=variable.ThrashCatPandemic&((buff.clearcasting.react&buff.bloodtalons.down)|(variable.ClearcastingLotsOfEnergy&equipped.luffa_wrappings))
+        #thrash_cat,cycle_targets=1,if=variable.ThrashCat_Tier19_4pc
+        if ThrashCat_Tier19_4pc() Spell(thrash_cat)
+        #variable,name=ThrashCat_NoTier19_4pc,value=!set_bonus.tier19_4pc&dot.thrash_cat.remains<=variable.ThrashCatPandemic&(buff.clearcasting.react&equipped.luffa_wrappings&(equipped.ailuro_pouncers|buff.bloodtalons.down))
+        #thrash_cat,cycle_targets=1,if=variable.ThrashCat_NoTier19_4pc
+        if ThrashCat_NoTier19_4pc() Spell(thrash_cat)
+    }
+}
+
+AddFunction FeralMaintainMainPostConditions
+{
+}
+
+AddFunction FeralMaintainShortCdPostConditions
+{
+    Rake_Main() and Spell(rake) 
+		or not { Rake_Main() and SpellUsable(rake) and SpellCooldown(rake) < TimeToEnergyFor(rake) } 
+		and { MoonfireCat_Main() and Spell(moonfire_cat) 
+			or ThrashCat_Tier19_4pc() and Spell(thrash_cat) 
+			or ThrashCat_NoTier19_4pc() and Spell(thrash_cat) }
+}
+AddFunction FeralMaintainCdPostConditions
+{
+    Rake_Main() and Spell(rake) 
+		or not { Rake_Main() and SpellUsable(rake) and SpellCooldown(rake) < TimeToEnergyFor(rake) } 
+		and { MoonfireCat_Main() and Spell(moonfire_cat) 
+			or ThrashCat_Tier19_4pc() and Spell(thrash_cat) 
+			or ThrashCat_NoTier19_4pc() and Spell(thrash_cat) }
+>>>>>>> parent of b73840c... Remove Incarnation and Tweak EG
+}
+########################################
+### END ElunesGuidance Action List   ###
+########################################
+
+<<<<<<< HEAD
+### actions.AoeFinishers
+
+AddFunction FeralAoeFinishersMainActions
+{
+    #variable,name=SavageRoar_BrutalSlash,value=talent.brutal_slash.enabled&buff.savage_roar.down&spell_targets.brutal_slash>desired_targets&action.brutal_slash.charges>=1
+    #pool_resource,for_next=1
+    #savage_roar,if=variable.SavageRoar_BrutalSlash
+    if SavageRoar_BrutalSlash() Spell(savage_roar)
+    unless SavageRoar_BrutalSlash() and SpellUsable(savage_roar) and SpellCooldown(savage_roar) < TimeToEnergyFor(savage_roar)
+    {
+        #variable,name=ThrashCat_5Targets,value=spell_targets.thrash_cat>=5&dot.thrash_cat.remains<=variable.ThrashCatPandemic&variable.ThrashCatEnergyPooling
+        #pool_resource,for_next=1
+        #thrash_cat,cycle_targets=1,if=variable.ThrashCat_5Targets
+        if ThrashCat_5Targets() Spell(thrash_cat)
+        unless ThrashCat_5Targets() and SpellUsable(thrash_cat) and SpellCooldown(thrash_cat) < TimeToEnergyFor(thrash_cat)
+        {
+            #variable,name=SwipeCat_8Targets,value=spell_targets.swipe_cat>=8&variable.SwipeCatEnergyPooling
+            #pool_resource,for_next=1
+            #swipe_cat,if=variable.SwipeCat_8Targets
+            if SwipeCat_8Targets() Spell(swipe_cat)
+=======
+### actions.Incarnation
+
+AddFunction FeralIncarnationMainActions
+{
+    #variable,name=ThrashCat_Incarnation,value=dot.thrash_cat.remains<=variable.ThrashCatPandemic&spell_targets.thrash_cat>=5
+    #pool_resource,for_next=1
+    #thrash_cat,cycle_targets=1,if=variable.ThrashCat_Incarnation
+    if ThrashCat_Incarnation() Spell(thrash_cat)
+    unless ThrashCat_Incarnation() and SpellUsable(thrash_cat) and SpellCooldown(thrash_cat) < TimeToEnergyFor(thrash_cat)
+    {
+        #variable,name=Regrowth_Incarnation_Expires,value=talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.bloodtalons.down&(buff.predatory_swiftness.remains<1.5|((!dot.rip.ticking|(dot.rip.remains<(variable.RipPandemic+gcd)|action.rip.persistent_multiplier>dot.rip.pmultiplier)&target.time_to_die-dot.rip.remains>action.rip.tick_time*4&combo_points=5)))
+        #regrowth,if=variable.Regrowth_Incarnation_Expires
+        if Regrowth_Incarnation_Expires() Spell(regrowth)
+        #variable,name=SwipeCat_Incarnation,value=spell_targets.swipe_cat>=8
+        #pool_resource,for_next=1
+        #swipe_cat,if=variable.SwipeCat_Incarnation
+        if SwipeCat_Incarnation() Spell(swipe_cat)
+        unless SwipeCat_Incarnation() and SpellUsable(swipe_cat) and SpellCooldown(swipe_cat) < TimeToEnergyFor(swipe_cat)
+        {
+            #variable,name=Rip_Incarnation,value=(!dot.rip.ticking|(dot.rip.remains<variable.RipPandemic)|action.rip.persistent_multiplier>dot.rip.pmultiplier)&target.time_to_die-dot.rip.remains>action.rip.tick_time*4&combo_points=5
+            #pool_resource,for_next=1
+            #rip,cycle_targets=1,if=variable.Rip_Incarnation
+            if Rip_Incarnation() Spell(rip)
+            unless Rip_Incarnation() and SpellUsable(rip) and SpellCooldown(rip) < TimeToEnergyFor(rip)
+            {
+                #variable,name=Regrowth_Incarnation_Rip_Expires,value=talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.bloodtalons.down&combo_points=5&(dot.rip.remains<=(variable.RipPandemic+4+gcd)|cooldown.ashamanes_frenzy.remains<1+gcd)
+                #regrowth,if=variable.Regrowth_Incarnation_Rip_Expires
+                if Regrowth_Incarnation_Rip_Expires() Spell(regrowth)
+                #variable,name=Maim_Incarnation,value=talent.bloodtalons.enabled&combo_points=5&buff.fiery_red_maimers.up&(dot.rip.remains<=(variable.RipPandemic+4)|cooldown.ashamanes_frenzy.remains<1)
+                #maim,if=variable.Maim_Incarnation
+                if Maim_Incarnation() Spell(maim)
+                #variable,name=FerociousBite_Incarnation,value=talent.bloodtalons.enabled&combo_points=5&(dot.rip.remains<=(variable.RipPandemic+4)|cooldown.ashamanes_frenzy.remains<1)
+                #ferocious_bite,cycle_targets=1,if=variable.FerociousBite_Incarnation
+                if FerociousBite_Incarnation() Spell(ferocious_bite)
+                #call_action_list,name=Maintain
+                FeralMaintainMainActions()
+
+                unless FeralMaintainMainPostConditions()
+                {
+                    #shred
+                    Spell(shred)
+                }
+            }
+>>>>>>> parent of b73840c... Remove Incarnation and Tweak EG
+        }
+    }
+}
+
+<<<<<<< HEAD
+AddFunction FeralAoeFinishersMainPostConditions
+{
+}
+
+### actions.Finishers
+
+AddFunction FeralFinishersMainActions
+{
+    #variable,name=Maim_3Targets,value=spell_targets.maim>=3&buff.fiery_red_maimers.up&variable.BuffBloodtalonsUp
+    #pool_resource,for_next=1
+    #maim,if=variable.Maim_3Targets
+    if Maim_3Targets() Spell(maim)
+    unless Maim_3Targets() and SpellUsable(maim) and SpellCooldown(maim) < TimeToEnergyFor(maim)
+    {
+        #variable,name=Rip_Main,value=(!dot.rip.ticking|(dot.rip.remains<variable.RipRefresh&target.health.pct>variable.ExecuteRange)|action.rip.persistent_multiplier>dot.rip.pmultiplier)&target.time_to_die-dot.rip.remains>action.rip.tick_time*4
+        #pool_resource,for_next=1
+        #rip,cycle_targets=1,if=variable.Rip_Main
+        if Rip_Main() Spell(rip)
+        unless Rip_Main() and SpellUsable(rip) and SpellCooldown(rip) < TimeToEnergyFor(rip)
+        {
+            #variable,name=FerociousBite_9SecondRefresh,value=dot.rip.ticking&dot.rip.remains<variable.RipRefresh&target.health.pct<variable.ExecuteRange
+            #pool_resource,for_next=1
+            #ferocious_bite,max_energy=1,cycle_targets=1,if=variable.FerociousBite_9SecondRefresh
+            if Energy() >= EnergyCost(ferocious_bite max=1) and FerociousBite_9SecondRefresh() Spell(ferocious_bite)
+            unless Energy() >= EnergyCost(ferocious_bite max=1) and FerociousBite_9SecondRefresh() and SpellUsable(ferocious_bite) and SpellCooldown(ferocious_bite) < TimeToEnergyFor(ferocious_bite)
+            {
+                #variable,name=SavageRoar_Main,value=(buff.savage_roar.remains<=7.2|(buff.savage_roar.remains<variable.SavageRoarRefresh&target.health.pct>=variable.ExecuteRange))
+                #pool_resource,for_next=1
+                #savage_roar,if=variable.SavageRoar_Main
+                if SavageRoar_Main() Spell(savage_roar)
+                unless SavageRoar_Main() and SpellUsable(savage_roar) and SpellCooldown(savage_roar) < TimeToEnergyFor(savage_roar)
+                {
+                    #variable,name=Maim_Main,value=buff.fiery_red_maimers.up&variable.BuffBloodtalonsUp
+                    #pool_resource,for_next=1
+                    #maim,if=variable.Maim_Main
+                    if Maim_Main() Spell(maim)
+                    unless Maim_Main() and SpellUsable(maim) and SpellCooldown(maim) < TimeToEnergyFor(maim)
+                    {
+                        #pool_resource,for_next=1
+                        #ferocious_bite,max_energy=1
+                        if Energy() >= EnergyCost(ferocious_bite max=1) Spell(ferocious_bite)
+                    }
+                }
+            }
+=======
+AddFunction FeralIncarnationMainPostConditions
+{
+    not { ThrashCat_Incarnation() and SpellUsable(thrash_cat) and SpellCooldown(thrash_cat) < TimeToEnergyFor(thrash_cat) } 
+		and not { SwipeCat_Incarnation() and SpellUsable(swipe_cat) and SpellCooldown(swipe_cat) < TimeToEnergyFor(swipe_cat) } 
+		and not { Rip_Incarnation() and SpellUsable(rip) and SpellCooldown(rip) < TimeToEnergyFor(rip) } 
+		and FeralMaintainMainPostConditions()
+}
+
+AddFunction FeralIncarnationShortCdActions
+{
+    #variable,name=ThrashCat_Incarnation,value=dot.thrash_cat.remains<=variable.ThrashCatPandemic&spell_targets.thrash_cat>=5
+    #pool_resource,for_next=1
+    #thrash_cat,cycle_targets=1,if=variable.ThrashCat_Incarnation
+    unless ThrashCat_Incarnation() and SpellUsable(thrash_cat) and SpellCooldown(thrash_cat) < TimeToEnergyFor(thrash_cat)
+    {
+        unless Regrowth_Incarnation_Expires() and Spell(regrowth)
+        {
+            #ashamanes_frenzy,if=variable.AshamanesFrenzy_Main
+            # MODIFICATION: AshamanesFrenzy_ShortCd for CheckBoxOff(opt_ashamanes_frenzy_main_action)
+            # REASON: Allows player to choose via checkbox whether to add Ashamane's Frenzy to the Main Icon
+            if AshamanesFrenzy_ShortCd() Spell(ashamanes_frenzy)
+>>>>>>> parent of b73840c... Remove Incarnation and Tweak EG
+        }
+    }
+}
+
+<<<<<<< HEAD
 AddFunction FeralFinishersMainPostConditions
 {
 }
@@ -966,12 +1515,161 @@ AddFunction FeralDefaultMainActions
                 {
                     #call_action_list,name=Generators,if=combo_points<5
                     if ComboPoints() < 5 FeralGeneratorsMainActions()
+=======
+AddFunction FeralIncarnationShortCdPostConditions
+{
+    not { ThrashCat_Incarnation() and SpellUsable(thrash_cat) and SpellCooldown(thrash_cat) < TimeToEnergyFor(thrash_cat) } 
+		and { Regrowth_Incarnation_Expires() and Spell(regrowth) 
+			or not { SwipeCat_Incarnation() and SpellUsable(swipe_cat) and SpellCooldown(swipe_cat) < TimeToEnergyFor(swipe_cat) } 
+			and not { Rip_Incarnation() and SpellUsable(rip) and SpellCooldown(rip) < TimeToEnergyFor(rip) }
+			and { Regrowth_Incarnation_Rip_Expires() and Spell(regrowth) 
+				or Maim_Incarnation() and Spell(maim) 
+				or FerociousBite_Incarnation() and Spell(ferocious_bite) 
+				or FeralMaintainShortCdPostConditions() 
+				or Spell(shred) } }
+}
+
+AddFunction FeralIncarnationCdPostConditions
+{
+    not { ThrashCat_Incarnation() and SpellUsable(thrash_cat) and SpellCooldown(thrash_cat) < TimeToEnergyFor(thrash_cat) } 
+		and { Regrowth_Incarnation_Expires() and Spell(regrowth) 
+			or AshamanesFrenzy_Main() and Spell(ashamanes_frenzy) 
+			or not { SwipeCat_Incarnation() and SpellUsable(swipe_cat) and SpellCooldown(swipe_cat) < TimeToEnergyFor(swipe_cat) } 
+			and not { Rip_Incarnation() and SpellUsable(rip) and SpellCooldown(rip) < TimeToEnergyFor(rip) } 
+			and { Regrowth_Incarnation_Rip_Expires() and Spell(regrowth) 
+				or Maim_Incarnation() and Spell(maim) 
+				or FerociousBite_Incarnation() and Spell(ferocious_bite) 
+				or FeralMaintainCdPostConditions() 
+				or Spell(shred) } }
+}
+
+### actions.default
+
+AddFunction FeralDefaultMainActions
+{
+    # MODIFICATION: Dash to get to cat form moved from Cd to Main
+    # REASON: So it doesn't show up out of combat and to remind you to use dash to regain Cat Form when an option
+    #dash,if=!buff.cat_form.up
+    if BuffExpires(cat_form_buff) Spell(dash)
+    
+    #cat_form
+    Spell(cat_form)
+
+    #variable,name=Rake_Prowl,value=buff.prowl.up|buff.shadowmeld.up
+    #rake,if=variable.Rake_Prowl
+    if Rake_Prowl() Spell(rake)
+    #variable,name=FerociousBite_3SecondRefresh,value=dot.rip.ticking&dot.rip.remains<3&target.time_to_die>3&target.health.pct<variable.ExecuteRange
+    #ferocious_bite,cycle_targets=1,if=variable.FerociousBite_3SecondRefresh
+    if FerociousBite_3SecondRefresh() Spell(ferocious_bite text=Execute)
+    #run_action_list,name=Incarnation,if=buff.incarnation.up&set_bonus.tier19_4pc
+    if BuffPresent(incarnation_king_of_the_jungle_buff) and ArmorSetBonus(T19 4) FeralIncarnationMainActions()
+
+    unless BuffPresent(incarnation_king_of_the_jungle_buff) and ArmorSetBonus(T19 4) and FeralIncarnationMainPostConditions()
+    {
+        #variable,name=RegrowthConditions,value=talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.bloodtalons.stack<variable.BloodtalonsOverwriteStacks
+        #variable,name=Regrowth_PredatorySwiftness_Expires,value=buff.predatory_swiftness.remains<1.5
+        #variable,name=Regrowth_AshamanesFrenzy,value=combo_points=2&buff.bloodtalons.down&cooldown.ashamanes_frenzy.remains<1+gcd&(buff.savage_roar.remains>(3+gcd)|!talent.savage_roar.enabled)
+        #regrowth,if=variable.RegrowthConditions&(variable.Regrowth_PredatorySwiftness_Expires|variable.Regrowth_AshamanesFrenzy)
+        if RegrowthConditions() and { Regrowth_PredatorySwiftness_Expires() or Regrowth_AshamanesFrenzy() } Spell(regrowth)
+        #variable,name=AshamanesFrenzy_Main,value=combo_points<=2&buff.elunes_guidance.down&variable.BuffBloodtalonsUp&variable.BuffSavageRoarUp
+        #ashamanes_frenzy,if=variable.AshamanesFrenzy_Main
+        # MODIFICATION: AshamanesFrenzy_Main for CheckBoxOn(opt_ashamanes_frenzy_main_action)
+        # REASON: Allows player to choose via checkbox whether to add Azshamane's Frenzy to the Main Icon
+        if AshamanesFrenzy_Main() Spell(ashamanes_frenzy)
+        #call_action_list,name=ElunesGuidance,if=talent.elunes_guidance.enabled
+        if Talent(elunes_guidance_talent) FeralElunesGuidanceMainActions()
+
+        unless Talent(elunes_guidance_talent) and FeralElunesGuidanceMainPostConditions()
+        {
+            #variable,name=Regrowth_SavageRoar_Down,value=variable.RegrowthConditions&talent.savage_roar.enabled&buff.savage_roar.down&combo_points=5
+            #regrowth,if=variable.Regrowth_SavageRoar_Down
+            if Regrowth_SavageRoar_Down() Spell(regrowth)
+            #variable,name=SavageRoar_Down,value=buff.savage_roar.down&(variable.FinisherConditions|time<8)
+            #pool_resource,for_next=1
+            #savage_roar,if=variable.SavageRoar_Down
+            if SavageRoar_Down() Spell(savage_roar)
+            unless SavageRoar_Down() and SpellUsable(savage_roar) and SpellCooldown(savage_roar) < TimeToEnergyFor(savage_roar)
+            {
+                #variable,name=Regrowth_Pouncers,value=equipped.ailuro_pouncers&talent.bloodtalons.enabled&(buff.predatory_swiftness.stack>2|(buff.predatory_swiftness.stack>1&dot.rake.remains<3))&buff.bloodtalons.down
+                #regrowth,if=variable.Regrowth_Pouncers
+                if Regrowth_Pouncers() Spell(regrowth)
+                #call_action_list,name=AoeFinishers,if=active_enemies>1
+                if Enemies() > 1 FeralAoeFinishersMainActions()
+
+                unless Enemies() > 1 and FeralAoeFinishersMainPostConditions()
+                {
+                    #variable,name=Regrowth_5CPs,value=variable.RegrowthConditions&combo_points=5
+                    #regrowth,if=variable.Regrowth_5CPs
+                    if Regrowth_5CPs() Spell(regrowth)
+                    #call_action_list,name=Finishers,if=variable.FinisherConditions&variable.BuffSavageRoarUp
+                    if FinisherConditions() and BuffSavageRoarUp() FeralFinishersMainActions()
+                    unless FinisherConditions() and BuffSavageRoarUp() and FeralFinishersMainPostConditions()
+                        {
+                            #call_action_list,name=Generators,if=combo_points<5
+                            if ComboPoints() < 5 FeralGeneratorsMainActions()
+                        }
+                    }
+                }
+            }
+        }
+}
+
+
+AddFunction FeralDefaultShortCdActions
+{
+    unless Spell(cat_form)
+    {
+        #variable,name=LotsOfEnergy,value=buff.berserk.up|buff.incarnation.up|cooldown.tigers_fury.remains<3|talent.soul_of_the_forest.enabled
+        #variable,name=ClearcastingLotsOfEnergy,value=variable.LotsOfEnergy|buff.clearcasting.react
+        #variable,name=PoolEnergy,value=energy.time_to_max<variable.PoolingValue|variable.LotsOfEnergy
+        #variable,name=ClearcastingPoolEnergy,value=variable.PoolEnergy|buff.clearcasting.react
+        #variable,name=FinisherConditions,value=combo_points=5&(variable.PoolEnergy|buff.elunes_guidance.up|cooldown.ashamanes_frenzy.remains<1|!dot.rip.ticking|(dot.rake.remains<1.5&spell_targets.swipe_cat<6)|(spell_targets.brutal_slash>desired_targets&talent.brutal_slash.enabled))
+        #variable,name=ThrashCatEnergyPooling,value=!dot.thrash_cat.ticking|variable.ClearcastingPoolEnergy
+        #variable,name=SwipeCatEnergyPooling,value=buff.scent_of_blood.up|variable.ClearcastingPoolEnergy
+        #variable,name=BuffSavageRoarUp,value=buff.savage_roar.up|!talent.savage_roar.enabled
+        #variable,name=BuffBloodtalonsUp,value=buff.bloodtalons.up|!talent.bloodtalons.enabled
+        #wild_charge
+        FeralGetInMeleeRange()
+
+        unless Rake_Prowl() and Spell(rake)
+        {
+            #auto_attack
+            FeralGetInMeleeRange()
+            #variable,name=Potion_Main,value=((buff.berserk.remains>10|buff.incarnation.remains>20)&(target.time_to_die<180|(trinket.proc.all.react&target.health.pct<25)))|target.time_to_die<=40
+            #potion,name=old_war,if=variable.Potion_Main
+            #variable,name=TigersFury_Main,value=(!buff.clearcasting.react&energy.deficit>=60)|energy.deficit>=80
+            #tigers_fury,if=variable.TigersFury_Main
+            if TigersFury_Main() Spell(tigers_fury)
+            #tigers_fury,if=variable.TigersFury_Sabertooth
+            if TigersFury_Sabertooth() Spell(tigers_fury)
+			if TigersFury_Predator() Spell(tigers_fury text=Predator)
+            unless FerociousBite_3SecondRefresh() and Spell(ferocious_bite)
+            {
+                #run_action_list,name=Incarnation,if=buff.incarnation.up&set_bonus.tier19_4pc
+                if BuffPresent(incarnation_king_of_the_jungle_buff) and ArmorSetBonus(T19 4) FeralIncarnationShortCdActions()
+
+                unless BuffPresent(incarnation_king_of_the_jungle_buff) and ArmorSetBonus(T19 4) and FeralIncarnationShortCdPostConditions() or RegrowthConditions() and { Regrowth_PredatorySwiftness_Expires() or Regrowth_AshamanesFrenzy() } and Spell(regrowth)
+                {
+                    #variable,name=Regrowth_AshamanesFrenzy,value=combo_points=2&buff.bloodtalons.down&cooldown.ashamanes_frenzy.remains<1+gcd&(buff.savage_roar.remains>(3+gcd)|!talent.savage_roar.enabled)
+                    #regrowth,if=variable.RegrowthConditions&(variable.Regrowth_PredatorySwiftness_Expires|variable.Regrowth_AshamanesFrenzy)
+                    # MODIFICATION: Regrowth_AshamanesFrenzy_ShortCd for CheckBoxOff(opt_ashamanes_frenzy_main_action)
+                    # REASON: Allows player to choose via checkbox whether to add Ashamane's Frenzy to the Main Icon
+                    if RegrowthConditions() and Regrowth_AshamanesFrenzy_ShortCd() Spell(regrowth)
+                    #variable,name=AshamanesFrenzy_Main,value=combo_points<=2&buff.elunes_guidance.down&variable.BuffBloodtalonsUp&variable.BuffSavageRoarUp
+                    #ashamanes_frenzy,if=variable.AshamanesFrenzy_Main
+                    # MODIFICATION: AshamanesFrenzy_ShortCd for CheckBoxOff(opt_ashamanes_frenzy_main_action)
+                    # REASON: Allows player to choose via checkbox whether to add Ashamane's Frenzy to the Main Icon
+                    if AshamanesFrenzy_ShortCd() Spell(ashamanes_frenzy)
+                    #call_action_list,name=ElunesGuidance,if=talent.elunes_guidance.enabled
+                    if Talent(elunes_guidance_talent) FeralElunesGuidanceShortCdActions()
+>>>>>>> parent of b73840c... Remove Incarnation and Tweak EG
                 }
             }
         }
     }
 }
 
+<<<<<<< HEAD
 
 AddFunction FeralDefaultShortCdActions
 {
@@ -1074,6 +1772,75 @@ AddFunction FeralElunesGuidanceShortCdActions
         #elunes_guidance,if=variable.ElunesGuidance_Main
         if ElunesGuidance_Main() Spell(elunes_guidance)
 
+=======
+AddFunction FeralDefaultCdActions
+{
+
+    unless Spell(cat_form)
+    {
+        #variable,name=LotsOfEnergy,value=buff.berserk.up|buff.incarnation.up|cooldown.tigers_fury.remains<3|talent.soul_of_the_forest.enabled
+        #variable,name=ClearcastingLotsOfEnergy,value=variable.LotsOfEnergy|buff.clearcasting.react
+        #variable,name=PoolEnergy,value=energy.time_to_max<variable.PoolingValue|variable.LotsOfEnergy
+        #variable,name=ClearcastingPoolEnergy,value=variable.PoolEnergy|buff.clearcasting.react
+        #variable,name=FinisherConditions,value=combo_points=5&(variable.PoolEnergy|buff.elunes_guidance.up|cooldown.ashamanes_frenzy.remains<1|!dot.rip.ticking|(dot.rake.remains<1.5&spell_targets.swipe_cat<6)|(spell_targets.brutal_slash>desired_targets&talent.brutal_slash.enabled))
+        #variable,name=ThrashCatEnergyPooling,value=!dot.thrash_cat.ticking|variable.ClearcastingPoolEnergy
+        #variable,name=SwipeCatEnergyPooling,value=buff.scent_of_blood.up|variable.ClearcastingPoolEnergy
+        #variable,name=BuffSavageRoarUp,value=buff.savage_roar.up|!talent.savage_roar.enabled
+        #variable,name=BuffBloodtalonsUp,value=buff.bloodtalons.up|!talent.bloodtalons.enabled
+        #skull_bash
+        FeralInterruptActions()
+
+        #variable,name=Berserk_Main,value=buff.ashamanes_energy.up|(equipped.convergence_of_fates&energy>=35)
+        #berserk,if=variable.Berserk_Main
+        if Berserk_Main() Spell(berserk_cat)
+        #variable,name=Incarnation_Main,value=buff.ashamanes_energy.up|energy>=35
+        #incarnation,if=variable.Incarnation_Main
+        if Incarnation_Main() Spell(incarnation_king_of_the_jungle)
+        #variable,name=Trinket_Main,value=(buff.tigers_fury.up&(target.time_to_die>trinket.stat.any.cooldown|target.time_to_die<45))|buff.incarnation.remains>20
+        #use_item,slot=trinket1,if=variable.Trinket_Main
+        if Trinket_Main() FeralUseItemActions()
+
+        unless FerociousBite_3SecondRefresh() and Spell(ferocious_bite)
+        {
+
+            unless BuffPresent(incarnation_king_of_the_jungle_buff) and ArmorSetBonus(T19 4) and FeralIncarnationCdPostConditions() or RegrowthConditions() and { Regrowth_PredatorySwiftness_Expires() or Regrowth_AshamanesFrenzy() } and Spell(regrowth) or AshamanesFrenzy_Main() and Spell(ashamanes_frenzy)
+            {
+                #variable,name=Shadowmeld_Main,value=energy>=action.rake.cost&dot.rake.pmultiplier<1.9&buff.tigers_fury.up&variable.BuffSavageRoarUp&variable.BuffBloodtalonsUp&(!talent.incarnation.enabled|cooldown.incarnation.remains>18)&!buff.incarnation.up
+                #shadowmeld,if=variable.Shadowmeld_Main
+                # MODIFICATION: Shadowmeld_Cd for CheckBoxOff(opt_shadowmeld_main_action)
+                # REASON: Allows player to choose via checkbox whether to add Shadowmeld to the Main Icon
+                if Shadowmeld_Cd() Spell(shadowmeld)
+            }
+        }
+    }
+}
+
+### actions.ElunesGuidance
+
+AddFunction FeralElunesGuidanceMainActions
+{
+    #variable,name=ElunesGuidance_Regrowth,value=talent.elunes_guidance.enabled&variable.RegrowthConditions&((cooldown.elunes_guidance.remains<gcd&combo_points=0)|(buff.elunes_guidance.up&combo_points>=4))
+    #regrowth,if=variable.ElunesGuidance_Regrowth
+    if ElunesGuidance_Regrowth() Spell(regrowth)
+}
+
+AddFunction FeralElunesGuidanceMainPostConditions
+{
+}
+
+AddFunction FeralElunesGuidanceShortCdActions
+{
+    unless ElunesGuidance_Regrowth() and Spell(regrowth)
+    {
+        #variable,name=ElunesGuidance_Pooling,value=talent.elunes_guidance.enabled&combo_points=0&energy<action.ferocious_bite.cost+25-energy.regen*cooldown.elunes_guidance.remains
+        #pool_resource,if=variable.ElunesGuidance_Pooling
+        unless ElunesGuidance_Pooling()
+        {
+            #variable,name=ElunesGuidance_Main,value=talent.elunes_guidance.enabled&combo_points=0&energy>=action.ferocious_bite.cost+25
+            #elunes_guidance,if=variable.ElunesGuidance_Main
+            if ElunesGuidance_Main() Spell(elunes_guidance)
+        }
+>>>>>>> parent of b73840c... Remove Incarnation and Tweak EG
     }
 }
 
@@ -1547,3 +2314,7 @@ AddIcon checkbox=opt_druid_guardian_aoe help=cd specialization=guardian
 # typhoon
 # war_stomp
 # wild_charge
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of b73840c... Remove Incarnation and Tweak EG
