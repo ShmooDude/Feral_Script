@@ -1,4 +1,4 @@
-# ShmooDude Feral and Guardian script
+# ShmooDude Feral and Guardian script
 ###
 ### Options:
 # Interrupt - Suggests use of interuptting abilities, including stuns/knockbacks on non-boss targets.
@@ -25,6 +25,12 @@
 # BrS at X targets - Minimum number of targets to suggest using Brutal Slash.
 #       This will use all available Brutal Slash charges.
 #       
+# Only suggest BrS when TF is up
+#       Good for Mythic+ to get the most out of your Brutal Slash charges
+#       Too much haste makes this sub-optimal
+# Try to sync Ashamane's Frenzy with Tiger's Fury
+#       Restricts Ashamane's Frenzy to only if Tiger's Fury is up or has more than 10 seconds remaining on the cooldown
+#       
 # Pooling Value - How high you will pool energy (in seconds to max energy)
 #       Lower will pool more agressively (higher energy)
 #       Adds 7 seconds with chatoyant_signet to whatever value
@@ -47,16 +53,19 @@ Include(ovale_druid_spells)
 # Temporary Define until Ovale updated
 Define(brutal_slash_talent 21)
 Define(sephuzs_secret 132452)
+Define(kiljaedens_burning_wish 144259)
 
 AddCheckBox(opt_melee_range L(not_in_melee_range) specialization=feral)
 AddCheckBox(opt_interrupt L(interrupt) default specialization=feral)
-AddCheckBox(opt_use_consumables L(opt_use_consumables) default specialization=feral)
+AddCheckBox(opt_use_consumables "Suggest Potion" default specialization=feral)
 
 AddCheckBox(opt_ashamanes_frenzy_main_action "Ashamane's Frenzy as a main action" default specialization=feral)
 AddCheckBox(opt_shadowmeld_main_action "Shadowmeld as a main action" specialization=feral)
 
 AddCheckBox(opt_tigers_fury_multiplier_predict "Tiger's Fury multiplier prediction" default specialization=feral)
 AddCheckBox(opt_brutal_slash_use_at_three_always "Prevent capping BrS charges" specialization=feral)
+AddCheckBox(opt_brutal_slash_use_with_tigers_fury "Only suggest BrS when TF is up" specialization=feral)
+AddCheckBox(opt_sync_af_tf "Try to sync Ashamane's with TF" specialization=feral)
 
 AddListItem(opt_10_rake_refresh rake_00_default "Rake: Default (7; 3 w/ AP, SotF, !BT)" specialization=feral default)
 AddListItem(opt_10_rake_refresh rake_01_pandemic "Rake at Pandemic (3; 4.5 w/ !JW)" specialization=feral)
@@ -365,9 +374,10 @@ AddFunction Incarnation_Main
 #use_item,slot=trinket1,if=variable.Trinket_Main
 AddFunction Trinket_Main
 {
-    BuffPresent(tigers_fury_buff) 
-        and { target.TimeToDie() > BuffCooldownDuration(trinket_stat_any_buff) or target.TimeToDie() < 45 } 
-            or BuffRemaining(incarnation_king_of_the_jungle_buff) > 20
+	HasEquippedItem(kiljaedens_burning_wish)
+		or { BuffPresent(tigers_fury_buff) 
+			and { target.TimeToDie() > BuffCooldownDuration(trinket_stat_any_buff) or target.TimeToDie() < 45 } 
+				or BuffRemaining(incarnation_king_of_the_jungle_buff) > 20 }
 }
 #variable,name=Potion_Main,value=((buff.berserk.remains>10|buff.incarnation.remains>20)&(target.time_to_die<180|(trinket.proc.all.react&target.health.pct<25)))|target.time_to_die<=40
 #potion,name=old_war,if=variable.Potion_Main
@@ -384,6 +394,14 @@ AddFunction TigersFury_Main
     BuffExpires(clearcasting_buff) and EnergyDeficit() >= 60 
         or EnergyDeficit() >= 80
         or TimeInCombat() < 8 and BuffPresent(savage_roar_buff)
+}
+# MODIFICATION: Predator TF
+# REASON: Suggest TF anytime its ready if TF is already up to maximize buff uptime.
+AddFunction TigersFury_Predator
+{
+    UnitInRaid() 
+        and Talent(predator_talent) 
+        and BuffPresent(tigers_fury_buff)
 }
 #variable,name=FerociousBite_3SecondRefresh,value=dot.rip.ticking&dot.rip.remains<3&target.time_to_die>3&target.health.pct<variable.ExecuteRange
 #ferocious_bite,cycle_targets=1,if=variable.FerociousBite_3SecondRefresh
@@ -422,6 +440,9 @@ AddFunction Regrowth_AshamanesFrenzy
         and SpellCooldown(ashamanes_frenzy) < GCD()
         and { BuffRemaining(savage_roar_buff) > 3 + GCD() or not Talent(savage_roar_talent) }
         and target.TimeToDie() > 21
+        and { CheckBoxOff(opt_sync_af_tf) 
+            or CheckBoxOn(opt_sync_af_tf)
+                and { BuffRemaining(tigers_fury_buff) > 5 or SpellCooldown(tigers_fury) >= 11 } }
 }
 AddFunction Regrowth_AshamanesFrenzy_ShortCd
 {
@@ -431,6 +452,9 @@ AddFunction Regrowth_AshamanesFrenzy_ShortCd
         and SpellCooldown(ashamanes_frenzy) < GCD()
         and { BuffRemaining(savage_roar_buff) > 3 + GCD() or not Talent(savage_roar_talent) }
         and target.TimeToDie() > 21
+        and { CheckBoxOff(opt_sync_af_tf) 
+            or CheckBoxOn(opt_sync_af_tf)
+                and { BuffRemaining(tigers_fury_buff) > 5 or SpellCooldown(tigers_fury) >= 11 } }
 }
 #variable,name=AshamanesFrenzy_Main,value=combo_points<=2&buff.elunes_guidance.down&variable.BuffBloodtalonsUp&variable.BuffSavageRoarUp
 #ashamanes_frenzy,if=variable.AshamanesFrenzy_Main
@@ -447,6 +471,9 @@ AddFunction AshamanesFrenzy_Main
         and BuffBloodtalonsUp() 
         and BuffSavageRoarUp()
         and target.TimeToDie() > 20
+        and { CheckBoxOff(opt_sync_af_tf) 
+            or CheckBoxOn(opt_sync_af_tf)
+                and { BuffRemaining(tigers_fury_buff) > 4 or SpellCooldown(tigers_fury) >= 10 } }
 }
 AddFunction AshamanesFrenzy_ShortCd
 {
@@ -456,6 +483,9 @@ AddFunction AshamanesFrenzy_ShortCd
         and BuffBloodtalonsUp() 
         and BuffSavageRoarUp()
         and target.TimeToDie() > 20
+        and { CheckBoxOff(opt_sync_af_tf) 
+            or CheckBoxOn(opt_sync_af_tf)
+                and { BuffRemaining(tigers_fury_buff) > 4 or SpellCooldown(tigers_fury) >= 10 } }
 }
 #call_action_list,name=ElunesGuidance,if=talent.elunes_guidance.enabled
 ###
@@ -499,6 +529,7 @@ AddFunction SavageRoar_BrutalSlash
         and BuffExpires(savage_roar_buff) 
         and Enemies() > Enemies() 
         and Charges(brutal_slash) >= 1
+        and { BuffPresent(tigers_fury_buff) or CheckBoxOff(opt_brutal_slash_use_with_tigers_fury) }
 }
 #variable,name=ThrashCat_5Targets,value=spell_targets.thrash_cat>=5&dot.thrash_cat.remains<=variable.ThrashCatPandemic&variable.ThrashCatEnergyPooling
 #thrash_cat,cycle_targets=1,if=variable.ThrashCat_5Targets
@@ -546,14 +577,6 @@ AddFunction TigersFury_Sabertooth
         and TimeInCombat() < 20 
         and target.DebuffExpires(rip_debuff) 
         and ComboPoints() == 5
-}
-# MODIFICATION: Predator TF
-# REASON: Suggest TF anytime its ready if TF is already up to maximize buff uptime.
-AddFunction TigersFury_Predator
-{
-    UnitInRaid() 
-        and Talent(predator_talent) 
-        and BuffPresent(tigers_fury_buff)
 }
 #variable,name=Rip_Main,value=(!dot.rip.ticking|(dot.rip.remains<variable.RipRefresh&target.health.pct>variable.ExecuteRange)|action.rip.persistent_multiplier>dot.rip.pmultiplier)&target.time_to_die-dot.rip.remains>action.rip.tick_time*4
 #rip,cycle_targets=1,if=variable.Rip_Main
@@ -605,6 +628,7 @@ AddFunction Maim_Main
 AddFunction BrutalSlash_Main
 {
     Enemies() >= BrutalSlashDesiredTargets()
+        and { BuffPresent(tigers_fury_buff) or CheckBoxOff(opt_brutal_slash_use_with_tigers_fury) }
 }
 #variable,name=ThrashCat_Spam,value=talent.brutal_slash.enabled&spell_targets.thrash_cat>=9
 #thrash_cat,if=variable.ThrashCat_Spam
