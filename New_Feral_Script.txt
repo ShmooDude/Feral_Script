@@ -393,7 +393,7 @@ AddFunction TigersFury_Main
 {
     BuffExpires(clearcasting_buff) and EnergyDeficit() >= 60 
         or EnergyDeficit() >= 80
-        or TimeInCombat() < 8 and BuffPresent(savage_roar_buff)
+        or TimeInCombat() < 8 and BuffPresent(savage_roar_buff) and target.Classification(worldboss)
 }
 # MODIFICATION: Predator TF
 # REASON: Suggest TF anytime its ready if TF is already up to maximize buff uptime.
