@@ -1394,8 +1394,6 @@ AddFunction GuardianDefaultShortCdActions
 {
     GuardianGetInMeleeRange()
 
-    # MoU if has aggro and primarily magic dmg over the last 10 seconds and not dpsm rotation
-
     # Ironfur if has aggro and there's been physical damage in the last 10 seconds and ironfur isn't up or rage is about to cap, and not using dpsm rotation
     if target.IsAggroed() 
         and IncomingDamage(10 physical=1) 
