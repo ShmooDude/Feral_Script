@@ -5,9 +5,9 @@ region=us
 server=proudmoore
 role=attack
 professions=alchemy=800/enchanting=793
-talents=2213322
+talents=2000322
 spec=feral
-artifact=58:0:0:0:0:1153:1:1154:1:1155:1:1156:1:1157:1:1158:1:1159:1:1160:4:1161:4:1162:4:1163:4:1164:4:1165:4:1166:4:1167:4:1168:4:1327:1:1365:1:1505:4:1506:1:1507:1:1508:1:1633:1
+artifact=58:0:0:0:0:1153:1:1154:1:1155:1:1156:1:1157:1:1158:1:1159:1:1160:4:1161:4:1162:4:1163:4:1164:4:1165:4:1166:4:1167:4:1168:4:1327:1:1365:1:1505:4:1506:1:1507:1:1508:2:1633:1
 
 head=,id=138330,bonus_id=3518/1507/3336
 neck=,id=140899,enchant_id=5438,bonus_id=3518/1517/3337
@@ -21,13 +21,20 @@ legs=,id=140908,bonus_id=3518/1507/3336
 feet=,id=134441,bonus_id=3418/41/1557/3337
 finger1=,id=140897,enchant_id=5429,bonus_id=3517/1808/1507/3337,gem_id=130222
 finger2=,id=140906,enchant_id=5429,bonus_id=3518/1808/1502/3528,gem_id=130247
-trinket1=,id=140802,bonus_id=3518/1502/1813
+trinket1=,id=140806,bonus_id=3518/1502/3528
 trinket2=,id=133644,bonus_id=3536/1808/1552/3337,gem_id=130222
 main_hand=,id=128860,bonus_id=723,relic_id=3418:1557:3337/3518:1517:3337/3509:1547:3337,gem_id=137340/140819/137327/0
 off_hand=,id=128859,relic_id=0/0,gem_id=0/0/0/0
 
+
+
+#hands=,id=137094,bonus_id=1811/3530
+#waist=,id=144405,bonus_id=3445/1808/1497/1813,gem_id=130222
+
 # set_bonus=tier19_2pc=0
 # set_bonus=tier19_4pc=0
+# set_bonus=tier20_2pc=1
+# set_bonus=tier20_4pc=1
  
 $(high_energy)=buff.berserk.up|buff.incarnation.up|buff.ashamanes_energy.up|cooldown.tigers_fury.remains<3|talent.soul_of_the_forest.enabled
 $(clearcasting_high_energy)=$(high_energy)|buff.clearcasting.react
@@ -77,7 +84,7 @@ actions.precombat+=/regrowth,if=talent.bloodtalons.enabled
 actions.precombat+=/cat_form
 actions.precombat+=/prowl
 actions.precombat+=/snapshot_stats
-actions.precombat+=/potion,name=old_war
+actions.precombat+=/potion,name=prolonged_power
  
 # Executed every time the actor is available.
 actions=dash,if=!buff.cat_form.up
@@ -93,10 +100,9 @@ actions+=/berserk,if=buff.ashamanes_energy.up|(equipped.convergence_of_fates&ene
 actions+=/incarnation,if=buff.ashamanes_energy.up|energy>=35
 actions+=/use_item,slot=trinket1,if=((buff.tigers_fury.up&(target.time_to_die>trinket.stat.any.cooldown|target.time_to_die<45))|buff.incarnation.remains>20)&!equipped.draught_of_souls
 actions+=/use_item,slot=trinket2,if=((buff.tigers_fury.up&(target.time_to_die>trinket.stat.any.cooldown|target.time_to_die<45))|buff.incarnation.remains>20)&!equipped.draught_of_souls
-actions+=/potion,name=old_war,if=((buff.berserk.remains>10|buff.incarnation.remains>20)&(target.time_to_die<180|(trinket.proc.all.react&target.health.pct<25)))|target.time_to_die<=40
+actions+=/potion,name=prolonged_power,if=((buff.berserk.remains>10|buff.incarnation.remains>20)&(target.time_to_die<180|(trinket.proc.all.react&target.health.pct<25)))|target.time_to_die<=80
 actions+=/pool_resource,for_next=1
 actions+=/ferocious_bite,cycle_targets=1,if=dot.rip.ticking&dot.rip.remains<3&target.time_to_die>3&target.health.pct<variable.execute_range
-actions+=/run_action_list,name=incarn,if=buff.incarnation.up&set_bonus.tier19_4pc
 actions+=/regrowth,if=$(regrowth_conditions)&(buff.predatory_swiftness.remains<1.5|(combo_points=2&buff.bloodtalons.down&cooldown.ashamanes_frenzy.remains<gcd&(buff.savage_roar.remains>3+gcd|!talent.savage_roar.enabled)))
 actions+=/ashamanes_frenzy,if=combo_points<=2&buff.elunes_guidance.down&$(bt_up)&$(sr_up)
 actions+=/call_action_list,name=elunes_guidance,if=talent.elunes_guidance.enabled
@@ -110,7 +116,8 @@ actions+=/call_action_list,name=finisher,if=combo_points=5&($(finisher_condition
 actions+=/call_action_list,name=aoe_generator,if=active_enemies>1&combo_points<5
 actions+=/call_action_list,name=maintain,if=combo_points<5
 actions+=/brutal_slash,if=combo_points<5&((raid_event.adds.exists&raid_event.adds.in>(1+max_charges-charges_fractional)*15)|(!raid_event.adds.exists&(charges_fractional>2.66)))
-actions+=/shred,if=combo_points<5&((dot.rake.remains>(action.shred.cost+action.rake.cost-energy)%energy.regen&combo_points<3)|($(clearcasting_pooling)))
+actions+=/shred,if=combo_points<5&((dot.rake.remains>(action.shred.cost+action.rake.cost-energy)%energy.regen&(combo_points<3))|($(clearcasting_pooling)))
+actions+=/shred,if=combo_points<5&((dot.rake.remains>(action.shred.cost+action.rake.cost-energy)%energy.regen&(buff.predatory_swiftness.remains<2))|($(clearcasting_pooling)))
 actions+=/use_item,slot=trinket1,if=$(sr_up)&equipped.draught_of_souls
 actions+=/use_item,slot=trinket2,if=$(sr_up)&equipped.draught_of_souls
  
@@ -154,17 +161,3 @@ actions.finisher+=/pool_resource,for_next=1
 actions.finisher+=/maim,if=buff.fiery_red_maimers.up&$(bt_up)&$(sr_up)
 actions.finisher+=/pool_resource,for_next=1
 actions.finisher+=/ferocious_bite,max_energy=1
- 
-actions.incarn=pool_resource,for_next=1
-actions.incarn+=/thrash_cat,cycle_targets=1,if=remains<=variable.thrash_cat_pandemic&spell_targets.thrash_cat>=5
-actions.incarn+=/regrowth,if=talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.bloodtalons.down&(buff.predatory_swiftness.remains<1.5|((!dot.rip.ticking|(dot.rip.remains<(variable.rip_pandemic+gcd)|action.rip.persistent_multiplier>dot.rip.pmultiplier)&target.time_to_die-dot.rip.remains>action.rip.tick_time*4&combo_points=5)))
-actions.incarn+=/ashamanes_frenzy,if=combo_points<=2&buff.elunes_guidance.down&$(bt_up)&$(sr_up)
-actions.incarn+=/pool_resource,for_next=1
-actions.incarn+=/swipe_cat,if=spell_targets.swipe_cat>=8
-actions.incarn+=/pool_resource,for_next=1
-actions.incarn+=/rip,cycle_targets=1,if=(!ticking|(remains<variable.rip_pandemic)|persistent_multiplier>dot.rip.pmultiplier)&target.time_to_die-dot.rip.remains>tick_time*4&combo_points=5
-actions.incarn+=/regrowth,if=talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.bloodtalons.down&combo_points=5&(dot.rip.remains<=(variable.rip_pandemic+4+gcd)|cooldown.ashamanes_frenzy.remains<1+gcd)
-actions.incarn+=/maim,if=talent.bloodtalons.enabled&combo_points=5&buff.fiery_red_maimers.up&(dot.rip.remains<=(variable.rip_pandemic+4)|cooldown.ashamanes_frenzy.remains<1)
-actions.incarn+=/ferocious_bite,cycle_targets=1,if=talent.bloodtalons.enabled&combo_points=5&(dot.rip.remains<=(variable.rip_pandemic+4)|cooldown.ashamanes_frenzy.remains<1)
-actions.incarn+=/call_action_list,name=maintain
-actions.incarn+=/shred
