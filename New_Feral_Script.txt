@@ -823,7 +823,7 @@ AddFunction FeralFinishersMainActions
             #variable,name=FerociousBite_9SecondRefresh,value=dot.rip.ticking&dot.rip.remains<variable.RipRefresh&target.health.pct<variable.ExecuteRange
             #pool_resource,for_next=1
             #ferocious_bite,max_energy=1,cycle_targets=1,if=variable.FerociousBite_9SecondRefresh
-            if Energy() >= EnergyCost(ferocious_bite max=1) and FerociousBite_9SecondRefresh() Spell(ferocious_bite)
+            if Energy() >= EnergyCost(ferocious_bite max=1) and FerociousBite_9SecondRefresh() Spell(ferocious_bite text=Refresh)
             unless Energy() >= EnergyCost(ferocious_bite max=1) and FerociousBite_9SecondRefresh() and SpellUsable(ferocious_bite) and SpellCooldown(ferocious_bite) < TimeToEnergyFor(ferocious_bite)
             {
                 #variable,name=SavageRoar_Main,value=(buff.savage_roar.remains<=7.2|(buff.savage_roar.remains<variable.SavageRoarRefresh&target.health.pct>=variable.ExecuteRange))
@@ -924,7 +924,7 @@ AddFunction FeralDefaultMainActions
     if Rake_Prowl() Spell(rake)
     #variable,name=FerociousBite_3SecondRefresh,value=dot.rip.ticking&dot.rip.remains<3&target.time_to_die>3&target.health.pct<variable.ExecuteRange
     #ferocious_bite,cycle_targets=1,if=variable.FerociousBite_3SecondRefresh
-    if FerociousBite_3SecondRefresh() Spell(ferocious_bite text=execute)
+    if FerociousBite_3SecondRefresh() Spell(ferocious_bite text=Refresh)
     #variable,name=RegrowthConditions,value=talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.bloodtalons.stack<variable.BloodtalonsOverwriteStacks
     #variable,name=Regrowth_PredatorySwiftness_Expires,value=buff.predatory_swiftness.remains<1.5
     #variable,name=Regrowth_AshamanesFrenzy,value=combo_points=2&buff.bloodtalons.down&cooldown.ashamanes_frenzy.remains<1+gcd&(buff.savage_roar.remains>(3+gcd)|!talent.savage_roar.enabled)
@@ -988,21 +988,22 @@ AddFunction FeralDefaultShortCdActions
             if TigersFury_Main() Spell(tigers_fury)
             #tigers_fury,if=variable.TigersFury_Sabertooth
             if TigersFury_Sabertooth() Spell(tigers_fury)
-            # MODIFICATION: TigersFury_Predator
-            # REASON: Spam Tiger's Fury with predator in raid to maximize raid uptime of versatility buff
-            if TigersFury_Predator() Spell(tigers_fury text=predator)
+
             unless FerociousBite_3SecondRefresh() and Spell(ferocious_bite) or RegrowthConditions() and { Regrowth_PredatorySwiftness_Expires() or Regrowth_AshamanesFrenzy() } and Spell(regrowth)
             {
                 #variable,name=Regrowth_AshamanesFrenzy,value=combo_points=2&buff.bloodtalons.down&cooldown.ashamanes_frenzy.remains<1+gcd&(buff.savage_roar.remains>(3+gcd)|!talent.savage_roar.enabled)
                 #regrowth,if=variable.RegrowthConditions&(variable.Regrowth_PredatorySwiftness_Expires|variable.Regrowth_AshamanesFrenzy)
                 # MODIFICATION: Regrowth_AshamanesFrenzy_ShortCd for CheckBoxOff(opt_ashamanes_frenzy_main_action)
                 # REASON: Allows player to choose via checkbox whether to add Ashamane's Frenzy to the Main Icon
-                if RegrowthConditions() and Regrowth_AshamanesFrenzy_ShortCd() Spell(regrowth)
+                if RegrowthConditions() and Regrowth_AshamanesFrenzy_ShortCd() Spell(regrowth text=AF)
                 #variable,name=AshamanesFrenzy_Main,value=combo_points<=2&buff.elunes_guidance.down&variable.BuffBloodtalonsUp&variable.BuffSavageRoarUp
                 #ashamanes_frenzy,if=variable.AshamanesFrenzy_Main
                 # MODIFICATION: AshamanesFrenzy_ShortCd for CheckBoxOff(opt_ashamanes_frenzy_main_action)
                 # REASON: Allows player to choose via checkbox whether to add Ashamane's Frenzy to the Main Icon
                 if AshamanesFrenzy_ShortCd() Spell(ashamanes_frenzy)
+                # MODIFICATION: TigersFury_Predator
+                # REASON: Spam Tiger's Fury with predator in raid to maximize raid uptime of versatility buff
+                if TigersFury_Predator() Spell(tigers_fury text=Pred)
                 #call_action_list,name=ElunesGuidance,if=talent.elunes_guidance.enabled
                 if Talent(elunes_guidance_talent) FeralElunesGuidanceShortCdActions()
             }
