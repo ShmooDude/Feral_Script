@@ -959,6 +959,11 @@ AddFunction FeralDefaultMainActions
     # MODIFICATION: AshamanesFrenzy_Main for CheckBoxOn(opt_ashamanes_frenzy_main_action)
     # REASON: Allows player to choose via checkbox whether to add Azshamane's Frenzy to the Main Icon
     if AshamanesFrenzy_Main() Spell(ashamanes_frenzy)
+	#variable,name=Shadowmeld_Main,value=combo_points<5&energy>=action.rake.cost&dot.rake.pmultiplier<1.9&buff.tigers_fury.up&variable.BuffSavageRoarUp&variable.BuffBloodtalonsUp&(!talent.incarnation.enabled|cooldown.incarnation.remains>18)&!buff.incarnation.up
+    #shadowmeld,if=variable.Shadowmeld_Main
+    # MODIFICATION: Shadowmeld_Cd for CheckBoxOff(opt_shadowmeld_main_action)
+    # REASON: Allows player to choose via checkbox whether to add Shadowmeld to the Main Icon
+    if Shadowmeld_Main() Spell(shadowmeld)
     #call_action_list,name=ElunesGuidance,if=talent.elunes_guidance.enabled
     if Talent(elunes_guidance_talent) FeralElunesGuidanceMainActions()
 
