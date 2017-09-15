@@ -1,7 +1,42 @@
-# Based on SimulationCraft profile "Lolaan".
-#    class=druid
-#    spec=feral
-#    talents=2213232
+# ShmooDude Feral and Guardian script
+###
+### Options:
+# Interrupt - Suggests use of interuptting abilities, including stuns/knockbacks on non-boss targets.
+#
+#
+# Not in Melee Range - Suggests movement abilities if available or a forward arrow if you're out of range.
+#
+#
+# Multiple-targets rotation - If this is disabled, the AoE icon is removed
+#
+#
+# Ashamane's Frenzy as main action - Puts the Ashamane's Frenzy suggestion in the main action box.
+#       Requires TimeToDie of 20 seconds or more
+#       If this is off, Ovale will suggest 2 CP Regrowths in the Short CD box.
+# Shadowmeld as main action - Puts the Shadowmeld suggestion in the main action box.
+#       Requires TimeToDie of 20 seconds or more
+#       Suggested off except on (raid) bosses.
+# Tiger's Fury multiplier prediction - Applies the Tiger's Fury multiplier if Tiger's Fury is ready.
+#       e.g. If TF is being suggested, any Rip suggestions will assume you use TF first.
+#
+# Prevent capping BrS charges - Will suggest Brutal Slash if you are about to reach max charges.
+#       Advantage: Helps not waste charges.  
+#       Disadvantage: Will probably not have 3 charges when AoE for the encounter shows up.
+# BrS at X targets - Minimum number of targets to suggest using Brutal Slash.
+#       This will use all available Brutal Slash charges.
+#       
+# Only suggest BrS when TF is up
+#       Good for Mythic+ to get the most out of your Brutal Slash charges
+#       Too much haste makes this sub-optimal
+# Rip - At how many seconds to overwrite a Rip
+#       Default Pandemic
+#
+# Rake - At how many seconds to overwrite a Rake
+#       Default 7 or
+#               Pandemic with Ailuro Pouncers Legendary or you are not speced into Bloodtalons
+# Savage Roar - At how many seconds to overwrite Savage Roar
+#       Default Pandemic
+#
 
 Include(ovale_common)
 Include(ovale_trinkets_mop)
