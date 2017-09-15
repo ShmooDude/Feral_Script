@@ -72,14 +72,11 @@ AddListItem(opt_11_rip_refresh rip_11 "Rip at 11 seconds" specialization=feral)
 
 AddListItem(opt_12_savage_roar_refresh savage_roar_00_default "Savage Roar: Default (Pandemic)" specialization=feral default)
 AddListItem(opt_12_savage_roar_refresh savage_roar_01_pandemic "Savage Roar Pandemic (duration*0.3)" specialization=feral)
-AddListItem(opt_12_savage_roar_refresh savage_roar_08 "Savage Roar at 8 seconds" specialization=feral)
-AddListItem(opt_12_savage_roar_refresh savage_roar_09 "Savage Roar at 9 seconds" specialization=feral)
-AddListItem(opt_12_savage_roar_refresh savage_roar_10 "Savage Roar at 10 seconds" specialization=feral)
-AddListItem(opt_12_savage_roar_refresh savage_roar_11 "Savage Roar at 11 seconds" specialization=feral)
 AddListItem(opt_12_savage_roar_refresh savage_roar_12 "Savage Roar at 12 seconds" specialization=feral)
 AddListItem(opt_12_savage_roar_refresh savage_roar_13 "Savage Roar at 13 seconds" specialization=feral)
 AddListItem(opt_12_savage_roar_refresh savage_roar_14 "Savage Roar at 14 seconds" specialization=feral)
 AddListItem(opt_12_savage_roar_refresh savage_roar_15 "Savage Roar at 15 seconds" specialization=feral)
+AddListItem(opt_12_savage_roar_refresh savage_roar_16 "Savage Roar at 16 seconds" specialization=feral)
 
 AddListItem(opt_09_desired_targets desired_targets_01 "BrS at 1 target" specialization=feral)
 AddListItem(opt_09_desired_targets desired_targets_02 "BrS at 2 targets" specialization=feral)
@@ -121,14 +118,11 @@ AddFunction savage_roar_refresh
     unless List(opt_12_savage_roar_refresh savage_roar_00_default)
     {
         if List(opt_12_savage_roar_refresh savage_roar_01_pandemic) BaseDuration(savage_roar_buff) * 0.3
-        if List(opt_12_savage_roar_refresh savage_roar_08) 8
-        if List(opt_12_savage_roar_refresh savage_roar_09) 9
-        if List(opt_12_savage_roar_refresh savage_roar_10) 10
-        if List(opt_12_savage_roar_refresh savage_roar_11) 11
         if List(opt_12_savage_roar_refresh savage_roar_12) 12
         if List(opt_12_savage_roar_refresh savage_roar_13) 13
         if List(opt_12_savage_roar_refresh savage_roar_14) 14
         if List(opt_12_savage_roar_refresh savage_roar_15) 15
+        if List(opt_12_savage_roar_refresh savage_roar_16) 16
     }
     BaseDuration(savage_roar_buff) * 0.3
 }
