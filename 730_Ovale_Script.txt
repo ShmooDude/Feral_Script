@@ -751,6 +751,7 @@ AddFunction FeralFinishersMainActions
 AddFunction FeralGeneratorsMainActions
 {
     #brutal_slash,if=spell_targets.brutal_slash>desired_targets
+    if Generators_BrutalSlash_DesiredTargets() Spell(brutal_slash)
     
     #pool_resource,for_next=1
     #thrash_cat,if=refreshable&spell_targets.thrash_cat>2
