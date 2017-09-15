@@ -294,8 +294,7 @@ AddFunction Cd_Berserk
 {
     Energy() >= 30 
         and { SpellCooldown(tigers_fury) > 5 
-            or BuffPresent(tigers_fury_buff)
-            or SpellCooldown(tigers_fury) <= 0 and ShortCd_TigersFury() }
+            or BuffPresent(tigers_fury_buff) or TFMultPred() > 1 }
 }
 
 #incarnation,if=energy>=30&(cooldown.tigers_fury.remains>15|buff.tigers_fury.up)
@@ -305,8 +304,7 @@ AddFunction Cd_Incarnation
 {
     Energy() >= 30 
         and { SpellCooldown(tigers_fury) > 15 
-            or BuffPresent(tigers_fury_buff)
-            or SpellCooldown(tigers_fury) <= 0 and ShortCd_TigersFury() }
+            or BuffPresent(tigers_fury_buff) TFMultPred() > 1 }
 }
 
 #elunes_guidance,if=combo_points=0&energy>=50
@@ -501,7 +499,7 @@ AddFunction Main_Regrowth_Pouncers
 AddFunction Generators_BrutalSlash_DesiredTargets
 {
     Enemies() >= BrutalSlashDesiredTargets()
-        and { BuffPresent(tigers_fury_buff) or CheckBoxOff(opt_brutal_slash_use_with_tigers_fury) }
+        and { BuffPresent(tigers_fury_buff) or TFMultPred() > 1 or CheckBoxOff(opt_brutal_slash_use_with_tigers_fury) }
 }
 
 #pool_resource,for_next=1
