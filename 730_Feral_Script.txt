@@ -20,13 +20,12 @@ hands=,id=147135,bonus_id=3563/1512/3528
 waist=,id=151316,bonus_id=3418/43/1587/3337
 legs=,id=147035,bonus_id=3563/1512/3528
 feet=,id=147030,bonus_id=3562/1517/3337
-#finger1=,id=151636,enchant_id=5430,bonus_id=1811/3570,gem_id=130247
+finger1=,id=151636,enchant_id=5430,bonus_id=1811/3570,gem_id=130247
 finger2=,id=147021,enchant_id=5430,bonus_id=3563/42/1517/3336
 trinket1=,id=151190,bonus_id=3562/1507/3528
 trinket2=,id=133644,bonus_id=3536/1582/3337
 main_hand=,id=128860,bonus_id=723,relic_id=3561:1512:3337/3518:1517:3337/3563:1527:3337,gem_id=147095/140819/147106
 off_hand=,id=128859,relic_id=0/0,gem_id=0/0/0/0
-
 
 
 # Default consumables
@@ -126,4 +125,3 @@ actions.generators+=/thrash_cat,if=refreshable&(variable.use_thrash=1|spell_targ
 actions.generators+=/pool_resource,for_next=1
 actions.generators+=/swipe_cat,if=spell_targets.swipe_cat>1
 actions.generators+=/shred,if=dot.rake.remains>(action.shred.cost+action.rake.cost-energy)%energy.regen|buff.clearcasting.react
-
