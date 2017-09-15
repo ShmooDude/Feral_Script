@@ -17,7 +17,7 @@ AddCheckBox(opt_shadowmeld_main_action "Shadowmeld as a main action" specializat
 AddCheckBox(opt_tigers_fury_multiplier_predict "Tiger's Fury multiplier prediction" default specialization=feral)
 AddCheckBox(opt_brutal_slash_use_at_three_always "Prevent capping BrS charges" specialization=feral)
 AddCheckBox(opt_brutal_slash_use_with_tigers_fury "Only suggest BrS when TF is up" specialization=feral)
-AddCheckBox(opt_sync_af_tf "Try to sync Ashamane's with TF" specialization=feral)
+# AddCheckBox(opt_sync_af_tf "Try to sync Ashamane's with TF" specialization=feral)
 
 AddListItem(opt_10_rake_refresh rake_00_default "Rake: Default (Pandemic)" specialization=feral default)
 AddListItem(opt_10_rake_refresh rake_01_pandemic "Rake at Pandemic (duration*0.3)" specialization=feral)
@@ -479,15 +479,8 @@ AddFunction Main_Regrowth_Pouncers
 #brutal_slash,if=spell_targets.brutal_slash>desired_targets
 AddFunction Generators_BrutalSlash_DesiredTargets
 {
-	if List(opt_09_desired_targets desired_targets_01) 1
-    if List(opt_09_desired_targets desired_targets_02) 2
-    if List(opt_09_desired_targets desired_targets_03) 3
-    if List(opt_09_desired_targets desired_targets_04) 4
-    if List(opt_09_desired_targets desired_targets_05) 5
-    if List(opt_09_desired_targets desired_targets_06) 6
-    if List(opt_09_desired_targets desired_targets_07) 7
-    if List(opt_09_desired_targets desired_targets_08) 8
-    if List(opt_09_desired_targets desired_targets_09) 9
+	Enemies() >= BrutalSlashDesiredTargets()
+        and { BuffPresent(tigers_fury_buff) or CheckBoxOff(opt_brutal_slash_use_with_tigers_fury) }
 }
 
 #pool_resource,for_next=1
