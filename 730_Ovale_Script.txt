@@ -304,7 +304,7 @@ AddFunction Cd_Incarnation
 {
     Energy() >= 30 
         and { SpellCooldown(tigers_fury) > 15 
-            or BuffPresent(tigers_fury_buff) TFMultPred() > 1 }
+            or BuffPresent(tigers_fury_buff) or TFMultPred() > 1 }
 }
 
 #elunes_guidance,if=combo_points=0&energy>=50
