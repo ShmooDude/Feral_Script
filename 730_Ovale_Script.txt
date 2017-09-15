@@ -453,15 +453,6 @@ AddFunction Finishers_Maimers
 }
 
 #regrowth,if=talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.bloodtalons.down&((combo_points=2&&cooldown.ashamanes_frenzy.remains<gcd)|(combo_points=4&dot.rake.remains<4))
-# MODIFICATION: Split into 3 functions.
-# REASON: Allows player to choose via checkbox whether to add Ashamane's Frenzy to the Main Icon
-AddFunction Regrowth_BT_Expires
-{
-    Talent(bloodtalons_talent) 
-        and BuffPresent(predatory_swiftness_buff) 
-        and BuffExpires(bloodtalons_buff) 
-}
-
 # MODIFICATION: CheckBoxOn(opt_ashamanes_frenzy_main_action) in Main_Regrowth_AshamanesFrenzy
 # REASON: Allows player to choose via checkbox whether to add Ashamane's Frenzy to the Main Icon
 # MODIFICATION: target.TimeToDie() > 21
@@ -469,6 +460,9 @@ AddFunction Regrowth_BT_Expires
 AddFunction Main_Regrowth_AshamanesFrenzy
 {
     CheckBoxOn(opt_ashamanes_frenzy_main_action) 
+        and Talent(bloodtalons_talent) 
+        and BuffPresent(predatory_swiftness_buff) 
+        and BuffExpires(bloodtalons_buff) 
         and ComboPoints() == 2 
         and SpellCooldown(ashamanes_frenzy) < 0.75 
         and target.TimeToDie() > 21
@@ -479,13 +473,11 @@ AddFunction Main_Regrowth_AshamanesFrenzy
 AddFunction ShortCd_Regrowth_AshamanesFrenzy
 {
     CheckBoxOff(opt_ashamanes_frenzy_main_action) 
+        and Talent(bloodtalons_talent) 
+        and BuffPresent(predatory_swiftness_buff) 
+        and BuffExpires(bloodtalons_buff) 
         and ComboPoints() == 2 
         and SpellCooldown(ashamanes_frenzy) < 0.75 
-}
-
-AddFunction Main_Regrowth_RakeRefresh
-{
-    ComboPoints() == 4 and target.DebuffRemaining(rake_debuff) < 4 
 }
 
 #regrowth,if=equipped.ailuro_pouncers&talent.bloodtalons.enabled&buff.bloodtalons.down&(buff.predatory_swiftness.stack>2|(buff.predatory_swiftness.stack>1&dot.rake.remains<3))
@@ -597,13 +589,10 @@ AddFunction FeralDefaultMainActions
     unless Main_Finishers_Conditions()
     {
         #regrowth,if=talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.bloodtalons.down&((combo_points=2&&cooldown.ashamanes_frenzy.remains<gcd)|(combo_points=4&dot.rake.remains<4&buff.bloodtalons.down))
-        # MODIFICATION: Split into 3 functions.
+        # MODIFICATION: CheckBoxOn(opt_ashamanes_frenzy_main_action) in Main_Regrowth_AshamanesFrenzy
         # REASON: Allows player to choose via checkbox whether to add Ashamane's Frenzy to the Main Icon
-        if Regrowth_BT_Expires() 
-        {
-            if Main_Regrowth_RakeRefresh() Spell(regrowth text=Rake)
-            if Main_Regrowth_AshamanesFrenzy() Spell(regrowth text=AF)
-        }
+        if Main_Regrowth_AshamanesFrenzy() Spell(regrowth text=AF)
+
         #regrowth,if=equipped.ailuro_pouncers&talent.bloodtalons.enabled&buff.bloodtalons.down&(buff.predatory_swiftness.stack>2|(buff.predatory_swiftness.stack>1&dot.rake.remains<3))
         if Main_Regrowth_Pouncers() Spell(regrowth text=Pouncers)
         
@@ -628,8 +617,10 @@ AddFunction FeralDefaultShortCdActions
             
             unless Main_Finishers_Conditions()
             {
+                # MODIFICATION: ShortCd_Regrowth_AshamanesFrenzy for CheckBoxOff(opt_ashamanes_frenzy_main_action)
+                # REASON: Allows player to choose via checkbox whether to add Ashamane's Frenzy to the Main Icon
                 #regrowth,if=talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.bloodtalons.down&((combo_points=2&&cooldown.ashamanes_frenzy.remains<gcd)|(combo_points=4&dot.rake.remains<4&buff.bloodtalons.down))
-                if Regrowth_BT_Expires() and ShortCd_Regrowth_AshamanesFrenzy() Spell(regrowth text=AF)
+                if ShortCd_Regrowth_AshamanesFrenzy() Spell(regrowth text=AF)
             }
         }
     }
@@ -760,7 +751,6 @@ AddFunction FeralFinishersMainActions
 AddFunction FeralGeneratorsMainActions
 {
     #brutal_slash,if=spell_targets.brutal_slash>desired_targets
-    if Enemies >= Generators_BrutalSlash_DesiredTargets() Spell(brutal_slash)
     
     #pool_resource,for_next=1
     #thrash_cat,if=refreshable&spell_targets.thrash_cat>2
