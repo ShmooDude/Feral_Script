@@ -461,7 +461,7 @@ AddFunction Finishers_Maimers
 #regrowth,if=talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.bloodtalons.down&((combo_points=2&&cooldown.ashamanes_frenzy.remains<gcd)|(combo_points=4&dot.rake.remains<4))
 # MODIFICATION: Split into 3 functions.
 # REASON: Allows player to choose via checkbox whether to add Ashamane's Frenzy to the Main Icon
-AddFunction Main_Regrowth_BT_Expires
+AddFunction Regrowth_BT_Expires
 {
 	Talent(bloodtalons_talent) 
 		and BuffPresent(predatory_swiftness_buff) 
@@ -603,10 +603,15 @@ AddFunction FeralDefaultMainActions
     unless Main_Finishers_Conditions()
     {
         #regrowth,if=talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.bloodtalons.down&((combo_points=2&&cooldown.ashamanes_frenzy.remains<gcd)|(combo_points=4&dot.rake.remains<4&buff.bloodtalons.down))
-        if Main_Regrowth_BT_Expires() and { Main_Regrowth_RakeRefresh() or Main_Regrowth_AshamanesFrenzy() } Spell(regrowth)
-		
+        # MODIFICATION: Split into 3 functions.
+		# REASON: Allows player to choose via checkbox whether to add Ashamane's Frenzy to the Main Icon
+		if Regrowth_BT_Expires() 
+		{
+			if Main_Regrowth_RakeRefresh() Spell(regrowth text=Rake)
+			if Main_Regrowth_AshamanesFrenzy() Spell(regrowth text=AF)
+		}
         #regrowth,if=equipped.ailuro_pouncers&talent.bloodtalons.enabled&buff.bloodtalons.down&(buff.predatory_swiftness.stack>2|(buff.predatory_swiftness.stack>1&dot.rake.remains<3))
-        if Main_Regrowth_Pouncers() Spell(regrowth)
+        if Main_Regrowth_Pouncers() Spell(regrowth text=Pouncers)
 		
         #run_action_list,name=generators
         FeralGeneratorsMainActions()
@@ -626,7 +631,13 @@ AddFunction FeralDefaultShortCdActions
         {
             #call_action_list,name=cooldowns
             FeralCooldownsShortCdActions()
-        }
+			
+			unless Main_Finishers_Conditions()
+			{
+				#regrowth,if=talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.bloodtalons.down&((combo_points=2&&cooldown.ashamanes_frenzy.remains<gcd)|(combo_points=4&dot.rake.remains<4&buff.bloodtalons.down))
+				if Regrowth_BT_Expires() and ShortCd_Regrowth_AshamanesFrenzy() Spell(regrowth text=AF)
+			}
+		}
     }
 }
 
