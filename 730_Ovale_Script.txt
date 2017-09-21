@@ -54,7 +54,7 @@ AddCheckBox(opt_brutal_slash_use_at_three_always "Prevent capping BrS charges" s
 AddCheckBox(opt_brutal_slash_use_with_tigers_fury "Only suggest BrS when TF is up" specialization=feral)
 # AddCheckBox(opt_sync_af_tf "Try to sync Ashamane's with TF" specialization=feral)
 
-AddListItem(opt_10_rake_refresh rake_00_default "Rake: Default (Pandemic)" specialization=feral default)
+AddListItem(opt_10_rake_refresh rake_00_default "Rake: Default (7 w/ BT)" specialization=feral default)
 AddListItem(opt_10_rake_refresh rake_01_pandemic "Rake at Pandemic (duration*0.3)" specialization=feral)
 AddListItem(opt_10_rake_refresh rake_05 "Rake at 5 seconds" specialization=feral)
 AddListItem(opt_10_rake_refresh rake_06 "Rake at 6 seconds" specialization=feral)
@@ -95,7 +95,7 @@ AddListItem(opt_09_desired_targets desired_targets_09 "BrS at 9 targets" special
 ########################################
 
 #variable,name=rake_refresh,value=4.5
-#variable,name=rip_refresh,op=add,value=1.2,if=set_bonus.tier20_4pc
+#variable,name=rake_refresh,op=mul,value=0.8,if=talent.jagged_wounds.enabled
 #variable,name=rake_refresh,value=7,if=talent.bloodtalons.enabled&!equipped.ailuro_pouncers
 AddFunction rake_refresh
 {
