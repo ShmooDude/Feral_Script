@@ -679,6 +679,9 @@ AddFunction FeralCooldownsShortCdActions
 
 AddFunction FeralCooldownsCdActions
 {
+	#skull_bash
+	FeralInterruptActions()
+	
     #berserk,if=energy>=30&(cooldown.tigers_fury.remains>5|buff.tigers_fury.up)
     # MODIFICATION: Display potion if it is time to use your DPS potion with your cooldowns
     # REASON: Potion won't show up till after Berserk is cast normally
