@@ -628,6 +628,9 @@ AddFunction FeralDefaultCdActions
 {
     unless Main_Rake_Prowl() and Spell(rake) or BuffExpires(cat_form_buff) and Spell(cat_form)
     {
+		#skull_bash
+		FeralInterruptActions()
+	
         #call_action_list,name=opener,if=!dot.rip.ticking&time<8
         if Main_Opener_Conditions() FeralOpenerCdActions()
         unless Main_Opener_Conditions() and FeralOpenerCdPostConditions()
@@ -679,9 +682,6 @@ AddFunction FeralCooldownsShortCdActions
 
 AddFunction FeralCooldownsCdActions
 {
-	#skull_bash
-	FeralInterruptActions()
-	
     #berserk,if=energy>=30&(cooldown.tigers_fury.remains>5|buff.tigers_fury.up)
     # MODIFICATION: Display potion if it is time to use your DPS potion with your cooldowns
     # REASON: Potion won't show up till after Berserk is cast normally
