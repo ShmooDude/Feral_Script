@@ -45,6 +45,7 @@ Include(ovale_druid_spells)
 
 AddCheckBox(opt_melee_range L(not_in_melee_range) specialization=feral)
 AddCheckBox(opt_use_consumables "Suggest Prolonged Power Potion" default specialization=feral)
+AddCheckBox(opt_interrupt L(interrupt) default specialization=feral)
 
 AddCheckBox(opt_ashamanes_frenzy_main_action "Ashamane's Frenzy as a main action" default specialization=feral)
 AddCheckBox(opt_shadowmeld_main_action "Shadowmeld as a main action" specialization=feral)
