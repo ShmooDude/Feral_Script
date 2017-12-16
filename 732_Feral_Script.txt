@@ -1,0 +1,115 @@
+druid="Feral"
+spec=feral
+level=110
+race=night_elf
+timeofday=day
+role=attack
+position=back
+talents=2331232
+artifact=58:0:0:0:0:1153:1:1154:1:1155:1:1156:1:1157:1:1158:1:1159:1:1160:4:1161:4:1162:4:1163:4:1164:4:1165:4:1166:4:1167:4:1168:4:1327:1:1365:1:1505:4:1506:1:1507:1:1508:24:1633:1
+crucible=1739:3:1780:3:1167:1:1166:2
+
+# Default consumables
+potion=potion_of_prolonged_power
+flask=seventh_demon
+food=lemon_herb_filet
+augmentation=defiled
+
+# Executed before combat begins. Accepts non-harmful actions only.
+actions.precombat=flask
+actions.precombat+=/food
+actions.precombat+=/augmentation
+actions.precombat+=/regrowth,if=talent.bloodtalons.enabled
+actions.precombat+=/cat_form
+actions.precombat+=/prowl
+actions.precombat+=/snapshot_stats
+actions.precombat+=/potion
+
+# Executed every time the actor is available.
+actions=dash,if=buff.cat_form.down
+actions+=/cat_form,if=buff.cat_form.down
+actions+=/rake,if=buff.prowl.up|buff.shadowmeld.up
+actions+=/auto_attack
+actions+=/call_action_list,name=opener,if=!dot.rip.ticking&time<15
+actions+=/call_action_list,name=cooldowns
+actions+=/ferocious_bite,target_if=dot.rip.ticking&dot.rip.remains<3&target.time_to_die>10&target.health.pct<=25+75*talent.sabertooth.enabled
+actions+=/call_action_list,name=bloodtalons,if=talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.bloodtalons.down
+actions+=/ferocious_bite,if=buff.apex_predator.up
+actions+=/run_action_list,name=finishers,if=combo_points>4
+actions+=/run_action_list,name=generators
+
+actions.bloodtalons=regrowth,if=combo_points<=4&cooldown.ashamanes_frenzy.remains<gcd
+actions.bloodtalons+=/regrowth,if=combo_points=4&dot.rake.remains<4
+actions.bloodtalons+=/regrowth,if=combo_points=5&(buff.incarnation.down|dot.rip.remains<8)
+actions.bloodtalons+=/regrowth,if=buff.apex_predator.up&buff.incarnation.down
+actions.bloodtalons+=/regrowth,if=equipped.ailuro_pouncers&(buff.predatory_swiftness.stack>2|(buff.predatory_swiftness.stack>1&dot.rake.remains<3))
+actions.bloodtalons+=/regrowth,if=buff.predatory_swiftness.remains<1.7
+
+actions.cooldowns=prowl,if=buff.incarnation.remains<0.5&buff.jungle_stalker.up
+actions.cooldowns+=/incarnation,if=energy>=30&(cooldown.tigers_fury.remains>15|buff.tigers_fury.up)
+actions.cooldowns+=/berserk,if=energy>=30&(cooldown.tigers_fury.remains>5|buff.tigers_fury.up)
+actions.cooldowns+=/tigers_fury,if=energy.deficit>=60
+actions.cooldowns+=/berserking
+actions.cooldowns+=/elunes_guidance,if=combo_points=0&energy>=50
+actions.cooldowns+=/potion,name=prolonged_power,if=target.time_to_die<65|(time_to_die<180&(buff.berserk.up|buff.incarnation.up))
+actions.cooldowns+=/ashamanes_frenzy,if=combo_points<=4&(!talent.bloodtalons.enabled|buff.bloodtalons.up)
+actions.cooldowns+=/shadowmeld,if=combo_points<5&energy>=action.rake.cost&dot.rake.pmultiplier<2.1&buff.tigers_fury.up&(!talent.bloodtalons.enabled|buff.bloodtalons.up)&(!talent.incarnation.enabled|cooldown.incarnation.remains>18)&buff.incarnation.down
+actions.cooldowns+=/use_items
+
+actions.finishers=pool_resource,for_next=1
+actions.finishers+=/savage_roar,if=buff.savage_roar.down
+actions.finishers+=/pool_resource,for_next=1
+actions.finishers+=/rip,target_if=(!ticking|(remains<=duration*0.3&target.health.pct>25&!talent.sabertooth.enabled)|(remains<=duration*0.8&persistent_multiplier>dot.rip.pmultiplier))&(target.time_to_die>4*tick_time*spell_targets.thrash_cat+remains|target.time_to_die>duration+remains)
+actions.finishers+=/pool_resource,for_next=1
+actions.finishers+=/savage_roar,if=buff.savage_roar.remains<12
+actions.finishers+=/pool_resource,for_next=1
+actions.finishers+=/maim,if=buff.fiery_red_maimers.up
+actions.finishers+=/ferocious_bite,if=spell_targets.thrash_cat>2
+actions.finishers+=/ferocious_bite,max_energy=1
+
+actions.generators=brutal_slash,if=spell_targets.brutal_slash>desired_targets
+actions.generators+=/pool_resource,for_next=1
+actions.generators+=/thrash_cat,if=spell_targets.thrash_cat>2&(refreshable|(spell_targets.thrash_cat>6+buff.incarnation.up&talent.brutal_slash.enabled))
+actions.generators+=/pool_resource,for_next=1
+actions.generators+=/rake,target_if=(!ticking|(!talent.bloodtalons.enabled&remains<duration*0.3)|(talent.bloodtalons.enabled&buff.bloodtalons.up&remains<=7&persistent_multiplier>dot.rake.pmultiplier*0.85))&(target.time_to_die>tick_time*spell_targets.thrash_cat+remains|target.time_to_die>duration+remains)
+actions.generators+=/brutal_slash,if=buff.tigers_fury.up&(raid_event.adds.in>(1+max_charges-charges_fractional)*recharge_time)
+actions.generators+=/moonfire_cat,target_if=refreshable&target.time_to_die>duration+remains
+actions.generators+=/pool_resource,for_next=1
+actions.generators+=/thrash_cat,if=spell_targets.thrash_cat>!equipped.luffa_wrappings&(refreshable|(spell_targets.thrash_cat>1+buff.incarnation.up+!equipped.luffa_wrappings&talent.brutal_slash.enabled))
+actions.generators+=/pool_resource,for_next=1
+actions.generators+=/swipe_cat,if=spell_targets.swipe_cat>1
+actions.generators+=/shred,if=dot.rake.remains>(action.shred.cost+action.rake.cost-energy)%energy.regen|buff.clearcasting.react
+
+actions.opener=moonfire_cat,if=talent.lunar_inspiration.enabled&!ticking
+actions.opener+=/savage_roar,if=buff.savage_roar.down
+actions.opener+=/tigers_fury,if=prev.ashamanes_frenzy
+actions.opener+=/regrowth,if=talent.sabertooth.enabled&talent.bloodtalons.enabled&buff.bloodtalons.down&combo_points=5
+
+head=behemoth_headdress,id=151801,bonus_id=3630
+neck=vulcanarcore_pendant,id=151965,bonus_id=3612/1502,enchant=mark_of_the_trained_soldier
+shoulders=bearmantle_shoulders,id=152129,bonus_id=3612/1502
+back=bearmantle_cloak,id=152125,bonus_id=3612/1502,enchant=binding_of_agility
+chest=vest_of_waning_life,id=151982,bonus_id=3612/1502
+wrists=sinuous_kerapteron_bindings,id=152087,bonus_id=3612/1502
+hands=bearmantle_paws,id=152126,bonus_id=3612/1502
+waist=belt_of_fractured_sanity,id=151991,bonus_id=3612/1502
+legs=bearmantle_legguards,id=152128,bonus_id=3612/1502
+feet=vicious_flamepaws,id=151983,bonus_id=3612/1502
+finger1=sullied_seal_of_the_pantheon,id=151972,bonus_id=3612/1502,enchant=binding_of_versatility
+finger2=soul_of_the_archdruid,id=151636,bonus_id=3630,gem_id=130247,enchant=binding_of_versatility
+trinket1=golganneths_vitality,id=154174,bonus_id=3997
+trinket2=seeping_scourgewing,id=151964,bonus_id=3612/1502
+main_hand=fangs_of_ashamane,id=128860,bonus_id=723,gem_id=155847/152041/155854/0,relic_id=3612:1512/3612:1502/3612:1512/0
+off_hand=fangs_of_ashamane,id=128859,gem_id=0/0/0/0,relic_id=0/0
+
+# Gear Summary
+# gear_ilvl=973.25
+# gear_agility=39316
+# gear_stamina=61887
+# gear_crit_rating=9591
+# gear_haste_rating=2971
+# gear_mastery_rating=9749
+# gear_versatility_rating=9727
+# gear_armor=2991
+# set_bonus=tier21_2pc=1
+# set_bonus=tier21_4pc=1
