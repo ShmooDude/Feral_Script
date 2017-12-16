@@ -97,6 +97,7 @@ AddFunction FeralGetInMeleeRange
 #desired_targets
 AddFunction BrutalSlashDesiredTargets asvalue=1
 {
+    if List(opt_desired_targets desired_targets_01) 1
     if List(opt_desired_targets desired_targets_02) 2
     if List(opt_desired_targets desired_targets_03) 3
     if List(opt_desired_targets desired_targets_04) 4
