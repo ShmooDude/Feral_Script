@@ -35,9 +35,10 @@ Include(ovale_trinkets_wod)
 Include(ovale_druid_spells)
 
 # Overrides.
-SpellInfo(apex_predator_buff 252752)
-SpellInfo(jungle_stalker_buff 252071)
-
+Define(apex_predator_buff 252752)
+Define(jungle_stalker_buff 252071)
+SpellRequire(ferocious_bite energy 0=buff,apex_predatory_buff)
+	
 AddCheckBox(opt_interrupt L(interrupt) default specialization=feral)
 AddCheckBox(opt_melee_range L(not_in_melee_range) specialization=feral)
 AddCheckBox(opt_use_consumables L(opt_use_consumables) default specialization=feral)
