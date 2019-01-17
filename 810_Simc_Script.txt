@@ -75,7 +75,7 @@ actions.generators+=/pool_resource,for_next=1
 actions.generators+=/rake,target_if=(!ticking|!talent.bloodtalons.enabled&refreshable)&target.time_to_die>remains+(2*spell_targets.thrash_cat*!talent.brutal_slash.enabled)*action.rake.tick_time
 actions.generators+=/pool_resource,for_next=1
 actions.generators+=/rake,target_if=talent.bloodtalons.enabled&buff.bloodtalons.up&remains<=7&persistent_multiplier>dot.rake.pmultiplier*0.85&target.time_to_die>remains+(1+1*spell_targets.thrash_cat*!talent.brutal_slash.enabled)*action.rake.tick_time
-actions.generators+=/brutal_slash,if=(buff.tigers_fury.up|(charges=2&cooldown.tigers_fury.remains>full_recharge_time))&raid_event.adds.in>full_recharge_time
+actions.generators+=/brutal_slash,if=(buff.tigers_fury.up|(charges>=2&cooldown.tigers_fury.remains>full_recharge_time))&raid_event.adds.in>full_recharge_time
 actions.generators+=/moonfire_cat,target_if=refreshable&target.time_to_die>remains+(2*spell_targets.thrash_cat*!talent.brutal_slash.enabled)*dot.moonfire_cat.tick_time
 actions.generators+=/pool_resource,for_next=1
 actions.generators+=/thrash_cat,if=refreshable&(spell_targets.thrash_cat>1|(azerite.wild_fleshrending.enabled&target.time_to_die>remains+action.thrash_cat.tick_time))
