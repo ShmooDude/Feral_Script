@@ -15,12 +15,15 @@ food=bountiful_captains_feast
 augmentation=battle_scarred
 
 # Executed before combat begins. Accepts non-harmful actions only.
-actions.precombat=variable,name=rip_ticks,value=8
-actions.precombat+=/flask
+# Number of Rip ticks needed for use on low health targets.
+actions.precombat=flask
 actions.precombat+=/food
 actions.precombat+=/augmentation
+actions.precombat+=/variable,name=rip_ticks,value=8
 actions.precombat+=/regrowth,if=talent.bloodtalons.enabled
+# Prowl activates Cat Form
 actions.precombat+=/prowl
+# Snapshot raid buffed stats before combat begins and pre-potting is done.
 actions.precombat+=/snapshot_stats
 actions.precombat+=/potion
 actions.precombat+=/berserk
@@ -61,12 +64,18 @@ actions.finishers+=/pool_resource,for_next=1
 actions.finishers+=/maim,if=buff.iron_jaws.up
 actions.finishers+=/ferocious_bite,max_energy=1
 
+actions.generators_aoe=pool_resource,for_next=1
+actions.generators_aoe+=/thrash_cat,if=refreshable&spell_targets.thrash_cat>2|talent.scent_of_blood.enabled&buff.scent_of_blood.down&spell_targets.thrash_cat>3
+actions.generators_aoe+=/brutal_slash,if=spell_targets.brutal_slash>desired_targets
+actions.generators_aoe+=/pool_resource,for_next=1
+actions.generators_aoe+=/swipe_cat,if=buff.scent_of_blood.up
+
 actions.generators=regrowth,if=talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.bloodtalons.down&combo_points=4&dot.rake.remains<4
 actions.generators+=/pool_resource,for_next=1
 actions.generators+=/rake,target_if=(!ticking|!talent.bloodtalons.enabled&refreshable)&target.time_to_die>remains+(2*spell_targets.thrash_cat*!talent.brutal_slash.enabled)*action.rake.tick_time
 actions.generators+=/pool_resource,for_next=1
-actions.generators+=/rake,target_if=talent.bloodtalons.enabled&buff.bloodtalons.up&remains<=7&persistent_multiplier>dot.rake.pmultiplier*0.85&target.time_to_die>remains+(2*spell_targets.thrash_cat*!talent.brutal_slash.enabled)*action.rake.tick_time
-actions.generators+=/brutal_slash,if=(buff.tigers_fury.up&(raid_event.adds.in>(1+max_charges-charges_fractional)*recharge_time))
+actions.generators+=/rake,target_if=talent.bloodtalons.enabled&buff.bloodtalons.up&remains<=7&persistent_multiplier>dot.rake.pmultiplier*0.85&target.time_to_die>remains+(1+1*spell_targets.thrash_cat*!talent.brutal_slash.enabled)*action.rake.tick_time
+actions.generators+=/brutal_slash,if=(buff.tigers_fury.up|(charges=2&cooldown.tigers_fury.remains>full_recharge_time))&raid_event.adds.in>full_recharge_time
 actions.generators+=/moonfire_cat,target_if=refreshable&target.time_to_die>remains+(2*spell_targets.thrash_cat*!talent.brutal_slash.enabled)*dot.moonfire_cat.tick_time
 actions.generators+=/pool_resource,for_next=1
 actions.generators+=/thrash_cat,if=refreshable&(spell_targets.thrash_cat>1|(azerite.wild_fleshrending.enabled&target.time_to_die>remains+action.thrash_cat.tick_time))
@@ -74,15 +83,13 @@ actions.generators+=/pool_resource,for_next=1
 actions.generators+=/swipe_cat,if=spell_targets.swipe_cat>1
 actions.generators+=/shred,if=dot.rake.remains>(action.shred.cost+action.rake.cost-energy)%energy.regen|buff.clearcasting.react
 
-actions.generators_aoe=pool_resource,for_next=1
-actions.generators_aoe+=/thrash_cat,if=refreshable&spell_targets.thrash_cat>2|talent.scent_of_blood.enabled&buff.scent_of_blood.down&spell_targets.thrash_cat>3
-actions.generators_aoe+=/brutal_slash,if=spell_targets.brutal_slash>desired_targets
-actions.generators_aoe+=/pool_resource,for_next=1
-actions.generators_aoe+=/swipe_cat,if=buff.scent_of_blood.up
-
+# We will open with TF, you can safely cast this from stealth without breaking it.
 actions.opener=tigers_fury
+# Lets make sure we end the opener "sequence" when our first rip is ticking or the fight is too short to bother with Rip
 actions.opener+=/variable,name=opener_done,value=dot.rip.ticking|target.time_to_die<variable.rip_ticks*action.rip.tick_time
+# Break out of the action list
 actions.opener+=/wait,sec=0.001,if=variable.opener_done
+# No need to wait for 5 CPs anymore, just Rake, Moonfire (if LI), Rip and we are up and running
 actions.opener+=/rip,if=buff.tigers_fury.up&(buff.bloodtalons.up|!talent.bloodtalons.enabled)&dot.rake.ticking&(!talent.lunar_inspiration.enabled|dot.moonfire_cat.ticking)&!ticking
 
 head=high_altitude_turban,id=158364,bonus_id=5062/1557/4786/4775,azerite_powers=209/18/15/13
