@@ -33,6 +33,7 @@ actions+=/cat_form,if=!buff.cat_form.up
 actions+=/rake,if=buff.prowl.up|buff.shadowmeld.up
 actions+=/call_action_list,name=cooldowns
 actions+=/ferocious_bite,target_if=talent.sabertooth.enabled&combo_points>spell_targets.thrash_cat&dot.rip.ticking&dot.rip.remains<3&target.time_to_die>dot.rip.remains+variable.rip_ticks*action.rip.tick_time
+actions+=/regrowth,if=buff.predatory_swiftness.up&talent.bloodtalons.enabled&buff.bloodtalons.stack<2&buff.predatory_swiftness.remains<1
 actions+=/call_action_list,name=finishers,if=combo_points>4
 actions+=/call_action_list,name=generators_aoe,if=combo_points<5&spell_targets.thrash_cat>1
 actions+=/call_action_list,name=generators,if=combo_points<5
