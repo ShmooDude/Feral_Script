@@ -5,7 +5,7 @@ level=120
 race=tauren
 role=attack
 position=back
-professions=alchemy=78/enchanting=100
+professions=alchemy=79/enchanting=105
 talents=2313122
 
 # Default consumables
@@ -73,7 +73,7 @@ actions.generators+=/rake,target_if=talent.bloodtalons.enabled&buff.bloodtalons.
 actions.generators+=/pool_resource,for_next=1
 actions.generators+=/moonfire_cat,target_if=refreshable&target.time_to_die>remains+(2+2*(spell_targets.thrash_cat-1)*!talent.brutal_slash.enabled)*dot.moonfire_cat.tick_time
 actions.generators+=/pool_resource,for_next=1
-actions.generators+=/thrash_cat,if=!ticking&azerite.wild_fleshrending.enabled&target.time_to_die>action.thrash_cat.tick_time
+actions.generators+=/thrash_cat,if=!ticking&azerite.wild_fleshrending.enabled&target.time_to_die>remains+action.thrash_cat.tick_time
 actions.generators+=/pool_resource,for_next=1
 actions.generators+=/brutal_slash,if=(buff.tigers_fury.up|(charges>=2&cooldown.tigers_fury.remains>full_recharge_time))&raid_event.adds.in>full_recharge_time
 actions.generators+=/pool_resource,for_next=1
@@ -95,31 +95,31 @@ actions.opener+=/variable,name=opener_done,value=dot.rip.ticking|target.time_to_
 actions.opener+=/wait,sec=0.001,if=variable.opener_done
 actions.opener+=/rip,if=buff.tigers_fury.up&(buff.bloodtalons.up|!talent.bloodtalons.enabled)&dot.rake.ticking&(!talent.lunar_inspiration.enabled|dot.moonfire_cat.ticking)&!ticking
 
-head=high_altitude_turban,id=158364,bonus_id=5062/1557/4786/4775,azerite_powers=209/18/15/13
-neck=heart_of_azeroth,id=158075,bonus_id=4936/4929/4930/1536,azerite_level=33
-shoulders=deathsnap_shoulderguards,id=157947,bonus_id=1562/5140/5382/4775,azerite_powers=358/31/85/13
-back=honorbound_outriders_drape,id=163360,bonus_id=5126/4802/42/1572/4783,gem_id=153715
-chest=deathstalkers_jerkin,id=166576,bonus_id=5126/1502/4786/5401/4775,azerite_powers=359/459/44/13
+head=cowl_of_righteous_resolve,id=165519,bonus_id=4822/1507/4786/5414,azerite_powers=359/209/38/219
+neck=heart_of_azeroth,id=158075,bonus_id=4936/4929/4930/1540,azerite_level=35
+shoulders=admiraltys_ceremonial_epaulets,id=165824,bonus_id=4822/1507/4786/5415,azerite_powers=359/247/459
+back=honorbound_outriders_drape,id=163360,bonus_id=5126/4802/42/1572/4783,gem_id=154126
+chest=cephalohide_jacket,id=159314,bonus_id=5442/1557/4786/5413,azerite_powers=358/247/18
 shirt=oozesoaked_shirt,id=98084
 tabard=tabard_of_brute_force,id=43349
 wrists=venerated_raptorhide_bindings,id=160214,bonus_id=5010/4802/1557/4784,gem_id=154126
 hands=deathstalkers_grips,id=165474,bonus_id=5126/1507/4783
-waist=bloodfeaster_belt,id=159325,bonus_id=5010/1552/4783
+waist=honorbound_outriders_buckle,id=163439,bonus_id=5125/4802/1567/4783,gem_id=154126
 legs=pathogenic_legwraps,id=160625,bonus_id=4799/42/1492/4786
-feet=striders_of_the_putrescent_path,id=160729,bonus_id=4799/1492/4786
-finger1=ring_of_the_infinite_void,id=160647,bonus_id=4798/1482/4783,enchant_id=5942
+feet=footpads_of_the_serene_wake,id=159295,bonus_id=4779/1557/4784
+finger1=seal_of_questionable_loyalties,id=158314,bonus_id=5010/1542/4786,enchant_id=5942
 finger2=rotscour_ring,id=160645,bonus_id=4799/1492/4786,enchant_id=5942
-trinket1=darkmoon_deck_fathoms,id=159125
-trinket2=construct_overcharger,id=160652,bonus_id=4798/1808/1477/4786,gem_id=154126
-main_hand=vile_exsanguinator,id=159655,bonus_id=5006/1537/4783,enchant_id=5965
+trinket1=dinobone_charm,id=158155,bonus_id=4803/1557/4781
+trinket2=variable_intensity_gigavolt_oscillating_reactor,id=165572,bonus_id=4798/1507/4786
+main_hand=vile_exsanguinator,id=159655,bonus_id=5010/1557/4786,enchant_id=5965
 
 # Gear Summary
-# gear_ilvl=374.93
-# gear_agility=4028
-# gear_stamina=6685
-# gear_crit_rating=1079
-# gear_haste_rating=773
-# gear_mastery_rating=1034
+# gear_ilvl=380.53
+# gear_agility=3937
+# gear_stamina=7479
+# gear_crit_rating=1287
+# gear_haste_rating=1092
+# gear_mastery_rating=767
 # gear_versatility_rating=81
 # gear_speed_rating=157
-# gear_armor=1838
+# gear_armor=1849
