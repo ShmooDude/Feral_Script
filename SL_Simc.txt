@@ -27,6 +27,7 @@ actions+=/variable,name=shortest_ttd,value=target.time_to_die,if=variable.shorte
 actions+=/cycling_variable,name=shortest_ttd,op=min,value=target.time_to_die
 # One shot stealth
 actions+=/run_action_list,name=stealth,if=buff.shadowmeld.up|buff.prowl.up
+actions+=/skull_bash
 actions+=/call_action_list,name=cooldown
 actions+=/run_action_list,name=finisher,if=combo_points>=(5-variable.4cp_bite)
 # Multi-gcd stealth
