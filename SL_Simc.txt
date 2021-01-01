@@ -52,8 +52,8 @@ actions+=/call_action_list,name=filler
 
 actions.owlweave=starsurge,if=buff.heart_of_the_wild.up
 actions.owlweave+=/sunfire,if=!prev_gcd.1.sunfire&!prev_gcd.2.sunfire
-actions.owlweave+=/heart_of_the_wild,if=energy<30&dot.rip.remains>4.5&(cooldown.tigers_fury.remains>=6.5|runeforge.cateye_curio)&buff.clearcasting.stack<1&!buff.apex_predators_craving.up&!buff.bloodlust.up&(buff.bs_inc.remains>5|!buff.bs_inc.up)&(!cooldown.convoke_the_spirits.up&cooldown.convoke_the_spirits.remains>6.5|!covenant.night_fae)
-actions.owlweave+=/moonkin_form,if=energy<30&dot.rip.remains>4.5&(cooldown.tigers_fury.remains>=6.5|runeforge.cateye_curio)&buff.clearcasting.stack<1&!buff.apex_predators_craving.up&!buff.bloodlust.up&(buff.bs_inc.remains>5|!buff.bs_inc.up)&(!cooldown.convoke_the_spirits.up&cooldown.convoke_the_spirits.remains>6.5|!covenant.night_fae)
+actions.owlweave+=/heart_of_the_wild,if=energy<30&dot.rip.remains>4.5&(cooldown.tigers_fury.remains>=6.5|runeforge.cateye_curio)&buff.clearcasting.stack<1&!buff.apex_predators_craving.up&!buff.bloodlust.up&(buff.bs_inc.remains>5|!buff.bs_inc.up)&(cooldown.convoke_the_spirits.remains>6.5|!covenant.night_fae)
+actions.owlweave+=/moonkin_form,if=energy<30&dot.rip.remains>4.5&(cooldown.tigers_fury.remains>=6.5|runeforge.cateye_curio)&buff.clearcasting.stack<1&!buff.apex_predators_craving.up&!buff.bloodlust.up&(buff.bs_inc.remains>5|!buff.bs_inc.up)&(cooldown.convoke_the_spirits.remains>6.5|!covenant.night_fae)
 #seems like a significant damage loss again
 #actions.owlweave+=/heart_of_the_wild,if=energy<35&(dot.sunfire.remains<dot.sunfire.duration*0.3+gcd)&(dot.rip.remains>4.5|combo_points<5)&cooldown.tigers_fury.remains>=7.5&buff.clearcasting.stack<1&!buff.apex_predators_craving.up&(buff.bs_inc.remains>5|!buff.bs_inc.up)&!cooldown.convoke_the_spirits.up&variable.owlweave=1
 #actions.owlweave+=/moonkin_form,if=energy<35&(dot.sunfire.remains<dot.sunfire.duration*0.3+gcd)&(dot.rip.remains>4.5|combo_points<5)&cooldown.tigers_fury.remains>=7.5&buff.clearcasting.stack<1&!buff.apex_predators_craving.up&(buff.bs_inc.remains>5|!buff.bs_inc.up)&!cooldown.convoke_the_spirits.up&variable.owlweave=1
