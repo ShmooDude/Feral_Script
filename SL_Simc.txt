@@ -52,8 +52,8 @@ actions+=/call_action_list,name=filler
 
 actions.owlweave=starsurge,if=buff.heart_of_the_wild.up
 actions.owlweave+=/sunfire,if=!prev_gcd.1.sunfire&!prev_gcd.2.sunfire
-actions.owlweave+=/heart_of_the_wild,if=energy<40&(dot.rip.remains>4.5|combo_points<5)&cooldown.tigers_fury.remains>=6.5&buff.clearcasting.stack<1&!buff.apex_predators_craving.up&!buff.bloodlust.up&(buff.bs_inc.remains>5|!buff.bs_inc.up)&(!cooldown.convoke_the_spirits.up|!covenant.night_fae)
-actions.owlweave+=/moonkin_form,if=energy<40&(dot.rip.remains>4.5|combo_points<5)&cooldown.tigers_fury.remains>=6.5&buff.clearcasting.stack<1&!buff.apex_predators_craving.up&!buff.bloodlust.up&(buff.bs_inc.remains>5|!buff.bs_inc.up)&(!cooldown.convoke_the_spirits.up|!covenant.night_fae)
+actions.owlweave+=/heart_of_the_wild,if=energy<30&dot.rip.remains>4.5&(cooldown.tigers_fury.remains>=6.5|runeforge.cateye_curio)&buff.clearcasting.stack<1&!buff.apex_predators_craving.up&!buff.bloodlust.up&(buff.bs_inc.remains>5|!buff.bs_inc.up)&(!cooldown.convoke_the_spirits.up&cooldown.convoke_the_spirits.remains>6.5|!covenant.night_fae)
+actions.owlweave+=/moonkin_form,if=energy<30&dot.rip.remains>4.5&(cooldown.tigers_fury.remains>=6.5|runeforge.cateye_curio)&buff.clearcasting.stack<1&!buff.apex_predators_craving.up&!buff.bloodlust.up&(buff.bs_inc.remains>5|!buff.bs_inc.up)&(!cooldown.convoke_the_spirits.up&cooldown.convoke_the_spirits.remains>6.5|!covenant.night_fae)
 #seems like a significant damage loss again
 #actions.owlweave+=/heart_of_the_wild,if=energy<35&(dot.sunfire.remains<dot.sunfire.duration*0.3+gcd)&(dot.rip.remains>4.5|combo_points<5)&cooldown.tigers_fury.remains>=7.5&buff.clearcasting.stack<1&!buff.apex_predators_craving.up&(buff.bs_inc.remains>5|!buff.bs_inc.up)&!cooldown.convoke_the_spirits.up&variable.owlweave=1
 #actions.owlweave+=/moonkin_form,if=energy<35&(dot.sunfire.remains<dot.sunfire.duration*0.3+gcd)&(dot.rip.remains>4.5|combo_points<5)&cooldown.tigers_fury.remains>=7.5&buff.clearcasting.stack<1&!buff.apex_predators_craving.up&(buff.bs_inc.remains>5|!buff.bs_inc.up)&!cooldown.convoke_the_spirits.up&variable.owlweave=1
@@ -62,7 +62,7 @@ actions.owlweave+=/moonkin_form,if=energy<40&(dot.rip.remains>4.5|combo_points<5
 # Rake needs roughly 50% of its length at a minimum to surpass shreds dpe
 #actions.stealth=run_action_list,name=bloodtalons,if=talent.bloodtalons.enabled&buff.bloodtalons.down
 actions.stealth=pool_resource,for_next=1
-actions.stealth+=/rake,target_if=(dot.rake.pmultiplier<1.5|refreshable)&druid.rake.ticks_gained_on_refresh>2
+actions.stealth+=/rake,target_if=(dot.rake.pmultiplier<1.5|refreshable)&druid.rake.ticks_gained_on_refresh>2|buff.bs_inc.remains<1
 actions.stealth+=/pool_resource,for_next=1
 actions.stealth+=/thrash_cat,target_if=refreshable&druid.thrash_cat.ticks_gained_on_refresh>variable.thrash_ticks,if=spell_targets.thrash_cat>3
 # Brutal Slash is better than stealth Shred at 3 targets
