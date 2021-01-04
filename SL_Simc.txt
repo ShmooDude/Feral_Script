@@ -22,7 +22,6 @@ actions+=/prowl
 actions+=/tigers_fury,if=buff.cat_form.down
 actions+=/cat_form,if=buff.cat_form.down
 actions+=/auto_attack,if=!buff.prowl.up&!buff.shadowmeld.up
-#Todo: buff.bs_inc.remains>5 could be optimized for runtime and maybe even split for the heart of the wild and moonkin form variant
 actions+=/variable,name=shortest_ttd,value=target.time_to_die,if=variable.shortest_ttd=0
 actions+=/cycling_variable,name=shortest_ttd,op=min,value=target.time_to_die
 # One shot stealth
@@ -52,15 +51,11 @@ actions+=/call_action_list,name=filler
 
 actions.owlweave=starsurge,if=buff.heart_of_the_wild.up
 actions.owlweave+=/sunfire,if=!prev_gcd.1.sunfire&!prev_gcd.2.sunfire
+#Todo: buff.bs_inc.remains>5 could be optimized for runtime and maybe even split for the heart of the wild and moonkin form variant
 actions.owlweave+=/heart_of_the_wild,if=energy<30&dot.rip.remains>4.5&(cooldown.tigers_fury.remains>=6.5|runeforge.cateye_curio)&buff.clearcasting.stack<1&!buff.apex_predators_craving.up&!buff.bloodlust.up&(buff.bs_inc.remains>5|!buff.bs_inc.up)&(cooldown.convoke_the_spirits.remains>6.5|!covenant.night_fae)
 actions.owlweave+=/moonkin_form,if=energy<30&dot.rip.remains>4.5&(cooldown.tigers_fury.remains>=6.5|runeforge.cateye_curio)&buff.clearcasting.stack<1&!buff.apex_predators_craving.up&!buff.bloodlust.up&(buff.bs_inc.remains>5|!buff.bs_inc.up)&(cooldown.convoke_the_spirits.remains>6.5|!covenant.night_fae)
-#seems like a significant damage loss again
-#actions.owlweave+=/heart_of_the_wild,if=energy<35&(dot.sunfire.remains<dot.sunfire.duration*0.3+gcd)&(dot.rip.remains>4.5|combo_points<5)&cooldown.tigers_fury.remains>=7.5&buff.clearcasting.stack<1&!buff.apex_predators_craving.up&(buff.bs_inc.remains>5|!buff.bs_inc.up)&!cooldown.convoke_the_spirits.up&variable.owlweave=1
-#actions.owlweave+=/moonkin_form,if=energy<35&(dot.sunfire.remains<dot.sunfire.duration*0.3+gcd)&(dot.rip.remains>4.5|combo_points<5)&cooldown.tigers_fury.remains>=7.5&buff.clearcasting.stack<1&!buff.apex_predators_craving.up&(buff.bs_inc.remains>5|!buff.bs_inc.up)&!cooldown.convoke_the_spirits.up&variable.owlweave=1
 
-# Todo: In very niche aoe situations without BT, its possible for brs and thrash to be worth using here. Investigate.
 # Rake needs roughly 50% of its length at a minimum to surpass shreds dpe
-#actions.stealth=run_action_list,name=bloodtalons,if=talent.bloodtalons.enabled&buff.bloodtalons.down
 actions.stealth=pool_resource,for_next=1
 actions.stealth+=/rake,target_if=(dot.rake.pmultiplier<1.5|refreshable)&druid.rake.ticks_gained_on_refresh>2|buff.bs_inc.remains<1
 actions.stealth+=/pool_resource,for_next=1
@@ -82,8 +77,6 @@ actions.bloodtalons+=/thrash_cat,if=buff.bt_thrash.down
 
 actions.cooldown=feral_frenzy,if=combo_points<3
 # TODO: Need to sync with with ravenous frenzy when we run frenzyband, or atleast check if its worth it
-#actions.cooldown+=/pool_resource,for_next=1,extra_amount=50
-#actions.cooldown+=/berserk,if=combo_points>=3&(energy>50|cooldown.convoke_the_spirits.up)
 actions.cooldown+=/berserk,if=combo_points>=3
 actions.cooldown+=/incarnation,if=combo_points>=3
 # Try and not waste TF energy, but also just use it for zerk and incarns
