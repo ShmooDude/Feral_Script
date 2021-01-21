@@ -44,6 +44,7 @@ actions+=/thrash_cat,target_if=refreshable&druid.thrash_cat.ticks_gained_on_refr
 actions+=/pool_resource,for_next=1
 actions+=/brutal_slash,if=(raid_event.adds.in>(1+max_charges-charges_fractional)*recharge_time)&(spell_targets.brutal_slash*action.brutal_slash.damage%action.brutal_slash.cost)>(action.shred.damage%action.shred.cost)
 actions+=/swipe_cat,if=spell_targets.swipe_cat>1+buff.bs_inc.up*2
+actions+=/thrash_cat,if=spell_targets.thrash_cat>3
 actions+=/shred,if=buff.clearcasting.up
 actions+=/rake,target_if=buff.bs_inc.up&druid.rake.ticks_gained_on_refresh>2
 actions+=/call_action_list,name=filler
