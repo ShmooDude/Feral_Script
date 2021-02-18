@@ -27,8 +27,8 @@ actions+=/cycling_variable,name=shortest_ttd,op=min,value=target.time_to_die
 actions+=/run_action_list,name=stealth,if=buff.shadowmeld.up|buff.prowl.up
 actions+=/skull_bash
 actions+=/call_action_list,name=cooldown
-actions+=/primal_wrath,if=druid.primal_wrath.ticks_gained_on_refresh>=20&combo_points>=2
 actions+=/run_action_list,name=finisher,if=combo_points>=(5-variable.4cp_bite)
+actions+=/primal_wrath,if=druid.primal_wrath.ticks_gained_on_refresh>=20&combo_points>=2,line_cd=5
 # Multi-gcd stealth
 actions+=/call_action_list,name=stealth,if=buff.bs_inc.up|buff.sudden_ambush.up
 # The most expensive BT cycle (Thresh Shred Swipe cost 115 energy, make sure we can make that in 4 globals)
