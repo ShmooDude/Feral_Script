@@ -21,7 +21,7 @@ actions+=/prowl
 actions+=/tigers_fury,if=buff.cat_form.down
 actions+=/cat_form,if=buff.cat_form.down
 actions+=/auto_attack,if=!buff.prowl.up&!buff.shadowmeld.up
-actions+=/variable,name=shortest_ttd,value=target.time_to_die,if=variable.shortest_ttd=0
+actions+=/variable,name=shortest_ttd,value=target.time_to_die
 actions+=/cycling_variable,name=shortest_ttd,op=min,value=target.time_to_die
 # One shot stealth
 actions+=/run_action_list,name=stealth,if=buff.shadowmeld.up|buff.prowl.up
