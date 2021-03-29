@@ -8,20 +8,20 @@ role=attack
 position=back
 talents=2313122
 covenant=night_fae
-soulbind=niya:1,322721/279:7/342270/260:7/320687/271:7/265:7/320660
+soulbind=niya,grove_invigoration/taste_for_blood:7/conflux_of_elements:7/born_of_the_wilds:7
 
 head=sadists_sinister_mask,id=182980,bonus_id=7187/1498/6935,gem_id=173127
 neck=trailspinner_pendant,id=178707,bonus_id=6807/1540/4802,gem_id=173127
 shoulders=wicked_flankers_gorget,id=183029,bonus_id=7187/1498
 back=crest_of_the_legionnaire_general,id=183032,bonus_id=7187/1498
-chest=umbrahide_vest,id=172314,bonus_id=6647/6648/6758/7086/1532,enchant=eternal_stats,enchant_id=6214
+chest=umbrahide_vest,id=172314,bonus_id=6647/6648/6758/7086/1532,enchant=eternal_skirmish,enchant_id=6214
 wrists=bands_of_the_undergrowth,id=178702,bonus_id=6807/1540/4802,gem_id=173127
 hands=rocket_chicken_handlers,id=179336,bonus_id=6807/1540
 waist=spellwoven_tourniquet,id=182995,bonus_id=7187/1498/6935,gem_id=173127
 legs=fearless_challengers_leggings,id=178801,bonus_id=6807/1540
 feet=primeval_souls_ankleguards,id=179352,ilevel=226,enchant=eternal_agility
 finger1=ring_of_perpetual_conflict,id=178872,bonus_id=6807/1540/4802,gem_id=173127,enchant_id=6164
-finger2=most_regal_signet_of_sire_denathrius,id=183036,bonus_id=7187/1498/6935,gem_id=173127,enchant=tenet_of_critical_strike,enchant_id=6164
+finger2=fleshfused_circle,id=178869,bonus_id=3535/4786/1808/1540,gem_id=173127,enchant_id=6164
 trinket1=inscrutable_quantum_device,id=179350,bonus_id=6536/1540/6646
-trinket2=dreadfire_vessel,id=184030,ilevel=233
+trinket2=dreadfire_vessel,id=184030,bonus_id=7187/1498
 main_hand=nightwatch_eviscerator,id=179530,bonus_id=7187/1531,enchant=sinful_revelation,enchant_id=6228
