@@ -6,7 +6,7 @@ race=night_elf
 timeofday=day
 role=attack
 position=back
-talents=2313133
+talents=2313122
 covenant=night_fae
 soulbind=niya:1,322721/279:7/342270/260:7/320687/271:7/265:7/320660
 
