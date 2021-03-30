@@ -1,0 +1,27 @@
+druid="No SA Stealth APL call"
+source=default
+spec=feral
+level=60
+race=night_elf
+timeofday=day
+role=attack
+position=back
+talents=3313223
+covenant=necrolord
+soulbind=bonesmith_heirmir:10,326514/278:7/326507/260:7/326513/267:7/326511
+
+head=sadists_sinister_mask,id=182980,bonus_id=1808,ilevel=233,gem_id=173127
+neck=charm_of_eternal_winter,id=183040,bonus_id=1808,ilevel=226,gem_id=173127
+shoulders=wicked_flankers_gorget,id=183029,ilevel=233
+back=crest_of_the_legionnaire_general,id=183032,ilevel=233,enchant_id=6204
+chest=umbrahide_vest,id=172314,bonus_id=6716/7086/6647/6649/1532,enchant_id=6214
+wrists=precisely_calibrated_chronometer,id=183019,bonus_id=1808,ilevel=226,gem_id=173127
+hands=gloves_of_obscure_rituals,id=178757,ilevel=226
+waist=heedless_pugilists_harness,id=183005,bonus_id=1808,ilevel=226,gem_id=173127
+legs=fearless_challengers_leggings,id=178801,ilevel=226
+feet=enchanted_toetappers,id=183030,ilevel=226,enchant_id=6211
+finger1=most_regal_signet_of_sire_denathrius,id=183036,bonus_id=1808,ilevel=233,gem_id=173127,enchant_id=6164
+finger2=ritualists_treasured_ring,id=183037,bonus_id=1808,ilevel=226,gem_id=173127,enchant_id=6164
+trinket1=inscrutable_quantum_device,id=179350,ilevel=226
+trinket2=dreadfire_vessel,id=184030,ilevel=233
+main_hand=krexuss_bloodletting_polearm,id=184264,ilevel=233,enchant_id=6228
