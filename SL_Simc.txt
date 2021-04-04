@@ -42,7 +42,7 @@ actions+=/pool_resource,for_next=1
 actions+=/rake,target_if=(refreshable|persistent_multiplier>dot.rake.pmultiplier)&druid.rake.ticks_gained_on_refresh>spell_targets.swipe_cat*2-2
 actions+=/lunar_inspiration,target_if=(refreshable|persistent_multiplier>dot.lunar_inspiration.pmultiplier)&druid.lunar_inspiration.ticks_gained_on_refresh>spell_targets.swipe_cat*2-2
 actions+=/pool_resource,for_next=1
-actions+=/thrash_cat,target_if=refreshable&druid.thrash_cat.ticks_gained_on_refresh>(4+spell_targets.thrash_cat*4)%(1+mastery_value)-conduit.taste_for_blood.enabled-covenant.necrolord
+actions+=/thrash_cat,target_if=refreshable&druid.thrash_cat.ticks_gained_on_refresh>(4+spell_targets.thrash_cat*4)%(1+mastery_value)-conduit.taste_for_blood.enabled-covenant.necrolord&(!buff.bs_inc.up|spell_targets.thrash_cat>1)
 actions+=/pool_resource,for_next=1
 actions+=/brutal_slash,if=(raid_event.adds.in>(1+max_charges-charges_fractional)*recharge_time)&(spell_targets.brutal_slash*action.brutal_slash.damage%action.brutal_slash.cost)>(action.shred.damage%action.shred.cost)
 actions+=/swipe_cat,if=spell_targets.swipe_cat>1+buff.bs_inc.up*2
