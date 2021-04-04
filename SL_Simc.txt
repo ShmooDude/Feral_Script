@@ -33,7 +33,7 @@ actions+=/rip,target_if=covenant.necrolord&(!talent.bloodtalons.enabled|buff.blo
 actions+=/run_action_list,name=finisher,if=combo_points>=(5-variable.4cp_bite)
 actions+=/primal_wrath,if=druid.primal_wrath.ticks_gained_on_refresh>=20&combo_points>=2,line_cd=5
 # Multi-gcd stealth
-actions+=/call_action_list,name=stealth,if=buff.bs_inc.up|buff.sudden_ambush.up
+actions+=/call_action_list,name=stealth,if=buff.bs_inc.up
 # The most expensive BT cycle (Thresh Shred Swipe cost 115 energy, make sure we can make that in 4 globals)
 actions+=/pool_resource,if=talent.bloodtalons.enabled&buff.bloodtalons.down&(energy+3.5*energy.regen+(40*buff.clearcasting.up))<(115-23*buff.incarnation_king_of_the_jungle.up)&active_bt_triggers=0
 actions+=/run_action_list,name=bloodtalons,if=talent.bloodtalons.enabled&buff.bloodtalons.down
@@ -47,7 +47,7 @@ actions+=/pool_resource,for_next=1
 actions+=/brutal_slash,if=(raid_event.adds.in>(1+max_charges-charges_fractional)*recharge_time)&(spell_targets.brutal_slash*action.brutal_slash.damage%action.brutal_slash.cost)>(action.shred.damage%action.shred.cost)
 actions+=/swipe_cat,if=spell_targets.swipe_cat>1+buff.bs_inc.up*2
 actions+=/thrash_cat,if=spell_targets.thrash_cat>3
-actions+=/shred,if=buff.clearcasting.up
+actions+=/shred,if=buff.clearcasting.up&(buff.sudden_ambush.down&buff.shadowmeld.down|buff.bs_inc.up)
 actions+=/rake,target_if=buff.bs_inc.up&druid.rake.ticks_gained_on_refresh>2
 actions+=/call_action_list,name=filler
 
@@ -83,7 +83,7 @@ actions.cooldown+=/incarnation,if=combo_points>=3
 # Try and not waste TF energy, but also just use it for zerk and incarns
 actions.cooldown+=/tigers_fury,if=energy.deficit>40|buff.bs_inc.up|(talent.predator.enabled&variable.shortest_ttd<3)
 # Might be wrong to use Smeld on Rake in very very niche situations, but very rarely
-actions.cooldown+=/shadowmeld,if=buff.tigers_fury.up&buff.bs_inc.down&combo_points<4&dot.rake.pmultiplier<1.6&energy>40&druid.rake.ticks_gained_on_refresh>spell_targets.swipe_cat*2-2&target.time_to_die>5
+actions.cooldown+=/shadowmeld,if=buff.tigers_fury.up&buff.bs_inc.down&combo_points<4&buff.sudden_ambush.down&dot.rake.pmultiplier<1.6&energy>40&druid.rake.ticks_gained_on_refresh>spell_targets.swipe_cat*2-2&target.time_to_die>5
 actions.cooldown+=/berserking,if=buff.tigers_fury.up|buff.bs_inc.up
 actions.cooldown+=/potion,if=buff.bs_inc.up|fight_remains<cooldown.bs_inc.remains|fight_remains<25
 actions.cooldown+=/ravenous_frenzy,if=buff.bs_inc.up|fight_remains<21
@@ -105,4 +105,4 @@ actions.filler=rake,target_if=variable.filler=1&dot.rake.pmultiplier<=1.2*persis
 actions.filler+=/rake,if=variable.filler=2
 actions.filler+=/lunar_inspiration,if=variable.filler=3
 actions.filler+=/swipe,if=variable.filler=4
-actions.filler+=/shred
+actions.filler+=/shred,if=buff.sudden_ambush.down
