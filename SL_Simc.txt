@@ -48,7 +48,6 @@ actions+=/brutal_slash,if=(raid_event.adds.in>(1+max_charges-charges_fractional)
 actions+=/swipe_cat,if=spell_targets.swipe_cat>1+buff.bs_inc.up*2
 actions+=/thrash_cat,if=spell_targets.thrash_cat>3
 actions+=/shred,if=buff.clearcasting.up&(buff.sudden_ambush.down&buff.shadowmeld.down|buff.bs_inc.up)
-actions+=/rake,target_if=buff.bs_inc.up&druid.rake.ticks_gained_on_refresh>2
 actions+=/call_action_list,name=filler
 
 actions.owlweave=starsurge,if=buff.heart_of_the_wild.up
