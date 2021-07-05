@@ -76,25 +76,25 @@ actions.bloodtalons+=/swipe_cat,if=buff.bt_swipe.down
 actions.bloodtalons+=/thrash_cat,if=buff.bt_thrash.down
 
 actions.cooldown=adaptive_swarm,target_if=((!dot.adaptive_swarm_damage.ticking|dot.adaptive_swarm_damage.remains<2)&(dot.adaptive_swarm_damage.stack<3|!dot.adaptive_swarm_heal.stack>1)&!action.adaptive_swarm_heal.in_flight&!action.adaptive_swarm_damage.in_flight&!action.adaptive_swarm.in_flight)&target.time_to_die>5|active_enemies>2&!dot.adaptive_swarm_damage.ticking&energy<35&target.time_to_die>5
+actions.cooldown+=/fleshcraft,if=(soulbind.pustule_eruption|soulbind.volatile_solvent)
 actions.cooldown+=/feral_frenzy,target_if=max:target.time_to_die,if=combo_points<3&target.time_to_die>7&!cooldown.tigers_fury.up|fight_remains<8&fight_remains>2
 actions.cooldown+=/fleshcraft,if=(soulbind.pustule_eruption|soulbind.volatile_solvent)
 # TODO: Need to sync with with ravenous frenzy when we run frenzyband, or atleast check if its worth it
-actions.cooldown+=/berserk,if=combo_points>=3
+actions.cooldown+=/berserk,if=combo_points>=3|(cooldown.feral_frenzy.up&talent.feral_frenzy.enabled)
 actions.cooldown+=/incarnation,if=combo_points>=3
+actions.cooldown+=/potion,if=buff.bs_inc.up|fight_remains<cooldown.bs_inc.remains|fight_remains<25	   
+actions.cooldown+=/berserking,if=buff.tigers_fury.up|buff.bs_inc.up
+# Give priority to on-use weapon
+actions.cooldown+=/use_item,name=jotungeirr_destinys_call,if=equipped.jotungeirr_destinys_call
+actions.cooldown+=/use_items
+actions.cooldown+=/ravenous_frenzy,if=buff.bs_inc.up|fight_remains<21
 # Try and not waste TF energy, but also just use it for zerk and incarns
 actions.cooldown+=/tigers_fury,if=energy.deficit>40|buff.bs_inc.up|(talent.predator.enabled&variable.shortest_ttd<3)
 # Might be wrong to use Smeld on Rake in very very niche situations, but very rarely
 actions.cooldown+=/shadowmeld,if=buff.tigers_fury.up&buff.bs_inc.down&combo_points<4&buff.sudden_ambush.down&dot.rake.pmultiplier<1.6&energy>40&druid.rake.ticks_gained_on_refresh>spell_targets.swipe_cat*2-2&target.time_to_die>5
-actions.cooldown+=/berserking,if=buff.tigers_fury.up|buff.bs_inc.up
-actions.cooldown+=/potion,if=buff.bs_inc.up|fight_remains<cooldown.bs_inc.remains|fight_remains<25
-actions.cooldown+=/ravenous_frenzy,if=buff.bs_inc.up|fight_remains<21
-# TODO: Check moonkin hotw and stuff like this, and maybe better combat remain resync
 actions.cooldown+=/convoke_the_spirits,if=(dot.rip.remains>4&combo_points<3&dot.rake.ticking&energy.deficit>=20)|fight_remains<5
 # Maybe there should be more conditions on the conduit
 actions.cooldown+=/kindred_spirits,if=buff.tigers_fury.up|(conduit.deep_allegiance.enabled)
-# Give priority to on-use weapon
-actions.cooldown+=/use_item,name=jotungeirr_destinys_call,if=equipped.jotungeirr_destinys_call
-actions.cooldown+=/use_items
 
 actions.finisher=pool_resource,for_next=1
 actions.finisher+=/savage_roar,if=buff.savage_roar.remains<3
