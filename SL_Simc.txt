@@ -81,7 +81,6 @@ actions.bloodtalons+=/thrash_cat,if=buff.bt_thrash.down
 actions.cooldown=adaptive_swarm,target_if=((!dot.adaptive_swarm_damage.ticking|dot.adaptive_swarm_damage.remains<2)&(dot.adaptive_swarm_damage.stack<3|!dot.adaptive_swarm_heal.stack>1)&!action.adaptive_swarm_heal.in_flight&!action.adaptive_swarm_damage.in_flight&!action.adaptive_swarm.in_flight)&target.time_to_die>5|active_enemies>2&!dot.adaptive_swarm_damage.ticking&energy<35&target.time_to_die>5
 actions.cooldown+=/fleshcraft,if=(soulbind.pustule_eruption|soulbind.volatile_solvent)
 actions.cooldown+=/feral_frenzy,target_if=max:target.time_to_die,if=combo_points<3&target.time_to_die>7&!cooldown.tigers_fury.up|fight_remains<8&fight_remains>2
-actions.cooldown+=/fleshcraft,if=(soulbind.pustule_eruption|soulbind.volatile_solvent)
 # TODO: Need to sync with with ravenous frenzy when we run frenzyband, or atleast check if its worth it
 actions.cooldown+=/berserk,if=combo_points>=3|(cooldown.feral_frenzy.up&talent.feral_frenzy.enabled)
 actions.cooldown+=/incarnation,if=combo_points>=3
