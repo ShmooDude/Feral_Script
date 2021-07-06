@@ -82,8 +82,8 @@ actions.cooldown=adaptive_swarm,target_if=((!dot.adaptive_swarm_damage.ticking|d
 actions.cooldown+=/fleshcraft,if=(soulbind.pustule_eruption|soulbind.volatile_solvent)
 actions.cooldown+=/feral_frenzy,target_if=max:target.time_to_die,if=combo_points<3&target.time_to_die>7&!cooldown.tigers_fury.up|fight_remains<8&fight_remains>2
 # TODO: Need to sync with with ravenous frenzy when we run frenzyband, or atleast check if its worth it
-actions.cooldown+=/berserk,if=combo_points>=3|(cooldown.feral_frenzy.up&talent.feral_frenzy.enabled)
-actions.cooldown+=/incarnation,if=combo_points>=3
+actions.cooldown+=/berserk,if=combo_points>=3|(cooldown.feral_frenzy.up&covenant.necrolord)
+actions.cooldown+=/incarnation,if=combo_points>=3|(cooldown.feral_frenzy.up&covenant.necrolord)
 actions.cooldown+=/potion,if=buff.bs_inc.up|fight_remains<cooldown.bs_inc.remains|fight_remains<25	   
 actions.cooldown+=/berserking,if=buff.tigers_fury.up|buff.bs_inc.up
 # Give priority to on-use weapon
