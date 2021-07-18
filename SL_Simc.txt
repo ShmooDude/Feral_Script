@@ -107,7 +107,7 @@ actions.finisher+=/primal_wrath,if=(druid.primal_wrath.ticks_gained_on_refresh>3
 actions.finisher+=/rip,target_if=refreshable&druid.rip.ticks_gained_on_refresh>variable.rip_ticks&((buff.tigers_fury.up|!ticking)&(buff.bloodtalons.up|!talent.bloodtalons.enabled)|!talent.sabertooth.enabled)&(spell_targets.primal_wrath=1|!talent.primal_wrath.enabled)&(active_dot.rip=0|ticking&active_dot.rip=1|!runeforge.draught_of_deep_focus|!talent.sabertooth.enabled)
 actions.finisher+=/savage_roar,if=buff.savage_roar.remains<(combo_points+1)*6*0.3
 actions.finisher+=/ferocious_bite,max_energy=1,target_if=max:time_to_die
-actions.finisher+=/ferocious_bite,target_if=max:time_to_die,if=buff.bs_inc.up&talent.soul_of_the_forest.enabled|cooldown.convoke_the_spirits.remains<1
+actions.finisher+=/ferocious_bite,target_if=max:time_to_die,if=buff.bs_inc.up&talent.soul_of_the_forest.enabled|cooldown.convoke_the_spirits.remains<1&covenant.night_fae
 
 actions.filler=rake,target_if=max:druid.rake.ticks_gained_on_refresh,if=variable.filler=1&dot.rake.pmultiplier<=1.2*persistent_multiplier
 actions.filler+=/rake,if=variable.filler=2
