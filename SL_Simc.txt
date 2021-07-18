@@ -7,7 +7,6 @@ actions.precombat+=/variable,name=4cp_bite,value=0
 # Shred = 0, Non-snapshot Rake = 1, Snapshot Rake = 2, LI = 3, Swipe = 4
 actions.precombat+=/variable,name=filler,value=1
 actions.precombat+=/variable,name=rip_ticks,value=7
-actions.precombat+=/snapshot_stats
 actions.precombat+=/cat_form
 actions.precombat+=/prowl
 
