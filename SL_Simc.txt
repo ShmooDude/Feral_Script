@@ -77,7 +77,7 @@ actions.bloodtalons+=/thrash_cat,if=buff.bt_thrash.down
 
 actions.cooldown=adaptive_swarm,target_if=((!dot.adaptive_swarm_damage.ticking|dot.adaptive_swarm_damage.remains<2)&(dot.adaptive_swarm_damage.stack<3|!dot.adaptive_swarm_heal.stack>1)&!action.adaptive_swarm_heal.in_flight&!action.adaptive_swarm_damage.in_flight&!action.adaptive_swarm.in_flight)&target.time_to_die>5|active_enemies>2&!dot.adaptive_swarm_damage.ticking&energy<35&target.time_to_die>5
 actions.cooldown+=/fleshcraft,if=(soulbind.pustule_eruption|soulbind.volatile_solvent)
-# Cast Tiger's Fury before (or immediatly after) casting Feral Frenzy if Berserk is on cooldown
+# Cast Tiger's Fury before (or immediatly after) casting Feral Frenzy if Berserk is off cooldown
 actions.cooldown+=/tigers_fury,sync=feral_frenzy,if=cooldown.bs_inc.up
 actions.cooldown+=/feral_frenzy,target_if=max:target.time_to_die,if=combo_points<3&target.time_to_die>7&(buff.savage_roar.up|!talent.savage_roar.enabled)&(!cooldown.tigers_fury.up|cooldown.bs_inc.up)|fight_remains<8&fight_remains>2
 # TODO: Need to sync with with ravenous frenzy when we run frenzyband, or atleast check if its worth it
